@@ -34,7 +34,7 @@
 サーバーや `ネットワークピア` が、リクエストしているユーザーのアプリケーション、OS、ベンダーや、ユーザーエージェントのバージョンを識別するためのもの。
 
 ``` text
-ネットワークピアってなんだ？
+ネットワークピアとは？
 プロキシのこと？クライアント - サーバー間にある中継機器のこと？
 ```
 
@@ -125,6 +125,7 @@ window.opener.location = "https://danger.example.com"
 `rel="noreferrer"` が設定されているリンクから遷移したページには、Referヘッダは付与されないため、秘密のURLが漏れる心配は無い。
 
 * [<a\>: The Anchor element - HTML: HyperText Markup Language | MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/a)
+* [HTML 本当は怖い target="_blank" 。rel="noopener" ってなに？ - かもメモ](https://chaika.hatenablog.com/entry/2018/12/06/110000)
 
 ---
 
@@ -157,7 +158,7 @@ Openerを生成しない。 `トップレベルのブラウジングコンテキ
 
 #### `nofollow`
 
-検索エンジンにリンク先と無関係であることを伝える。Googleはリンク先のページをサイトからクロールしなくなる。
+検索エンジンにリンク先と無関係であることを伝える。Googleはリンク先のページをサイトからクロールしない。信頼できないコンテンツ・ユーザー投稿に含まれるリンクなどに指定する。
 
 検索エンジンに対する指示のため、なにかを防止する効果は無い。
 
@@ -168,9 +169,13 @@ Openerを生成しない。 `トップレベルのブラウジングコンテキ
 * noreferrer
   + Refererヘッダーが送信されない
   + `window.openner=null`になる(noopenerと同等)
+  + noopenerよりブラウザの対応範囲が広い
 * nofollow
   + 検索エンジンにリンク先と無関係であることを伝える
   + SEO評価を渡さない？
+
+* [noopener と noreferrer の整理、結局どっちを使えば良いのか](https://blog.ojisan.io/noreferrer-noopener)
+  * ずばり同じ内容のブログがあった（ある程度書いてから気づいた）
 
 ---
 
