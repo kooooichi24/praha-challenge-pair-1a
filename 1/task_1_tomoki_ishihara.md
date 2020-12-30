@@ -40,12 +40,6 @@
 
 * [User-Agent - HTTP | MDN](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/User-Agent)
 
----
-
-> ブラウザーによって異なるウェブページやサービスを提供することが、通常は悪い考えである理由については、ユーザーエージェント文字列を用いたブラウザーの判定をお読みください。
-
-* [ユーザーエージェント文字列を用いたブラウザーの判定 - HTTP | MDN](https://developer.mozilla.org/ja/docs/Web/HTTP/Browser_detection_using_the_user_agent)
-
 ### Accept
 
 クライアントが理解できるコンテンツタイプを MIME タイプでサーバーに伝える。
@@ -61,10 +55,10 @@ Refererを送信しない・制御する方法は以下のようなものがあ�
 * HTTPS -> HTTP に遷移する場合
 * 参照していたリソースがローカルの "file" または "data" の URI の場合
 * クライアントのブラウザがRefererヘッダを送信しないよう設定している場合
-* aタグのrel属性
-* aタグのreferrerpolicy属性
-* metaタグ(name="referrer")
-* Referrer-Policyヘッダー
+* `rel="noreferrer"`
+* referrerpolicy 属性
+* `<meta>` の referrer 属性
+* Referrer-Policy ヘッダー
 
 ### Accept-Encoding
 
@@ -116,7 +110,7 @@ window.opener.location = "https://danger.example.com"
 
 が仕込まれていると、新しいタブの裏で別のページに移動してしまう。
 
-`rel="noreferrer"` が設定されているリンクでは、 `window.opener=null` となるため、上記の現象は起こらなくなる。
+`rel="noreferrer"` が設定されている場合、 `window.opener = null` となるため、上記の現象は起こらなくなる。
 
 #### 2. 遷移先にURLを知られてしまうから
 
@@ -141,26 +135,23 @@ window.opener.location = "https://danger.example.com"
 
 #### `noreferrer`
 
-> Relevant to <form\>, <a\>, and <area\>, including this value makes the referrer unknown (no Referer header will be included), and opens the creates a top-level browsing context, as if noopener were also set.
+* Refererヘッダを送信しない
+* noopenerも指定されているかのように振る舞う
 
-> `<form>` , `<a>` , `<area>` に関連して、この値を含めると、リファラーが不明になり (リファラーヘッダは含まれません)、noopener も設定されているかのようにトップレベルのブラウジングコンテキストが開きます。
-
-つまり、
-
-* Refererヘッダが送信されなくなる
-* `トップレベルのブランジングコンテキスト`が開く。(`noopener`と同等の効果)
+[Link types: noreferrer - HTML: HyperText Markup Language | MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/noreferrer)
 
 #### `noopener`
 
-Openerを生成しない。 `トップレベルのブラウジングコンテキスト` を作成する。
+新しいページからの元ののドキュメントへのアクセスを許可せずにリンクを開く。( `window.opener = null` にする)
 
-つまり、window.openerがnullでtarget="_parent"が設定されているかのようにリンクを動作させる。
+* [Link types: noopener - HTML: HyperText Markup Language | MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types/noopener)
+* [Link types - HTML: HyperText Markup Language | MDN](https://developer.mozilla.org/en-US/docs/Web/HTML/Link_types)
 
 #### `nofollow`
 
 検索エンジンにリンク先と無関係であることを伝える。Googleはリンク先のページをサイトからクロールしない。信頼できないコンテンツ・ユーザー投稿に含まれるリンクなどに指定する。
 
-検索エンジンに対する指示のため、なにかを防止する効果は無い。
+*検索エンジンに対する指示のため、なにかを防止する効果は無い。*
 
 #### 結局どの属性をつければ良いか
 
@@ -175,12 +166,13 @@ Openerを生成しない。 `トップレベルのブラウジングコンテキ
   + SEO評価を渡さない？
 
 * [noopener と noreferrer の整理、結局どっちを使えば良いのか](https://blog.ojisan.io/noreferrer-noopener)
-  * ずばり同じ内容のブログがあった（ある程度書いてから気づいた）
+  + ずばり同じ内容のブログがあった（ある程度書いてから気づいた）
 
 ---
 
 > 先輩エンジニアに「同じオリジンの時はrefererの情報を全部送って、別オリジンの時は、オリジン情報だけをrefererとして送信するように、HTTPリクエストにヘッダを追加しておいてもらえる？」と頼まれました。HTTPリクエストのヘッダーには、どんな値を追加する必要があるでしょうか？
-```text
+
+``` text
 Referrer-Policy: origin-when-cross-origin
 ```
 
@@ -194,12 +186,13 @@ Referrer-Policy: origin-when-cross-origin
 
 > 例：「User-agentを使って、ユーザがモバイル端末を使用していることを判定しようとした場合、どのような誤検知や問題が想定されるでしょうか？」
 
-ちなみに回答：
+回答：
 
-* User-Agentを偽装している端末
-* 単なる文字列のため、予期しないUser-Agentが検知される可能性
-* バージョンが変わった場合
-* 大きいモバイル端末で表示が崩れる
+User-Agentは簡単に変更でき、偽装している端末があった場合正しく検出できません。また、単なる文字列のため予期しない端末が誤検知される可能性もあります。
+
+モバイル端末・非モバイル端末にはさまざまな種類があり、バージョンによって機能も常に変化していくため、User-Agentの判定を使用して小さい画面であることやタッチ操作であることを検出しようとした場合、全ての端末に当てはまらない可能性があります。例えば大きな画面のモバイル端末では、表示が崩れる問題が想定されます。
+
+* [ユーザーエージェント文字列を用いたブラウザーの判定 - HTTP | MDN](https://developer.mozilla.org/ja/docs/Web/HTTP/Browser_detection_using_the_user_agent)
 
 ---
 
@@ -207,58 +200,53 @@ Referrer-Policy: origin-when-cross-origin
 
 Referrer-Policyヘッダーを設定しなかった場合、デフォルトではどのような場合にreferrer情報が送信されますか？
 
+<details><summary>回答</summary><div>
 
-<details>
-  <summary>回答</summary>
-  <div>
-    Referrer-Policyの既定値はhoge。
-    これは〜〜〜〜の場合に送信するという設定。
-    Chrome等ではより厳格な値であるcorss〜〜〜を規定値にしたいらしい。
-  </div>
-</details>
+Referrer-Policyの既定値は `no-referrer-when-downgrade` 。これはプロトコルのセキュリティ水準が同一か改善される場合はreferrerを送信し、低下する場合は送信しないという設定。
+
+* HTTP -> HTTP, HTTPS -> HTTPS 送信
+* HTTP -> HTTPS 送信
+* HTTPS -> HTTP 送信しない
+
+ブラウザーはより厳格な値である `strict-origin-when-cross-origin` を規定値にしたいらしい。
+</div></details>
 
 #### クイズ2
 
-「`<meta name="referrer" content="unsafe-url">`」が設定されているページで、「`<a href="~~~" rel="noreferrer">...</a>`」から遷移した場合、Refererは送信されますか？されませんか？
+img要素にはrel="noreferrer"が使用できません。img要素でreferrer情報を送信したくない場合、どうすればよいでしょうか？
 
-<details>
-  <summary>回答</summary>
-  <div>
-    Referrer-Policyの既定値はhoge。
-    これは〜〜〜〜の場合に送信するという設定。
-    Chrome等ではより厳格な値であるcorss〜〜〜を規定値にしたいらしい。
-  </div>
-</details>
+<details><summary>回答</summary><div>
+
+同じページに `<meta name="referrer" content="noreferrer">` を設置する or `referrerpolicy="noreferrer"` を使用する
+</div></details>
 
 #### クイズ3
 
-まだない
+「 `<meta name="referrer" content="unsafe-url">` 」が設定されているページで、「 `<a href="~~~" rel="noreferrer">...</a>` 」から遷移した場合、Refererは送信されますか？されませんか？
 
-<details>
-  <summary>回答</summary>
-  <div>
-    Referrer-Policyの既定値はhoge。
-    これは〜〜〜〜の場合に送信するという設定。
-    Chrome等ではより厳格な値であるcorss〜〜〜を規定値にしたいらしい。
-  </div>
-</details>
+<details><summary>回答</summary><div>
 
----
+`rel="noreferrer"` が優先されるため、送信されない。
 
-* HTTPヘッダーにはどのような種類がありますか？
-* Referrer-Policyを設定しなかった場合、どのような場合にreferrer情報が送信されますか？
-* どのサイトから遷移してきたかを確認したい場合、どのヘッダを確認しますか？ (Referer? Origin?)
-  + Refererはブラウザによっては送信しない場合がある
-  + Referrer-Policyによって無効化できる
-* `<meta name="referrer" content="origin">`と`rel="noreferrer"`
-* rel="noreferrer"とreferrerpolicy="origin"が同時に設定されている場合、どちらが優先されますか？
-  + [Referrer-Policy によるリファラ制御 | blog.jxck.io](https://blog.jxck.io/entries/2018-10-08/referrer-policy.html)
-  + [HTML Standard](https://html.spec.whatwg.org/multipage/urls-and-fetching.html#referrer-policy-attribute)
+優先順位があり、高い順に以下のようになっている。
 
-## 参考になったサイト
+> 1. `rel=noreferrer`
+
+> 1. referrerpolicy 属性
+> 1. `<meta>` の referrer 属性
+> 1. HTTP の Referrer-Policy ヘッダ
+
+* [Referrer-Policy によるリファラ制御 | blog.jxck.io](https://blog.jxck.io/entries/2018-10-08/referrer-policy.html)
+* [HTML Standard](https://html.spec.whatwg.org/multipage/urls-and-fetching.html#referrer-policy-attribute)
+
+</div></details>
+
+## 参考／その他
 
 * [改めてHTTPを学ぶ - Qiita](https://qiita.com/ayacai115/items/cc33c1f1cfe57c3f1d10)
   + Hyper TextのHyperは複数の文章を相互に参照できるという仕組みから文章(Text)を超える(Hyper)が語源。
 * [HTTP ヘッダー - HTTP | MDN](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers)
   + HTTPヘッダーとは、クライアントやサーバーがHTTPリクエストやレスポンスで追加の情報を渡すためのもの。
   + `X-`接頭辞は独自のヘッダーを表す接頭辞として使用されていたが、非標準のフィールドが標準になったときに不便なため、2012年に非推奨になった。
+* [HTML Standard](https://html.spec.whatwg.org/multipage/browsers.html)
+  + ブラウジングコンテキストという概念があった
