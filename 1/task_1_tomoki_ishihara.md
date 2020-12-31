@@ -231,7 +231,6 @@ img要素にはrel="noreferrer"が使用できません。img要素でreferrer�
 優先順位があり、高い順に以下のようになっている。
 
 > 1. `rel=noreferrer`
-
 > 1. referrerpolicy 属性
 > 1. `<meta>` の referrer 属性
 > 1. HTTP の Referrer-Policy ヘッダ
