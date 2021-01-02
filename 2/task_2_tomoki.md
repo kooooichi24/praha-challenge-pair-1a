@@ -228,8 +228,82 @@ curl -X POST -d '{"name": "hoge"}' "https://httpbin.org/post"
 ### curl
 
 #### クイズ1
+
+`https://httpbin.org/anything`からステータスコード400が返ってくるようなcurlコマンドを記述してください。
+
+<details><summary>回答例</summary>
+
+```sh
+curl -H "Host:" "https://httpbin.org/anything"
+```
+
+`"[ヘッダー名]:"`とすることでヘッダー自体を削除できる。  
+必須のヘッダーであるHostヘッダーを削除することでステータスコード400を起こした。
+
+</details>
+
 #### クイズ2
+
+`https://httpbin.org/cookies`から
+```sh
+{
+  "cookies": {
+    "hoge": "fuga", 
+    "piyo": "poyo"
+  }
+}
+```
+
+が返ってくるようなcurlコマンドを記述してください。
+
+<details><summary>回答例</summary>
+
+```sh
+curl -b "hoge=fuga;piyo=poyo" "https://httpbin.org/cookies"
+or
+curl --cookie "hoge=fuga;piyo=poyo" "https://httpbin.org/cookies"
+or
+curl -H "Cookie:hoge=fuga;piyo=poyo" "https://httpbin.org/cookies"
+```
+
+`-b`, `--cookie`オプションでクッキーを送信できる。複数送信する場合は`;`で区切る。
+
+</details>
+
 #### クイズ3
+
+`https://httpbin.org/cookies/set?hoge=123456789&fuga=202101013734649`にリクエストを送信して
+
+```sh
+{
+  "cookies": {
+    "fuga": "202101013734649", 
+    "hoge": "123456789"
+  }
+}
+```
+
+のような出力を得るcurlコマンドを記述してください。
+
+<details><summary>回答例</summary>
+
+```sh
+curl -c "" -L "https://httpbin.org/cookies/set?hoge=123456789&fuga=202101013734649"
+```
+
+`https://httpbin.org/cookies/set?[name]=[value]`は`[name]=[value]`クッキーをセットした後に、`https://httpbin.org/cookies`にリダイレクトする。
+
+なので、受け取ったクッキーを保存してリダイレクト先に送信したい。
+
+---
+
+`-L`, `--location`オプションを使用すると、リダイレクト先でもリクエストを送ってくれる。
+
+`-c`, `--cookie-jar` オプションを使用するとCookieエンジンが有効になり、受け取ったクッキーがcurlに保存され、処理が終わった後に指定されたファイルにもクッキーが保存される。
+
+Cookieエンジンが有効になると、リダイレクト先や複数のURLで保存したクッキーを送信してくれるようになる。`--cookie`オプション使用時にも有効になる。
+
+</details>
 
 ### postman
 
