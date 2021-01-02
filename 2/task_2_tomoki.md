@@ -57,7 +57,7 @@ curl -H "X-Test:hello" "https://httpbin.org/headers"
 curl -X POST -H "Content-Type:application/json" -d '{"name": "hoge"}' "https://httpbin.org/post"
 ```
 
-#### -d, (--data)
+#### -d, (--data, --data-raw)
 
 POSTリクエストのデータを送るためのオプション。デフォルトで`Content-Type: application/x-www-form-urlencoded`ヘッダーが追加される。
 
@@ -65,8 +65,23 @@ POSTリクエストのデータを送るためのオプション。デフォル�
 
 <details><summary>補足</summary>
 
-- -dと-fの違いは？
-- `application/json`と`application/x-www-form-urlencoded`の違いは？
+`-F`, `--form` オプションは、ユーザーがformへ入力して、submitしたときのように`Content-Type: multipart/form-data`ヘッダーを使用してデータを送信するオプション。
+
+`[name]=[value]`のような形でデータを渡す。
+
+- `application/json`
+  - JSONでデータを送信する。複雑な構造のデータを送信するのに適している。
+- `application/x-www-form-urlencoded`
+  - `field1=value1&field2=value2`の形式でデータを送信する。シンプル。
+  - 文字がエンコードされるため、バイナリデータを送信するのに不向き。
+- `multipart/form-data`
+  - HTMLフォームのデータを送信する際に使用する。ファイルも送信できる。
+
+---
+
+- [POST - HTTP | MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods/POST)
+- [MIME types (IANA media types) - HTTP | MDN](https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types)
+- [php - x-www-form-urlencoded Vs json HTTP POST - Stack Overflow](https://stackoverflow.com/questions/11281117/x-www-form-urlencoded-vs-json-http-post)
 </details>
 
 ### 問題3
@@ -112,116 +127,15 @@ curl -X POST -d '{"name": "hoge"}' "https://httpbin.org/post"
 
 ## postman
 
+回答: https://documenter.getpostman.com/view/14035167/TVt2c474
+
 <details><summary>感想</summary>
 
+- postman回答の公開は[PrAhaChallenge/curl-postman.md at main · kai815/PrAhaChallenge](https://github.com/kai815/PrAhaChallenge/blob/main/web-basis/curl-postman.md)を参考にしました
 - インストールの時に`brew cask`初めて使ったけど便利だった。
 - postman、ヘッダーの補完もしてくれる（便利）
 - body用のエディターもある（JSON書きやすい）
 </details>
-
-### 問題1
-
-レスポンス
-
-```sh
-{
-    "headers": {
-        "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Host": "httpbin.org",
-        "Postman-Token": "b2272aa9-6172-4302-a13e-fdbc6a69119b",
-        "User-Agent": "PostmanRuntime/7.26.8",
-        "X-Amzn-Trace-Id": "Root=1-5feda943-40faf906190f1865433cdeaf",
-        "X-Test": "hello"
-    }
-}
-```
-
-### 問題2
-
-レスポンス(一部略)
-
-```sh
-{
-    "args": {},
-    "data": "{\n    \"name\": \"hoge\"\n}",
-    "files": {},
-    "form": {},
-    "headers": {
-        "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Content-Length": "22",
-        "Content-Type": "application/json",
-        "Host": "httpbin.org",
-        "Postman-Token": "c3423365-776d-48dd-bdb1-c09e66ee3ac0",
-        "User-Agent": "PostmanRuntime/7.26.8",
-        "X-Amzn-Trace-Id": "Root=1-5fedaa8e-43384de504176ca919568809"
-    },
-    "json": {
-        "name": "hoge"
-    },
-    "url": "https://httpbin.org/post"
-}
-```
-
-
-### 問題3
-
-レスポンス(一部略)
-
-```sh
-{
-    "args": {},
-    "data": "{\n    \"userA\": {\n        \"name\": \"hoge\",\n        \"age\": 29\n    }\n}",
-    "files": {},
-    "form": {},
-    "headers": {
-        "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Content-Length": "66",
-        "Content-Type": "application/json",
-        "Host": "httpbin.org",
-        "Postman-Token": "54ed4c52-4242-4548-8ab8-cf055fd1a33f",
-        "User-Agent": "PostmanRuntime/7.26.8",
-        "X-Amzn-Trace-Id": "Root=1-5fedaae3-17f183c713a243997817710e"
-    },
-    "json": {
-        "userA": {
-            "age": 29,
-            "name": "hoge"
-        }
-    },
-    "url": "https://httpbin.org/post"
-}
-```
-
-
-### 問題4
-
-レスポンス(一部略)
-
-```sh
-{
-    "args": {},
-    "data": "",
-    "files": {},
-    "form": {
-        "{\n    \"name\": \"hoge\"\n}": ""
-    },
-    "headers": {
-        "Accept": "*/*",
-        "Accept-Encoding": "gzip, deflate, br",
-        "Content-Length": "22",
-        "Content-Type": "application/x-www-form-urlencoded",
-        "Host": "httpbin.org",
-        "Postman-Token": "9bc3b5a7-63ef-4a2e-9def-ed5ad2973f2f",
-        "User-Agent": "PostmanRuntime/7.26.8",
-        "X-Amzn-Trace-Id": "Root=1-5fedab5c-3e9a35eb2f4172bf39d0bb35"
-    },
-    "json": null,
-    "url": "https://httpbin.org/post"
-}
-```
 
 ## クイズ
 
@@ -308,5 +222,50 @@ Cookieエンジンが有効になると、リダイレクト先や複数のURL�
 ### postman
 
 #### クイズ1
+
+Postmanでは変数を設定することができ、URLやQuery Params、Headers等様々な箇所で設定した変数を使用できます。
+
+`https://httpbin.org`を変数に格納し、`https://httpbin.org/anything`にリクエストを送信してください。
+
+<details><summary>回答例</summary>
+
+Collection variablesに `base_url=https://httpbin.org`を追加して、  
+`{{base_url}}/anything`にリクエストを送信する。
+</details>
+
 #### クイズ2
+
+Postmanではリクエストの前後でJavaScriptコードを実行することができます。動的なリクエストを作成したり、リクエストの結果をテストするのに便利です。
+
+`https://httpbin.org/status/200`からステータスコード200が返ってくることを確認するテストを記述してください。
+
+<details><summary>回答例(テストコードのみ)</summary>
+
+```js
+pm.test("Status code is 200", () => {
+    pm.response.to.have.status(200)
+})
+```
+</details>
+
 #### クイズ3
+
+`https://httpbin.org/base64/{value}`から、
+
+```sh
+PrAha Challenge is Awesome!!!
+```
+
+が返ってくるようなリクエストを作成してください。
+
+<details><summary>回答例</summary>
+
+`Pre-request Script`に以下を記述して、
+
+```js
+pm.collectionVariables.set("text", btoa("PrAha Challenge is Awesome!!!"))
+```
+
+`https://httpbin.org/base64/{{text}}`にリクエストを送信する。
+
+</details>
