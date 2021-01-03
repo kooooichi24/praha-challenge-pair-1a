@@ -125,6 +125,29 @@ or
 curl -X POST -d '{"name": "hoge"}' "https://httpbin.org/post"
 ```
 
+レスポンス(一部略)
+```sh
+{
+  "args": {}, 
+  "data": "", 
+  "files": {}, 
+  "form": {
+    "{\"name\": \"hoge\"}": ""
+  }, 
+  "headers": {
+    "Accept": "*/*", 
+    "Content-Length": "16", 
+    "Content-Type": "application/x-www-form-urlencoded", 
+    "Host": "httpbin.org", 
+    "User-Agent": "curl/7.64.1", 
+    "X-Amzn-Trace-Id": "Root=1-5ff14006-5ad9550c63325e1a1102619d"
+  }, 
+  "json": null, 
+  "url": "https://httpbin.org/post"
+}
+
+```
+
 ## postman
 
 回答: https://documenter.getpostman.com/view/14035167/TVt2c474
@@ -152,7 +175,7 @@ curl -H "Host:" "https://httpbin.org/anything"
 ```
 
 `"[ヘッダー名]:"`とすることでヘッダー自体を削除できる。  
-必須のヘッダーであるHostヘッダーを削除することでステータスコード400を起こした。
+必須のヘッダーであるHostヘッダーを削除することでステータスコード400を発生させた。
 
 </details>
 
@@ -163,7 +186,7 @@ curl -H "Host:" "https://httpbin.org/anything"
 {
   "cookies": {
     "hoge": "fuga", 
-    "piyo": "poyo"
+    "mugi": "kome"
   }
 }
 ```
@@ -173,11 +196,11 @@ curl -H "Host:" "https://httpbin.org/anything"
 <details><summary>回答例</summary>
 
 ```sh
-curl -b "hoge=fuga;piyo=poyo" "https://httpbin.org/cookies"
+curl -b "hoge=fuga;mugi=kome" "https://httpbin.org/cookies"
 or
-curl --cookie "hoge=fuga;piyo=poyo" "https://httpbin.org/cookies"
+curl --cookie "hoge=fuga;mugi=kome" "https://httpbin.org/cookies"
 or
-curl -H "Cookie:hoge=fuga;piyo=poyo" "https://httpbin.org/cookies"
+curl -H "Cookie:hoge=fuga;mugi=kome" "https://httpbin.org/cookies"
 ```
 
 `-b`, `--cookie`オプションでクッキーを送信できる。複数送信する場合は`;`で区切る。
@@ -203,6 +226,8 @@ curl -H "Cookie:hoge=fuga;piyo=poyo" "https://httpbin.org/cookies"
 
 ```sh
 curl -c "" -L "https://httpbin.org/cookies/set?hoge=123456789&fuga=202101013734649"
+or
+curl -b "" -L "https://httpbin.org/cookies/set?hoge=123456789&fuga=202101013734649"
 ```
 
 `https://httpbin.org/cookies/set?[name]=[value]`は`[name]=[value]`クッキーをセットした後に、`https://httpbin.org/cookies`にリダイレクトする。
@@ -260,12 +285,12 @@ PrAha Challenge is Awesome!!!
 
 <details><summary>回答例</summary>
 
-`Pre-request Script`に以下を記述して、
+`Pre-request Script`に以下を記述。
 
 ```js
 pm.collectionVariables.set("text", btoa("PrAha Challenge is Awesome!!!"))
 ```
 
-`https://httpbin.org/base64/{{text}}`にリクエストを送信する。
+その後、`https://httpbin.org/base64/{{text}}`にリクエストを送信する。
 
 </details>
