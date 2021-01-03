@@ -191,12 +191,12 @@ curlコマンドで`-d`(`--data`)オプションを記述したときのデフ�
 </div></details>
 
 #### クイズ３
+- 以下のようなレスポンスヘッダーのみ得られるcurlを作成してください。
 - methodはGET
 - URLは`https://httpbin.org/get`
-- 以下のようなレスポンスを得られるはずです
 
 ```
-HTTP/1.1 200 OK // ここが重要
+HTTP/1.1 200 OK // ここも重要
 Date: Sun, 03 Jan 2021 14:57:30 GMT
 Content-Type: application/json
 Content-Length: 255
@@ -215,20 +215,72 @@ $ curl -I --http1.1 https://httpbin.org/get
 $ curl -X GET -I --http1.1 https://httpbin.org/get
 ```
 
+**ポイント**
+- `-I` (`--head`)オプション
+  - レスポンスヘッダーのみを出力する
+- `--http1.1` オプション
+  - HTTP/1.1 の指定
+
+</div></details>
+
+#### クイズ４
+- 以下のようなレスポンスヘッダーとレスポンスボディが得られるcurlを作成してください。
+- methodはGET
+- URLは`https://httpbin.org/get`
+
+```
+HTTP/1.1 200 OK // ここも大事
+Date: Sun, 03 Jan 2021 15:20:43 GMT
+Content-Type: application/json
+Content-Length: 255
+Connection: keep-alive
+Server: gunicorn/19.9.0
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+
+{
+  "args": {}, 
+  "headers": {
+    "Accept": "*/*", 
+    "Host": "httpbin.org", 
+    "User-Agent": "curl/7.64.1", 
+    "X-Amzn-Trace-Id": "Root=1-5ff1e0cb-7b1f779f54ceb3a50a5a5504"
+  }, 
+  "origin": "60.114.99.112", 
+  "url": "https://httpbin.org/get"
+}
+```
+
+<details><summary>回答</summary><div>
+
+**request**
+```bash
+$ curl -i --http1.1 https://httpbin.org/get
+もしくは
+$ curl -X GET -i --http1.1 https://httpbin.org/get
+```
+
+**ポイント**
+- `-i` (`--include`)オプション
+  - レスポンスヘッダーとレスポンスボディを出力する
+- `--http1.1` オプション
+  - HTTP/1.1 の指定
+
 </div></details>
 
 
 
-#### クイズ４
+
+
+#### クイズ５
+- 以下のような、curlの追加情報やリクエストヘッダー、レスポンスヘッダー、レスポンスボディで構成されている出力が得られるcurlを作成してください。
 - methodはGET
 - URLは`https://httpbin.org/get`
-- 以下のようなレスポンスを得られるはずです
 
 ```
-*   Trying 3.211.1.78...
+*   Trying 54.164.234.192...
 * TCP_NODELAY set
-* Connected to httpbin.org (3.211.1.78) port 443 (#0)
-* ALPN, offering h2
+* Connected to httpbin.org (54.164.234.192) port 443 (#0)
 * ALPN, offering http/1.1
 * successfully set certificate verify locations:
 *   CAfile: /etc/ssl/cert.pem
@@ -244,7 +296,7 @@ $ curl -X GET -I --http1.1 https://httpbin.org/get
 * TLSv1.2 (IN), TLS change cipher, Change cipher spec (1):
 * TLSv1.2 (IN), TLS handshake, Finished (20):
 * SSL connection using TLSv1.2 / ECDHE-RSA-AES128-GCM-SHA256
-* ALPN, server accepted to use h2
+* ALPN, server accepted to use http/1.1
 * Server certificate:
 *  subject: CN=httpbin.org
 *  start date: Dec 21 00:00:00 2020 GMT
@@ -252,23 +304,19 @@ $ curl -X GET -I --http1.1 https://httpbin.org/get
 *  subjectAltName: host "httpbin.org" matched cert's "httpbin.org"
 *  issuer: C=US; O=Amazon; OU=Server CA 1B; CN=Amazon
 *  SSL certificate verify ok.
-* Using HTTP2, server supports multi-use
-* Connection state changed (HTTP/2 confirmed)
-* Copying HTTP/2 data in stream buffer to connection buffer after upgrade: len=0
-* Using Stream ID: 1 (easy handle 0x7f95a680b400)
-> GET /get HTTP/2
+> GET /get HTTP/1.1
 > Host: httpbin.org
 > User-Agent: curl/7.64.1
 > Accept: */*
 > 
-* Connection state changed (MAX_CONCURRENT_STREAMS == 128)!
-< HTTP/2 200 
-< date: Sun, 03 Jan 2021 14:55:45 GMT
-< content-type: application/json
-< content-length: 255
-< server: gunicorn/19.9.0
-< access-control-allow-origin: *
-< access-control-allow-credentials: true
+< HTTP/1.1 200 OK // ここも重要
+< Date: Sun, 03 Jan 2021 15:51:30 GMT
+< Content-Type: application/json
+< Content-Length: 255
+< Connection: keep-alive
+< Server: gunicorn/19.9.0
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Credentials: true
 < 
 {
   "args": {}, 
@@ -276,7 +324,7 @@ $ curl -X GET -I --http1.1 https://httpbin.org/get
     "Accept": "*/*", 
     "Host": "httpbin.org", 
     "User-Agent": "curl/7.64.1", 
-    "X-Amzn-Trace-Id": "Root=1-5ff1daf1-381560ea004accac70a8a4fe"
+    "X-Amzn-Trace-Id": "Root=1-5ff1e802-7d011ba8777eec822301f4f3"
   }, 
   "origin": "60.114.99.112", 
   "url": "https://httpbin.org/get"
@@ -289,14 +337,22 @@ $ curl -X GET -I --http1.1 https://httpbin.org/get
 
 **request**
 ```bash
-$ curl -I https://httpbin.org/get
+$ curl -v --http1.1 https://httpbin.org/get
 もしくは
-$ curl -X GET -I https://httpbin.org/get
+$ curl -X GET -v --http1.1 https://httpbin.org/get
 ```
 
+**ポイント**
+- `-v` (`--verbose`)オプション
+  - curlの追加情報やリクエストヘッダー、レスポンスヘッダー、レスポンスボディを出力する
+  - デバッグ用途などで利用する
+  - `*` で始まる行は、curl によって提供された追加情報
+  - `>` で始まる行は、curl によって送信された "ヘッダデータ"
+  - `<` で始まる行は、通常は隠されている curl によって受信された "ヘッダデータ" 
+- `--http1.1` オプション
+  - HTTP/1.1 の指定
+
 </div></details>
-
-
 
 ### postman
 #### クイズ１
