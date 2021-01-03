@@ -356,7 +356,31 @@ $ curl -X GET -v --http1.1 https://httpbin.org/get
 
 ### postman
 #### クイズ１
+`postman`で定義した環境変数利用時の文法は何か？
+
+<details><summary>回答</summary><div>
+{{ENV}}
+</div></details>
+
 #### クイズ２
+- 以下のようなステータスコードとレスポンスヘッダーが得られるリクエストをpostmanで作成してください。
+
+**request**
+```bash
+$ curl -i --http1.1 https://httpbin.org/status/201
+```
+
+**response**
+```
+HTTP/1.1 201 CREATED
+Date: Sun, 03 Jan 2021 17:34:00 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 0
+Connection: keep-alive
+Server: gunicorn/19.9.0
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
+```
 #### クイズ３
 
 ## 疑問
@@ -375,3 +399,42 @@ $ curl -X GET -v --http1.1 https://httpbin.org/get
     
     以下、DeepLでの翻訳結果。
     > curl が使用する内部ヘッダーと同じ名前のカスタムヘッダーを追加した場合、内部ヘッダーの代わりに外部設定されたヘッダーが使用されることに注意してください。これにより、curl が通常行うよりもさらにトリッキーなものを作成することができます。
+  
+2. docker環境上とhttps://httpbin.org/headersへのリクエストではレスポンスのHTTPのバージョンが異なるのは何故か？
+
+    1. HTTP/2
+
+        **request**
+        ```bash
+        $ curl -I https://httpbin.org/headers
+        ```
+
+        **response**
+        ```
+        HTTP/2 200 // この箇所!!
+        date: Sun, 03 Jan 2021 17:39:54 GMT
+        content-type: application/json
+        content-length: 173
+        server: gunicorn/19.9.0
+        access-control-allow-origin: *
+        access-control-allow-credentials: true
+        ```
+
+    2. HTTP/1.1
+
+        **request**
+        ```bash
+        $ curl -I localhost/headers
+        ```
+
+        **response**
+        ```
+        HTTP/1.1 200 OK // この箇所!!
+        Server: gunicorn/19.9.0
+        Date: Sun, 03 Jan 2021 17:39:57 GMT
+        Connection: keep-alive
+        Content-Type: application/json
+        Content-Length: 103
+        Access-Control-Allow-Origin: *
+        Access-Control-Allow-Credentials: true
+        ```
