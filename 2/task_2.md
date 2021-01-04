@@ -29,3 +29,9 @@ curl -H "Content-Type:application/json" -d "{\"userA\": {\"name\": \"hoge\", \"a
 ```
 curl -H "Content-Type:application/x-www-form-urlencoded" -d "{\"name\":\"hoge\"}" "https://httpbin.org/post"
 ```
+
+## postman
+
+### 問題1~4
+
+https://www.getpostman.com/collections/2686b1be2a5d5cacf181
