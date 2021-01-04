@@ -1,10 +1,11 @@
 const express = require('express');
+const StatusCodes = require('http-status-codes').StatusCodes;
 const app = express();
 const port = 3000;
 
 app.get('/', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify({text: 'hello world'}));
+  res.status(StatusCodes.OK).send(JSON.stringify({text: 'hello world'}));
 });
 
 app.listen(port, () => {
