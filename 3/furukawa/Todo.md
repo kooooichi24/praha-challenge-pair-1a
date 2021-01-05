@@ -18,3 +18,4 @@
 - [x] リクエストボディの値をレスポンスボディへ
 - [x] ステータスコード の指定
 - [x] Content-Type の指定
+- [x] Content-Typeがapplication/json以外の時は、400
