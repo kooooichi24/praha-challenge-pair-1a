@@ -6,7 +6,7 @@ app.use(express.urlencoded({ extended: true })); // for parsing application/x-ww
 const port = 8080;
 
 app.get('/', (req, res) => {
-  res.status(StatusCodes.OK).json(JSON.stringify({text: 'hello world'}));
+  res.status(StatusCodes.OK).json({text: 'hello world'});
 });
 
 app.post('/', (req, res) => {
