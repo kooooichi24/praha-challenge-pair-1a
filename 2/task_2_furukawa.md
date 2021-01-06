@@ -362,27 +362,6 @@ $ curl -X GET -v --http1.1 https://httpbin.org/get
 {{ENV}}
 </div></details>
 
-#### クイズ２
-- 以下のようなステータスコードとレスポンスヘッダーが得られるリクエストをpostmanで作成してください。
-
-**request**
-```bash
-$ curl -i --http1.1 https://httpbin.org/status/201
-```
-
-**response**
-```
-HTTP/1.1 201 CREATED
-Date: Sun, 03 Jan 2021 17:34:00 GMT
-Content-Type: text/html; charset=utf-8
-Content-Length: 0
-Connection: keep-alive
-Server: gunicorn/19.9.0
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Credentials: true
-```
-#### クイズ３
-
 ## 疑問
 1. man curl で得られる出力の -H 部分の記述内容の一部が理解できない。
 
