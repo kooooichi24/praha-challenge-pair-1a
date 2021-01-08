@@ -6,7 +6,7 @@ const PORT1 = 3000;
 const app1 = express();
 
 app1.get("/", (req,res) =>{
-  res.cookie("domain origin", req.hostname);
+  res.cookie("domain origin", req.hostname,{httpOnly: true});
   res.sendFile(__dirname + '/public-1/index.html')
 })
 
@@ -21,7 +21,8 @@ app2.use(express.static('public-2',{
   setHeaders: (res,path, stat) => {
     res.cookie('domain','https://d71d91a3de47.ngrok.io', {
       sameSite: 'none',
-      secure: true
+      secure: true,
+      httpOnly: true
     })
   }
 }))
