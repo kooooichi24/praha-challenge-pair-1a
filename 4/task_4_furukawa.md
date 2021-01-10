@@ -198,34 +198,34 @@ Refferencesの記事を参考にしたがわからぬ。
   - サニタイジングとは入力データから危険な文字を検出し，置換・除去することにより，入力データを無害化する処理である。
 ## 課題２（クイズ）
 ### クイズ１
-
+Max-Age 属性とは何を設定できる属性ですか?
+また、Max-AgeとExpiresが両方設定した場合のどちらが優先されますか?
 
 <details><summary>回答</summary><div>
+クッキーの期限までの秒数を設定する。
 
+両方設定されていたらMax-Ageが優先される。
 </div></details>
 
 #### クイズ２
-b
+Path 属性とは何を設定できる属性ですか?
+
 <details><summary>回答</summary><div>
 
-**Refference**
-- [POST | MDN Web Docs](https://developer.mozilla.org/ja/docs/Web/HTTP/Methods/POST)
-- [備忘録：Content-typeについて | Qiita](https://qiita.com/bellcrud/items/1c7c73d42df10b4107c0)
-- [curl の POST オプション -d と -F の違いから、改めて MIME type を学ぶ | Qiita](https://qiita.com/att55/items/04e8080d1c441837ad42)
+リクエストの URL に含まれるべきパスを設定する。
+含まれていない場合、ブラウザーは Cookie ヘッダーを送信しない。
 
 </div></details>
 
 #### クイズ３
-c
+www.hoge.com から www.fuga.com にクッキーを送信すると仮定する。
+
+SameSite 属性に何を設定すればよいか? また補足事項を述べよ。
 
 <details><summary>回答</summary><div>
+SameSite=None
 
-**ポイント**
-- `-I` (`--head`)オプション
-  - レスポンスヘッダーのみを出力する
-- `--http1.1` オプション
-  - HTTP/1.1 の指定
-
+Secure 属性も必要。
 </div></details>
 
 
@@ -234,3 +234,6 @@ c
 
     Set-cookieでHttpOnlyオプションを付与することで、JavaScriptがDocument.cookie プロパティなどを介してこのクッキーにアクセスすることを禁止できるが、なぜ禁止することができるのか気になる。
 
+2. CookieのExpiresを判定するのはいつ?誰がするの?
+
+3. Same-SiteのLaxにおけるトップレベルナビゲーションの記述部分がいまいち理解できていない。
