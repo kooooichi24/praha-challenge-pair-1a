@@ -73,6 +73,8 @@ https://ysk-pro.hatenablog.com/entry/cookie#%E3%82%AF%E3%83%83%E3%82%AD%E3%83%BC
 
 ### stack overflowのようなWEB掲示板サービスを開発しているとしましょう。XSS（クロスサイトスクリプティング）により、他ユーザのクッキー情報が抜き出される仕組みを説明してください。どのような対策が考えられますか？
 
+
+イマイチ解決策がわからず下記の記事を添付して起きます！
 https://www.atmarkit.co.jp/ait/articles/0212/05/news002.html
 
 
