@@ -33,7 +33,7 @@ HTTPはステートレスなプロトコルとして設計されているもの�
   - ステートフルとステートレスのメリデメが分かりやすく記述されていました。
 - [Set-Cookie | MDN Web Docs](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Set-Cookie)
 - [HTTP Cookie の使用 | MDN Web Docs](https://developer.mozilla.org/ja/docs/Web/HTTP/Cookies)
-
+---
 ### www.hoge.comで発行されたクッキーは、www.fuga.comにも送信されるでしょうか？
 送信されない。
 
@@ -49,7 +49,7 @@ HTTPはステートレスなプロトコルとして設計されているもの�
     - `mozilla`は、ドメイン。
     - `developer`は、サブドメイン。
 - [【勉強会】IPアドレス、ホスト名、ドメインを正しく説明できますか？](https://www.en-pc.jp/blog/archives/480)
-
+---
 ### hoge.com:8080のクッキーはhoge.com:9090にも送信されるでしょうか？
 送信される。
 
@@ -57,7 +57,7 @@ HTTPはステートレスなプロトコルとして設計されているもの�
 ```
 ホスト名が同じため。
 ```
-
+---
 ### www.hoge.comで発行されたクッキーは、www.api.hoge.comにも送信されるでしょうか？
 送信されない。
 
@@ -70,7 +70,7 @@ HTTPはステートレスなプロトコルとして設計されているもの�
 - [Set-cookie | MDN Web Docs](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Set-Cookie)
   - `Domain=<domain-value>`
     > 複数のホストやドメインの値を指定することはできませんが、ドメインが指定された場合、すべてのサブドメインが常に含まれます。
-
+---
 ### クッキーにDomain="hoge.com"を指定した場合、api.hoge.comにもクッキーは送信されるでしょうか？
 送信される。
 
@@ -80,9 +80,17 @@ Set-cookieレスポンスヘッダーには、Domainオプションが存在す�
 Domainオプションは、クッキーを送信する先のホストを指定でき、Domainオプションのデフォルトはホスト名である。
 ドメインが指定された場合、全てのサブドメインが常に含まれるため、送信される。
 ```
-
+---
 ### ブラウザで実行されるJavaScriptは場合によってはクッキーの値を取得できます。JavaScriptからクッキーの値が取得されることを防ぐことは可能でしょうか？どうすれば良いのでしょうか？
-`Set-cookie`ヘッダーに`HttpOnly`オプションを付与する。
+
+```
+Set-cookieヘッダーにHttpOnlyオプションを付与する。
+```
+
+構文
+```
+Set-Cookie: <cookie-name>=<cookie-value>; HttpOnly
+```
 
 **Refference**
 - [HttpOnly / Set-Cookie | MDN Web Docs](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Set-Cookie)
@@ -92,24 +100,43 @@ Domainオプションは、クッキーを送信する先のホストを指定�
   - Chromeの検証モードで、`document.cookie = "key=value;"` を実行するとクッキーが追加できる。
 
 ### HTTPS（暗号化）通信の時だけクッキーを送信することは可能でしょうか？どうすれば良いのでしょうか？
-`Set-cookie`ヘッダーに`Secure`オプションを付与する。
 
+```
+Set-cookieヘッダーにSecureオプションを付与する。
+```
+
+構文
+```
+Set-Cookie: <cookie-name>=<cookie-value>; Secure
+```
+
+---
 ### クッキーにExpiresを設定すると、どのように挙動が変わるでしょうか？
+```
 わからない
 
-`Expires=<date>`で指定された日時を過ぎると、クライアントはクッキーを削除する? (実際の挙動としては、常に現在時刻とExpiresで指定された時刻をチェックしている? それとも、リクエスト時に期限切れのクッキーを削除する? それか、サーバーがリクエストごとにExpiresを確認している)
+指定しない場合は、クッキーの有効期限はセッションクッキーの寿命となる。
+```
 
-また、指定しない場合は、クッキーの有効期限はセッションクッキーの寿命となる。
+わからないポイント
+```
+いつ・どこで・だれが・どうやって 挙動が変わるかわからない。
+
+`Expires=<date>`で指定された日時を過ぎると、クライアントがクッキーを削除する? (実際の挙動としては、常に現在時刻とExpiresで指定された時刻をチェックしている? それとも、リクエスト時に期限切れのクッキーを削除する? それか、サーバーがリクエストごとにExpiresを確認している)
+```
 
 **Refference**
 - [Expires=<date> / Set-Cookie | MDN Web Docs](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Set-Cookie)
   - クッキーの有効期限を指定する。
 
+---
+
 ### SameSite属性について説明してください
 
 **SameSite属性とは**
-
+```
 今開いているページのドメインから、別のドメインにリクエストを送る際に、クッキーをセットするかどうかを制御する属性。
+```
 
 **SameSite属性の値**
 1. Strict
@@ -139,32 +166,43 @@ Domainオプションは、クッキーを送信する先のホストを指定�
 - [SameSite cookies explained | web.dev](https://web.dev/samesite-cookies-explained/)
 - [SameSite cookies | MDN Web Docs](https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Set-Cookie/SameSite)
 
+---
+
 ### クッキーに格納しない方が良い情報の例を、3つ以上挙げてください
+```
 暗号化の有無に関わらず、ユーザーに関する情報全て。
 - ユーザーID
 - パスワード
 - メールアドレス
 - 氏名
+```
 
 **Refferences**
 - [解答：まちがった自動ログイン処理](https://blog.ohgaki.net/wrong-auto-login-the-answer)
 
+---
+
 ### クッキーはローカルストレージと混同されることが多々あります。クッキーを使うべきタイミングと、ローカルストレージを使うべきタイミングを挙げてみてください
+```
 Refferencesの記事を参考にしたがわからぬ。
+```
 
 **クッキーを使うべきタイミング**
+```
 サーバー側で読み取るためのもの。
+```
 
-以下の情報などの重要なデータを扱う際。(セッションIDによる認証を行う)
+以下のような重要なデータを扱う際。(セッションIDによる認証を行う)
 - ユーザーID
-- セッションID
 - JWT
 - 個人情報
 - クレジットカード情報
 - APIキー
 
 **ローカルストレージを使うべきタイミング**
+```
 クライアント側で読み取るためのもの。
+```
 
 - 重要な情報を一切含まない
 - 極端なハイパフォーマンスを要求されない
@@ -175,6 +213,8 @@ Refferencesの記事を参考にしたがわからぬ。
 - [HTML5のLocal Storageを使ってはいけない（翻訳）](https://techracho.bpsinc.jp/hachi8833/2019_10_09/80851)
   - 原文: [Please Stop Using Local Storage](https://www.rdegges.com/2018/please-stop-using-local-storage/)
   - JWTのTokenをlocal storageに使うな。と記載されていて「うっ」となった。
+
+---
 
 ### stack overflowのようなWEB掲示板サービスを開発しているとしましょう。XSS（クロスサイトスクリプティング）により、他ユーザのクッキー情報が抜き出される仕組みを説明してください。どのような対策が考えられますか？
 
@@ -196,6 +236,9 @@ Refferencesの記事を参考にしたがわからぬ。
 - [クロスサイトスクリプティング（XSS）のセキュリティ対策とは？](https://www.shadan-kun.com/blog/measure/1052/#:~:text=%E3%82%AF%E3%83%AD%E3%82%B9%E3%82%B5%E3%82%A4%E3%83%88%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0%EF%BC%88XSS%EF%BC%89%E3%81%A8%E3%81%AF%E3%80%81%E6%8E%B2%E7%A4%BA%E6%9D%BF%E3%82%B5%E3%82%A4%E3%83%88%E3%82%84,%E3%81%AE%E7%BD%A0%E3%82%92%E4%BB%95%E6%8E%9B%E3%81%91%E3%81%BE%E3%81%99%E3%80%82)
 - [クロスサイトスクリプティング | IPA ISEC](https://www.ipa.go.jp/security/awareness/vendor/programmingv1/a01_02.html)
   - サニタイジングとは入力データから危険な文字を検出し，置換・除去することにより，入力データを無害化する処理である。
+
+---
+
 ## 課題２（クイズ）
 ### クイズ１
 Max-Age 属性とは何を設定できる属性ですか?
@@ -207,7 +250,7 @@ Max-Age 属性とは何を設定できる属性ですか?
 両方設定されていたらMax-Ageが優先される。
 </div></details>
 
-#### クイズ２
+### クイズ２
 Path 属性とは何を設定できる属性ですか?
 
 <details><summary>回答</summary><div>
@@ -217,7 +260,7 @@ Path 属性とは何を設定できる属性ですか?
 
 </div></details>
 
-#### クイズ３
+### クイズ３
 www.hoge.com から www.fuga.com にクッキーを送信すると仮定する。
 
 SameSite 属性に何を設定すればよいか? また補足事項を述べよ。
@@ -228,6 +271,7 @@ SameSite=None
 Secure 属性も必要。
 </div></details>
 
+---
 
 ## 疑問
 1. Set-cookieのHttpOnlyの仕組みについて
