@@ -1,6 +1,17 @@
 {
   "name": "task_5_tomoki_ishihara",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT"
+  "main": "src/index.js",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "start": "node --es-module-specifier-resolution=node src/index.js",
+    "dev": "nodemon --es-module-specifier-resolution=node src/index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
 }
