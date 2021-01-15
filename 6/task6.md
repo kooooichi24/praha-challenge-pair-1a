@@ -87,4 +87,21 @@ https://at-virtual.net/securecoding/access-control-allow-origin%E3%81%AF%E3%81%A
 
 ## 課題3
 
+mockを作成
+
+- サンプルパス
+praha-challenge-pair-1a/6/mock
+
 ## 課題4
+
+- 4-1
+
+content-typeを、jsonにしてポストリクエストを送りました。
+
+- 4-2
+
+CORS制約を受けなかったです。
+
+- 4-3
+
+理由はわかりませんでした。。！
