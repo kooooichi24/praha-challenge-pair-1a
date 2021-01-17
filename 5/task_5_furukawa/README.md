@@ -3,7 +3,42 @@
 [airtable](https://airtable.com/tblTnXBXFOYJ0J7lZ/viwyi8muFtWUlhNKG/recmQLSaOpAgZOkVm?blocks=hide)
 
 ## 課題1(質問)
+### 1
+- 前提
+    - Cookie はドメインに関連付けられる。
+- ファーストパーティクッキーとは
+    - Cookie のドメインが現在閲覧しているページのドメインと**同じ**である場合、その Cookie をファーストパーティクッキーと呼ぶ。
+- サードパーティクッキーとは
+    - Cookie のドメインが現在閲覧しているページのドメインと**異なる**である場合、その Cookie をサードパーティクッキーと呼ぶ。
+- ファーストパーティクッキーとサードパーティクッキーの違い
+    - Cookie のドメインが、現在閲覧しているページのドメインと同じか否か。
 
+![cross-site-set-cookie-response-header](./img/cross-site-set-cookie-response-header.png)
+[What are first-party and third-party cookies? | web.dev](https://web.dev/samesite-cookies-explained/#what-are-first-party-and-third-party-cookies) (直感的に理解しやすい画像だったので引用)
+
+#### Refferences
+- [サードパーティの Cookie | MDN Web Docs](https://developer.mozilla.org/ja/docs/Web/HTTP/Cookies#third-party_cookies)
+- [ウェブのプライバシー強化: サードパーティ Cookie 廃止への道 | Google Developers](https://developers-jp.googleblog.com/2020/01/cookie.html)
+- [What are first-party and third-party cookies? | web.dev](https://web.dev/samesite-cookies-explained/#what-are-first-party-and-third-party-cookies)
+- [7.1.  Third-Party Cookies | RFC6265](https://tools.ietf.org/html/rfc6265#section-7.1)
+
+#### 疑問
+- `https://developer.mozilla.org/ja/docs/Web/HTTP/Cookies` で確認できる Cookie はそれぞれファーストパーティクッキーかサードパーティクッキーか?
+
+    ![疑問1](./img/1.png)
+
+    特に、`.mozilla.org`から発行されているCookieが、ファーストパーティクッキーかサードパーティクッキーかわからない。
+
+    つまり、`b.a.com` から見た `a.com` は同じドメインか否か。という問題に帰着する。
+
+### 2
+#### Refferences
+### 3
+#### Refferences
+### 4
+#### Refferences
+### 5
+#### Refferences
 ## 課題2(実装)
 ページの読み込みと同時に、ファーストパーティクッキーと、サードパーティクッキーが設定されるようなWEBサイトのデモ
 
@@ -34,3 +69,7 @@
     $ yarn start
     $ ngrok http 3001
     ```
+
+#### Refferences
+1. [Express での静的ファイルの提供 | Express](https://expressjs.com/ja/starter/static-files.html)
+2. [Documentation | ngrok](https://ngrok.com/docs)
