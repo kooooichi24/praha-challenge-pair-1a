@@ -17,7 +17,7 @@
     ```bash
     $ cd server1
     $ npm init
-    $ node index.js
+    $ yarn start
     ```
 
 2. server2
@@ -25,6 +25,6 @@
     ```bash
     $ cd server2
     $ npm init
-    $ node index.js
+    $ yarn start
     $ ngrok http 3001
     ```
