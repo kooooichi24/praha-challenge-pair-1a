@@ -8,11 +8,12 @@
       body {
         font-family: sans-serif;
       }
-      .panda {
+      .box {
         display: flex;
         gap: 1.5rem;
+        margin-top: 2rem;
       }
-      .panda>pre {
+      .box>pre {
         position: relative;
         background-color: rgb(242, 248, 255);
         border-radius: 10px;
@@ -20,7 +21,7 @@
         padding: 1rem;
         box-shadow: 4px 6px 10px rgb(161 166 195 / 30%);
       }
-      .panda>pre::before {
+      .box>pre::before {
         content: "";
         position: absolute;
         left: -16px;
@@ -35,9 +36,9 @@
   </head>
   <body>
     <h1>1st / 3rd Party Cookie Test</h1>
-    <div class="panda">
+    <div class="box">
       <img width="80px" height="80px" src="<%= resourceURL %>/images/sushidesu.jpg" />
-      <pre>I'm a third party resource !!
+      <pre>I'm a third party resource (sushidesu.jpg)!
 from <a href="<%= resourceURL %>"><%= resourceURL %></a>
 
 3rd Party Cookieを確認する（Cookieはセットされません）
@@ -46,6 +47,13 @@ from <a href="<%= resourceURL %>"><%= resourceURL %></a>
 リンク遷移で各種Cookieをセットする（= Top Level Navigation）
   -> <a href="<%= resourceURL %>/set-cookies"><%= resourceURL %>/set-cookies</a></pre>
     </div>
-    <pre><%= cookies %></pre>
+
+    <div class="box">
+      <img width="80px" height="80px" src="/images/nekodesu.png" />
+      <pre>I'm a first party resource (nekodesu.png)!
+
+-- 1st Party Cookies --
+<%= cookies %></pre>
+    </div>
   </body>
 </html>
