@@ -4,7 +4,7 @@ const router = Router()
 
 router.get("/", (req, res) => {
   res
-    .cookie("hey", "cookie", {
+    .cookie("1stParty", "cookie", {
       httpOnly: true,
     })
     .render("top.ejs", {
