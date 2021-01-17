@@ -10,10 +10,10 @@
 
 ### 2
 
-1. `shop.example.com` （通販サイト）で商品を見る
+- `shop.example.com` （通販サイト）で商品を見る
   - -> ページに埋め込まれたiframeから 広告配信用サーバーに `ad.example.com?page=ultraWideMonitor`のような形でリクエストが飛ぶ
   - -> 広告配信用サーバーでユーザーID発行し、そのIDをクッキーに保存させる (`Set-Coookie: ID=hogehoge`)
-1. その後、 `sns.example.co.jp` （SNSサイト）にアクセスする（同じく `ad.example.com` の広告が埋め込まれている）
+- その後、 `sns.example.co.jp` （SNSサイト）にアクセスする（同じく `ad.example.com` の広告が埋め込まれている）
   - -> 埋め込まれたiframeから `ad.example.com` にリクエストを送る際に、`Cookie: ID=hogehoge` が送信される
   - -> サーバーはクッキーを元に、ユーザーの情報を検索し、ウルトラワイドディスプレイの広告を返す
   - -> ウルトラワイドディスプレイの広告が iframe 上に表示される
@@ -26,12 +26,12 @@
 また、Chromeではバージョン84以降、 `Same-Site` 属性のないクッキーを `SameSite=Lax` として扱うため、`SameSite=None` および `Secure` 属性を付与しなければならない。
 
 
-1. `img`や`iframe`を埋め込む方法
+- `img`や`iframe`を埋め込む方法
   - `src`に指定したURLとクッキーをやりとりできる
-1. `<script src="~~">` を埋め込む方法
-1. `<script>~</script>` を埋め込む方法？
+- `<script src="~~">` を埋め込む方法
+- `<script>~</script>` を埋め込む方法？
   - どうやってクッキーをやりとりするのかがわからない。XHRやfetchを使用する？
-1. リダイレクトによるSSO
+- リダイレクトによるSSO
   - 異なるサイトでログイン情報を共有したい時に、認証用の `auth.example.com` を用意して、各サイトからリダイレクトさせる
     - `a.com` にアクセスすると、認証用の `auth.example.com` にリダイレクト
     - `auth.example.com` でログインパスワードを入力し、クッキーを発行
@@ -39,7 +39,7 @@
     - 認証に成功したので、`auth.example.com` から `b.com` にトークン付きでリダイレクト
   - [牧歌的 Cookie の終焉 | blog.jxck.io](https://blog.jxck.io/entries/2020-02-25/end-of-idyllic-cookie.html#sso) で紹介されていた。
   - 1st partyなサイト上でクッキーが直接やりとりされるわけではないが、ユーザーがアクセスしたいサイト (`a.com`や`b.com`)からみて、`auth.example.com`は 3rd partyなので、やりとりされるCookieは 3rd party cookie となるらしい
-1. 他にもXHRやfetchでCORSを許可してクッキーを送信する方法がありそう？
+- 他にもXHRやfetchでCORSを許可してクッキーを送信する方法がありそう？
 
 ### 4
 
@@ -115,7 +115,7 @@ npm run start
 | ??PartySameSiteNone       | `SameSite=None` のクッキー              |
 | ??PartySameSiteSecureNone | `SameSite=None` かつ `Secure` のクッキー |
 
----
+## その他
 
 ### ngrokを2つ立ち上げるとサードパーティクッキーにはならない？
 
@@ -170,8 +170,8 @@ ngrok http 8000
 
 #### Set-Cookieがブロックされるかどうか
 
-○： ブロックされない（クッキーが保存される）
-×： ブロックされる（クッキーは保存されない）
+- ○： ブロックされない（クッキーが保存される）
+- ×： ブロックされる（クッキーは保存されない）
 
 | localhost と ngrok | 第一サーバー | 第二サーバー | 
 | --------------- | ------------ | ------------ | 
@@ -197,7 +197,7 @@ ngrok http 8000
 | SameSite=Strict | ×            | 
 | SameSite=None   | ○           | 
 
-| ntrok × 2 | 送信されたか | 
+| ngrok × 2 | 送信されたか | 
 | --------------- | ------------ | 
 | SameSite=Lax    | ○           | 
 | SameSite=Strict | ×            | 
@@ -205,9 +205,11 @@ ngrok http 8000
 
 ### 結論
 
-ngrokを2台立ち上げた時も、1台だけ立ち上げた時とほとんど同様の挙動になった（はず）。（localhostではSecureなクッキーがブロックされる）
+ngrokを2台立ち上げた時も、1台だけ立ち上げた時とほとんど同様の挙動になった（はず）。（localhostではSecure属性のついたクッキーがブロックされる）
 
 まだドラフト段階で今後変わる可能性がありそう？なのであまり厳密に調査する必要はないのかもしれない。
+
+---
 
 ### メモ（同一サイト／クロスサイトなリクエスト）
 
