@@ -1,13 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>1st/3rd Party Cookie Test</title>
-</head>
-<body>
-  <h1>PrAha Challenge</h1>
-  <img src="<%= resourceURL %>/images/sushidesu.jpg" />
-  <pre><%= cookies %></pre>
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1st/3rd Party Cookie Test</title>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+      .panda {
+        display: flex;
+        gap: 1.5rem;
+      }
+      .panda>pre {
+        position: relative;
+        background-color: rgb(242, 248, 255);
+        border-radius: 10px;
+        margin: 0;
+        padding: 1rem;
+        box-shadow: 4px 6px 10px rgb(161 166 195 / 30%);
+      }
+      .panda>pre::before {
+        content: "";
+        position: absolute;
+        left: -16px;
+        top: 16px;
+        width: 0;
+        height: 0;
+        border-style: solid;
+        border-width: 8px 16px 8px 0;
+        border-color: transparent rgb(242, 248, 255) transparent transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>1st / 3rd Party Cookie Test</h1>
+    <div class="panda">
+      <img width="80px" height="80px" src="<%= resourceURL %>/images/sushidesu.jpg" />
+      <pre>I'm a third party resource !!
+from <a href="<%= resourceURL %>"><%= resourceURL %></a>
+
+3rd Party Cookieを確認する（Cookieはセットされません）
+  -> <a href="<%= resourceURL %>"><%= resourceURL %></a>
+
+リンク遷移で各種Cookieをセットする（= Top Level Navigation）
+  -> <a href="<%= resourceURL %>/set-cookies"><%= resourceURL %>/set-cookies</a></pre>
+    </div>
+    <pre><%= cookies %></pre>
+  </body>
 </html>
