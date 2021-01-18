@@ -11,7 +11,7 @@ api.listen(API_PORT, () => {
 
 !(async () => {
   const apiURL = await ngrok.connect(API_PORT)
-  console.log(`localhost:${API_PORT}} on ${apiURL}`)
+  console.log(`localhost:${API_PORT} on ${apiURL}`)
 
   server.locals.apiURL = apiURL
   server.listen(PORT, () => {
