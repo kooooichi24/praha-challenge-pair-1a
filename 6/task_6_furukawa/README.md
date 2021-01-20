@@ -154,10 +154,56 @@
 
 ### 5. 
 - **挙動**
-#### Refferences
-### 6. 
-#### Refferences
 
+  ```
+  XMLHttpRequestのerrorイベントをトリガーし、要求しているJavaScriptコードへの応答データを拒否する。
+  ```
+  [How does Access-Control-Allow-Origin header work? | stack overflow](https://stackoverflow.com/questions/10636611/how-does-access-control-allow-origin-header-work)
+  > If Site B has not indicated that Site A is allowed to access this page, the browser will trigger the XMLHttpRequest's error event and deny the response data to the requesting JavaScript code.
+
+#### メモ
+- [CORS のエラーメッセージ | MDN Web Docs](https://developer.mozilla.org/ja/docs/Web/HTTP/CORS/Errors#cors_error_messages)
+  
+  ブラウザに出力される CORS のエラーメッセージ一覧
+  > Firefox のコンソールは、 CORS のためにリクエストが失敗した場合はコンソールにメッセージを表示します。
+  
+- [Reason: CORS header 'Access-Control-Allow-Origin' does not match 'xyz' | MDN Web Docs](https://developer.mozilla.org/ja/docs/Web/HTTP/CORS/Errors/CORSAllowOriginNotMatchingOrigin)
+
+  > リクエストを作成しているオリジンが、 Access-Control-Allow-Origin ヘッダーによって許可されたオリジンのいずれにも一致しないことを表します。
+
+  - 原因
+    - オリジンの不一致
+    - 複数の`Access-Control-Allow-Origin`レスポンスヘッダーを含む
+      ```
+      ○ `Access-Control-Allow-Origin: <origin_A>, <origin_B>`
+
+      × `Access-Control-Allow-Origin: <origin_A>`
+        `Access-Control-Allow-Origin: <origin_B>`
+      ```
+
+---
+
+### 6. 
+- **何をする必要があるか**
+
+  ```
+  XMLHttpRequest.withCredentials = True を設定する
+  ```
+  [資格情報を含むリクエスト | MDN Web Docs](https://developer.mozilla.org/ja/docs/Web/HTTP/CORS#requests_with_credentials)
+
+#### Refferences
+- [XMLHttpRequest.withCredentials | MDN Web Docs](https://developer.mozilla.org/ja/docs/Web/API/XMLHttpRequest#properties)
+
+  > Boolean で、サイト間の Access-Control リクエストでクッキーや認証ヘッダーなどの資格情報を使用するかどうかを示します。
+
+#### メモ
+- [Access-Control-Allow-Credentials | MDN Web Docs](https://developer.mozilla.org/ja/docs/Web/HTTP/CORS#access-control-allow-credentials)
+
+  > Access-Control-Allow-Credentials は credentials フラグが真であるときに、リクエストへのレスポンスを開示してよいか否かを示します。<br>
+  > ... <br>
+  > 単純な GET リクエストはプリフライトを行いませんので、リソースへのリクエストが資格情報付きで行われた場合にリソースと共にこのヘッダーを返さなければ、レスポンスはブラウザーによって無視され、ウェブコンテンツに返らないことに注意してください。
+
+  Cross-originサーバーは、`XMLHttpRequest.withCredentials = True` を用いたブラウザからのリクエストに対して`Access-Control-Allow-Credentials: true` のレスポンスヘッダーを返さなければいけない。
 ---
 
 ## 課題2(クイズ)
