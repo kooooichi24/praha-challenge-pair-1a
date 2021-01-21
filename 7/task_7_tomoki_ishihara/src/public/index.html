@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cache Test</title>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+      .cache,
+      .no-cache {
+        position: relative;
+        width: 200px;
+      }
+      img {
+        width: 100%;
+      }
+      .cache::before,
+      .no-cache::before {
+        background-color: #ebebeb;
+        padding: 0.2em 0.5em;
+        position: absolute;
+        top: 0;
+        max-width: 100%;
+      }
+      .cache::before {
+        content: "Cache-Control: private, max-age=86400";
+      }
+      .no-cache::before {
+        content: "Cache-Control: no-store, max-age=0";
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Cache Test</h1>
+    <div class="cache">
+      <img src="/cache/neko.png" />
+    </div>
+    <div class="no-cache">
+      <img src="/no-cache/neko.png" />
+    </div>
+  </body>
+</html>
