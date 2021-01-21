@@ -8,7 +8,6 @@ app.use("/endpoint1", (req,res, next) => {
 },express.static("public"))
 
 app.use("/endpoint2", (req,res, next) => {
-
   console.log("endpoint2")
   next()
 },express.static("public", {
@@ -30,7 +29,6 @@ app.get("/endpoint1", (req,res)=>{
 app.get("/endpoint2", (req,res)=>{
   res.sendFile(__dirname + "/public" + "/index.html" )
  })
-
 
 app.listen(PORT, ()=> {
   console.log(`sever start localhost:${PORT}`)
