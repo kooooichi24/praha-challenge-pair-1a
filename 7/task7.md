@@ -123,8 +123,21 @@ https://blog.ideamans.com/2018/01/google-chrome-network.html
 
 ## 課題2
 
-- [] 1エンドポイントでは
+### ディレクトリ
 
+mock
+
+### 実行コマンド
+
+```
+npm install
+npm start
+```
+
+### 説明
+
+エンドポイントを、endpoint1とendpoint2を作成し、
+endpoint2の場合は、setCustomCacheControl関数で、画像をキャッシュする設定をしています
 
 ## 課題3 ブラウザキャッシュを使うべきではないケースを３つ考えて、ペアと会話してみてください
 
@@ -154,6 +167,14 @@ Cache-Control: no-cacheをレスポンスヘッダーに含めた場合、ブラ
 
 <details>
   <summary>回答</summary>
+  キャシュ自体はされるようで、キャッシュする時は、オリジンサーバーに問い合わせをするらしい
+　完全にキャッシュさせない場合、Cache-Controlにno-storeを設定する必要がるらしい
+
+  - no-cacheのところ
+  https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Cache-Control
+
+  https://blog.idcf.jp/entry/cdn2
+
 </details>
 
 - 問題2
@@ -162,6 +183,10 @@ Expiresとmax-ageの両方を設定した場合、どちらが優先されます
 
 <details>
   <summary>回答</summary>
+  max-ageが優先される
+
+  - 有効期限の箇所
+  https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Cache-Control
 </details>
 
 ## メモ
