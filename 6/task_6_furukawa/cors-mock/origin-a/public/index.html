@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Origin-A</title>
+</head>
+<body>
+  <main>
+    <section>
+      <h1>Simple Requests (No Pre-Flight)</h1>
+      <article>
+        <h2>Example #1</h2>
+        <pre>
+          POST http://8e51ee5bb6c0.ngrok.io/simple-cors
+          Content-Type: application/x-www-form-urlencoded
+
+          requests=simple&method=post
+        </pre>
+        <div>
+          <textarea readonly id="example1" rows="4" cols="60"></textarea>
+        </div>
+        <div>
+          <button onclick="onClick1()">Fetch</button>  
+        </div>
+      </article>
+    </section>
+    
+    <hr>
+
+    <section>
+      <h1>Complex Requests (Pre-Flight Required)</h1>
+      <article>
+        <h2>Example #2</h2>
+        <pre>
+          POST http://8e51ee5bb6c0.ngrok.io/complex-cors
+          Content-Type: application/json
+          X-PINGOTHER: pingpong
+
+          {requests: "complex", method: "post"}
+        </pre>
+        <div>
+          <textarea readonly id="example2" rows="4" cols="60"></textarea>
+        </div>
+        <div>
+          <button onclick="onClick2()">Fetch</button>  
+        </div>
+      </article>
+    </section>
+
+
+  </main>
+  
+  <!--  -->
+  <script>
+    const baseUrl = 'http://8e51ee5bb6c0.ngrok.io';
+
+    const example1= document.getElementById("example1");
+    const example2= document.getElementById("example2");
+
+    const headers1 = { 'Content-Type': 'application/x-www-form-urlencoded' };
+    const headers2 = { 'Content-Type': 'application/json', 'X-PINGOTHER': 'pingpong' };
+
+    const body1 = 'requests=simple&method=post';
+    const body2 = JSON.stringify({ requests: 'complex', method: 'post'});
+
+
+    const postData = async (method, url, headers, data) => {
+      const response = await fetch(url, {
+        method: method,
+        headers: headers,
+        body: data
+      })
+      return response.json();
+    };
+
+    const onClick1 = () => {
+      postData('POST', `${baseUrl}/simple-cors`, headers1, body1)
+      .then(data => {
+        example1.value = JSON.stringify(data);
+      });
+    };
+
+    const onClick2 = () => {
+      postData('POST', `${baseUrl}/complex-cors`, headers2, body2)
+        .then(data => {
+          example2.value = JSON.stringify(data);
+        });
+    };
+
+  </script>
+</body>
+</html>

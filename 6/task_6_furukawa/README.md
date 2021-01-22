@@ -7,7 +7,7 @@
 - **`CORS` の仕組み**
 
   ```
-  CORSとは、Croww-origin のリソースへのアクセス権を与える仕組みであり、
+  CORSとは、Cross-origin のリソースへのアクセス権を与える仕組みであり、
   CORSにはsimple request と preflight request の2つの仕組みが存在する。
   
   simple request の仕組みは、
