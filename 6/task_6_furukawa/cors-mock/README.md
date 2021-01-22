@@ -1,7 +1,7 @@
 # 課題3(実装)
 CORSを説明するためのモック
 
-![デモ動画](./static/cors-demo.mov)
+![デモ動画](./static/cors-demo.gif)
 
 ## Usage
 ### Prerequisites
