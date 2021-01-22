@@ -9,12 +9,6 @@ app.use(express.urlencoded({ extended: true }));
 
 /* -------------------------------------------------------------------------- */
 
-
-app.get('simple-cors', (req, res) => {
-  res.set('Access-Control-Allow-Origin', ACCESS_CONTROL_ALLOW_ORIGIN);
-  res.json({ message: 'Simple CORS requests are working. [GET]' })
-});
-
 app.post('/simple-cors', (req, res) => {
   res.set('Access-Control-Allow-Origin', ACCESS_CONTROL_ALLOW_ORIGIN);
   res.json({ message: 'Simple CORS requests are working. [POST]' });
