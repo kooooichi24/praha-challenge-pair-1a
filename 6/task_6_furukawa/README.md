@@ -314,11 +314,5 @@ img.src = 'https://example.com/graph-axes.svg';
   - 理解度テストより引用
 ---
 
-## 疑問
-1. aa
-
-    aa
-
-2. bb
-
-    bb
+## 課題3(実装), 課題4（成果物に関する質問）
+[README.md](./cors-mock/README.md)

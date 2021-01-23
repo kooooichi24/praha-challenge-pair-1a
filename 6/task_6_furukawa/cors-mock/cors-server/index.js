@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const port = 3001;
 
-const ACCESS_CONTROL_ALLOW_ORIGIN = 'http://87cf0c721b07.ngrok.io'
+const ACCESS_CONTROL_ALLOW_ORIGIN = 'http://b15a91639b5f.ngrok.io';
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
@@ -22,7 +22,7 @@ app.options("/complex-cors", (req, res) => {
     'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
     'Access-Control-Allow-Headers': 'X-PINGOTHER, Content-Type',
   });
-  res.json();
+  res.status(204).json();
 });
 app.post('/complex-cors', (req, res) => {
   res.set({ 'Access-Control-Allow-Origin': ACCESS_CONTROL_ALLOW_ORIGIN })
