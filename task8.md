@@ -65,11 +65,6 @@ https://www.youtube.com/watch?v=Lqo-K5fhvQ4
 
 https://www.youtube.com/watch?v=SPIiVKXB818
 
-### コマンドラインインジェクションとSQLインジェクションの違い
-
-※参考記事
-https://www.google.com/search?q=%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%82%A4%E3%83%B3%E3%82%B8%E3%82%A7%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3+sq%E3%82%A4%E3%83%B3%E3%82%B8%E3%82%A7%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3+%E9%81%95%E3%81%84&oq=%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%82%A4%E3%83%B3%E3%82%B8%E3%82%A7%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%80%80sq%E3%82%A4%E3%83%B3%E3%82%B8%E3%82%A7%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3%E3%80%80%E9%81%95%E3%81%84&aqs=chrome..69i57.9897j0j7&sourceid=chrome&ie=UTF-8
-
 ### CSRF
 
 - 仕組み
@@ -101,6 +96,23 @@ https://qiita.com/wanko5296/items/142b5b82485b0196a2da
 
 
 ## 課題2
+
+1. XSSとCSRFの違いはなんでしょうか？
+
+<details>
+  <summary>
+    解答
+  </summary>
+  正直明確には解答できないでの、下記の記事を参照ください！
+
+  ※参考記事
+  https://qiita.com/wanko5296/items/142b5b82485b0196a2da#xss%E3%81%A8csrf%E3%81%AE%E9%81%95%E3%81%84　　
+
+
+  被害になるトリガーは同じですが、目的は事なるのが大きな違いなのかな？とも思いました。
+  XSSはなりすまし目的
+  CSRFは利用者の意図しないWebアプリケーション上の処理実行目的
+</details>
 
 ## 課題3
 
