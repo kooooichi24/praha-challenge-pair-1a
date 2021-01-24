@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>cache-mock</title>
+</head>
+<body>
+  <main>
+    <section>
+      <h1>Using Browser Cache</h1>
+      <article>
+        <h2>cache</h2>
+        <div>
+          <img src="/cache/images/js-logo.png" alt="js-logo" style="width: 128px; height: 128px;" />
+        </div>
+
+        <h3>初回アクセス時</h3>
+        <pre>
+          GET /cache/images/js-logo.png
+          Cache-Control: no-cache // defaultかな? 初回以降に消えるのは何故だ?
+          Pragma: no-cache        // defaultかな? 初回以降に消えるのは何故だ?
+          HTTP/1.1 200 OK
+          Cache-Control: private, must-revalidate, max-age=10
+        </pre>
+
+        <h3>初回以降 (初回アクセスから10秒以内)</h3>
+        <pre>
+          GET /cache/images/js-logo.png
+          // Provisional headers are shown. Disable cache to see full headers. とブラウザ上で表示される
+
+          HTTP/1.1 200 OK // (from memory cache) とブラウザ上で表示される
+          Cache-Control: private, must-revalidate, max-age=10
+        </pre>
+
+        <h3>初回以降 (初回アクセスから10秒以上経過)</h3>
+        <pre>
+          GET /cache/images/js-logo.png
+          If-Modified-Since: Sun, 24 Jan 2021 08:43:40 GMT
+          If-None-Match: W/"1203-177339025af"
+
+          HTTP/1.1 304 Not Modified
+          Cache-Control: private, must-revalidate, max-age=10
+        </pre>
+      </article>
+    </section>
+
+    <hr>
+
+    <section>
+      <h1>No Using Browser Cache</h1>
+      <article>
+        <h2>no-cache</h2>
+        <div>
+          <img src="/no-cache/images/ts-logo.png" alt="ts-logo" style="width: 128px; height: 128px;" />
+        </div>
+
+        <h3>初回アクセス時</h3>
+        <pre>
+          GET /no-cache/images/ts-logo.png
+          Cache-Control: no-cache // defaultかな? 初回以降に消えるのは何故だ?
+          Pragma: no-cache        // defaultかな? 初回以降に消えるのは何故だ?
+
+          HTTP/1.1 200
+          Cache-Control: no-store, max-age=0, expires=Sun Jan 24 2021 18:53:55 GMT+0900 (Japan Standard Time)
+        </pre>
+
+        <h3>初回以降</h3>
+        <pre>
+          GET /no-cache/images/ts-logo.png
+
+          HTTP/1.1 200
+          Cache-Control: no-store, max-age=0, expires=Sun Jan 24 2021 18:53:55 GMT+0900 (Japan Standard Time)
+        </pre>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
