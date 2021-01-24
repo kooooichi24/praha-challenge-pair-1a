@@ -206,114 +206,76 @@
 
 [README.md](./cache-mock/README.md)
 
+---
+
 ## 課題3 (成果物に関する質問)
+- ケース1
+  - どんなサービスの？
+    - Amazon
+  - どんなページで？
+    - トップページ
+  - どんなファイルを？
+    - 広告配信用のファイル
+  - なぜキャッシュしてはいけないのでしょうか？
+    - 広告配信結果は動的に変わるから?
+
+- ケース2
+  - どんなサービスの？
+    - Amazon
+  - どんなページで？
+    - トップページ
+  - どんなファイルを？
+    - htmlファイル
+  - なぜキャッシュしてはいけないのでしょうか？
+    - トップページなどのhtmlファイルは動的だから
+
+- ケース3
+  - どんなサービスの？
+    - Amazon
+  - どんなページで？
+    - トップページ
+  - どんなファイルを？
+    - query parameter 付きのリクエストのレスポンス結果
+  - なぜキャッシュしてはいけないのでしょうか？
+    - query parameter の値が動的に変わるから?
 
 
 ## 課題4 (クイズ)
-クロスオリジンリソースで指定されたアクションが許可されているかどうかのクイズ
-
 ### クイズ1
-web.devドメインのWebページには、次のiframeが含まれています。
 
-```html
-<iframe id="iframe" src="https://example.com/some-page.html" alt="Sample iframe"></iframe>
-```
+一般的にどちらの方が早いでしょうか?
 
-WebページのJavaScriptには、埋め込みページの要素からテキストコンテンツを取得するための次のコードが含まれています。
-
-```js
-const iframe = document.getElementById('iframe');
-const message = iframe.contentDocument.getElementById('message').innerText;
-```
-
-このJavaScriptは許可されていますか？
-
+1. キャッシュのレスポンス
+    ```
+    browser <- resource cache
+    ```
+2. キャッシュ検証
+    ```
+    browser <-cache validation- server
+    ```
 
 <details><summary>回答</summary><div>
 
 ```
-許可されていない。
-
-iframeはホストWebページと同じオリジン上にないため、ブラウザーは埋め込みページの読み取りを許可しません。
+キャッシュ検証
 ```
+- [ETag example | web.dev](https://web.dev/http-cache/)
+  > If there's a match, then the server can respond with a 304 Not Modified HTTP response, which is the equivalent of "Hey, keep using what you've already got!" There's very little data to transfer when sending this type of response, so it's usually much faster than having to actually send back a copy of the actual resource being requested.
+
+  304レスポンスは転送のデータが少ないから、キャッシュのレスポンスよりも遥かに高速!!
 
 </div></details>
 
 ### クイズ2
-web.devドメインのWebページには、次のフォームが含まれています。
-
-```html
-<form action="https://example.com/results.json">
-  <label for="email">Enter your email: </label>
-  <input type="email" name="email" id="email" required>
-  <button type="submit">Subscribe</button>
-</form>
-```
-
-このフォームを送信できますか？
+キャッシュの検証に用いられる `ETag` レスポンスヘッダーと `Last-Modified` レスポンスヘッダーの違いは何でしょう?
 
 <details><summary>回答</summary><div>
 
 ```
-送信できる。
+比較対象が異なる。
 
-フォームデータactionは、`<form>`要素の属性で指定されたクロスオリジンURLに書き込むことができます。
+ETag レスポンスヘッダーはIDによる比較。
+Last-Modified レスポンスヘッダーは日時による比較。
 ```
 
 </div></details>
-
-### クイズ3
-web.devドメインのWebページには、次のiframeが含まれています。
-
-```html
-<iframe src="https://example.com/some-page.html" alt="Sample iframe"></iframe>
-```
-
-このiframeの埋め込みは許可されていますか？
-
-<details><summary>回答</summary><div>
-
-```
-通常は許可されている。
-
-オリジンの所有者がX-Frame-Options HTTPヘッダーをdenyまたはsameoriginに設定していない限り、クロスオリジンのiframe埋め込みが許可されます。
-```
-
-</div></details>
-
-### クイズ4
-web.devドメインのWebページには、次のキャンバスが含まれています。
-
-```html
-<canvas id="bargraph"></canvas>
-```
-
-WebページのJavaScriptには、キャンバスに画像を描画するための次のコードが含まれています。
-
-```js
-var context = document.getElementById('bargraph').getContext('2d');
-var img = new Image();
-  img.onload = function() {
-  context.drawImage(img, 0, 0);
-};
-img.src = 'https://example.com/graph-axes.svg';
-```
-
-この画像をキャンバスに描くことはできますか？
-
-<details><summary>回答</summary><div>
-
-```
-場合による。
-
-画像は別のオリジンにあります。
-オリジンの所有者が画像に適切な CORSヘッダーを指定した場合、画像は安全に描画できます。
-そうでない場合、画像はエラーを引き起こします。
-```
-
-</div></details>
-
-#### Refferences
-- [Same-origin policy](https://web.dev/same-origin-policy/#what-is-permitted-and-what-is-blocked)
-  - 理解度テストより引用
----
