@@ -205,22 +205,25 @@
 
 ## 課題2 (クイズ)
 ### クイズ1
+Cookie に SameSite 属性を付与することで防ぐことができる脆弱性は XSS と CSRF のどちらか?
 
+（但し、SameSite属性を付与することで脆弱性を完全に防げるわけではない。）
 <details><summary>回答</summary><div>
+CSRF
 
+[CookieのSameSite属性で「防げるCSRF」と「防げないCSRF」](https://blog.motikan2010.com/entry/2019/02/02/Cookie%E3%81%AESameSite%E5%B1%9E%E6%80%A7%E3%81%A7%E3%80%8C%E9%98%B2%E3%81%92%E3%82%8BCSRF%E3%80%8D%E3%81%A8%E3%80%8C%E9%98%B2%E3%81%92%E3%81%AA%E3%81%84CSRF%E3%80%8D)
 </div></details>
 
 ### クイズ2
+悪意のあるユーザーが他のユーザーの資格情報を知らなくても可能な攻撃手法は XSS と CSRF のどちらか？
 
 <details><summary>回答</summary><div>
+CSRF
 
+[クロスサイトリクエストフォージェリ (CSRF) | MDN Web Docs](https://developer.mozilla.org/ja/docs/Learn/Server-side/First_steps/Website_security#%E3%82%AF%E3%83%AD%E3%82%B9%E3%82%B5%E3%82%A4%E3%83%88%E3%83%AA%E3%82%AF%E3%82%A8%E3%82%B9%E3%83%88%E3%83%95%E3%82%A9%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%AA_csrf)
+> メモ: ここでのトリックは、John がユーザーの cookie (またはアクセス資格情報) にアクセスする必要がないことです。ユーザーのブラウザーはこの情報を保存し、関連するサーバーへのすべてのリクエストに自動的に含めます。
 </div></details>
 
-### クイズ3
-
-<details><summary>回答</summary><div>
-
-</div></details>
 
 
 ---
