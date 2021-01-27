@@ -143,20 +143,6 @@
   a
   ```
 
-#### Refferences
-- [単純リクエスト | MDN Web Docs](https://developer.mozilla.org/ja/docs/Web/HTTP/CORS#simple_requests)
-
-#### メモ
-- [プリフライトリクエスト | MDN Web Docs](https://developer.mozilla.org/ja/docs/Web/HTTP/CORS#preflighted_requests)
-
-  > **サイト間リクエストがユーザーデータに影響を与える可能性が`ある`ような場合**に、このようにプリフライトを行います。
-  
-  逆に考えると、単純リクエストの条件は、**サイト間リクエストがユーザーデータに影響を与える可能性が`ない`ような場合**
-
-  - 疑問
-    - PUT Method は、なぜサイト間リクエストがユーザーデータに影響を与える可能性が`ある`のか
-    - どのようなヘッダーが、影響を与える可能性があるか。
-
 ---
 
 ### 5. 
