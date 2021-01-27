@@ -243,12 +243,13 @@
 <details><summary>回答</summary><div>
 
 ```
-キャッシュ検証
+キャッシュのレスポンス
 ```
 - [ETag example | web.dev](https://web.dev/http-cache/)
   > If there's a match, then the server can respond with a 304 Not Modified HTTP response, which is the equivalent of "Hey, keep using what you've already got!" There's very little data to transfer when sending this type of response, so it's usually much faster than having to actually send back a copy of the actual resource being requested.
 
-  304レスポンスは転送のデータが少ないから、キャッシュのレスポンスよりも遥かに高速!!
+  304レスポンスは転送のデータが少ないから、実際のレスポンスよりも遥かに高速!!
+  ただし、キャッシュレスポンスは0に近い！！
 
 </div></details>
 
