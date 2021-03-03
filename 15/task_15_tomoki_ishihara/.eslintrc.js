@@ -5,7 +5,8 @@ module.exports = {
   },
   extends: [
     'airbnb-base',
-    'plugin:jest/recommended'
+    'plugin:jest/recommended',
+    "prettier"
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
