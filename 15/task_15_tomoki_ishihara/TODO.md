@@ -1,0 +1,28 @@
+
+- 分割統治・各個撃破
+- 重要・テスト容易性高い ものと 重要でない・容易性低いものにわける
+
+---
+
+- fourArithmeticOperations 関数
+  - [ ] 渡された引数に対して計算を行い、結果を返す
+  - [ ] 1個〜30個までの引数を受け取る（31個以上の引数を指定するとエラーが発生する）
+  - [ ] 引数が数字以外だとエラーが発生する (先頭を除く?)
+  - [ ] 先頭の引数 (multiply/add/subtract/divide) をみて、対応する計算を実行する
+- multiply 関数
+  - [ ] 引数を全て乗算して結果を返す
+  - [ ] 計算結果が1000を越える場合は "big big number" という文字列を返す
+- add 関数
+  - [ ] 引数を全て加算して結果を返す
+  - [ ] 計算結果が1000を超える場合は "too big" という文字列を返す
+- subtract 関数
+  - [ ] 引数を全て減算して結果を返す
+  - [ ] 計算結果がマイナスの場合は "negative number" という文字列を返す
+- divide 関数
+  - [ ] 引数を全て除算して結果を返す
+  - [ ] 計算結果が小数になる場合は 小数第10位で四捨五入した結果を返す
+    - (有効桁数が15桁のようなので)
+    - [数値 | JavaScript プログラミング解説](https://so-zou.jp/web-app/tech/programming/javascript/grammar/data-type/number/#floating-point)
+    - [JavaScriptの数値計算はどれくらい正確なのか](https://zenn.dev/uhyo/articles/javascript-math-accuracy#%E3%81%8A%E3%81%BE%E3%81%91%3A-webassembly%E3%81%AE%E6%95%B0%E5%80%A4%E8%A8%88%E7%AE%97%E3%81%AE%E6%AD%A3%E7%A2%BA%E3%81%95)
+    - [倍精度浮動小数点数 - Wikipedia](https://ja.wikipedia.org/wiki/%E5%80%8D%E7%B2%BE%E5%BA%A6%E6%B5%AE%E5%8B%95%E5%B0%8F%E6%95%B0%E7%82%B9%E6%95%B0)
+  - [ ] 引数に0が含まれる場合、例外を発生させる
