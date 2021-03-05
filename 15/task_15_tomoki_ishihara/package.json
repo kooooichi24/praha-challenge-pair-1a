@@ -7,6 +7,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest",
+    "test:watch": "yarn test --watchAll",
     "lint": "eslint src/** --ext .ts,.js",
     "lint:fix": "yarn lint --fix",
     "format": "prettier 'src/**/*.{ts,js}' --check",
