@@ -18,7 +18,6 @@
     "@typescript-eslint/eslint-plugin": "^4.16.1",
     "@typescript-eslint/parser": "^4.16.1",
     "eslint": "^7.21.0",
-    "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^24.1.5",
@@ -35,7 +34,7 @@
     }
   },
   "lint-staged": {
-    "*.{ts,js}": [
+    "src/**/*.{ts,js}": [
       "eslint --cache --fix",
       "prettier --write"
     ]
