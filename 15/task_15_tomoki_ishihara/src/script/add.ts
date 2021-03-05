@@ -1,3 +1,3 @@
 export const add = (...numbers: number[]) => {
-  return 2;
+  return numbers.reduce((prev, cur) => prev + cur, 0);
 };
