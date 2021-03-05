@@ -1,3 +1,3 @@
 export const subtract = (...numbers: number[]) => {
-  // TODO
+  return numbers.reduce((prev, cur) => prev - cur, 0);
 };
