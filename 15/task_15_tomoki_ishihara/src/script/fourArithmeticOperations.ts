@@ -10,7 +10,7 @@ export class FourArithmeticOperations {
   constructor(operators: Operators) {
     this.operators = operators;
   }
-  exec(operation: string, ...numbers: number[]) {
+  exec(operation: string, ...numbers: number[]): number | string | undefined {
     switch (operation) {
       case "add":
         return this.operators.add(...numbers);
