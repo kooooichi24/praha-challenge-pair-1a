@@ -10,8 +10,8 @@
   - [ ] exec関数は渡された引数に対して計算を行い結果を返す
     - [ ] 先頭の引数 (multiply/add/subtract/divide) をみて、対応する計算を実行する
       - [ ] 先頭が multiply の場合 multiply関数を実行する
-      - [ ] 先頭が add の場合 add関数を実行する
-        - [ ] "add", 1, 1 を渡すと 2を返す
+      - [x] 先頭が add の場合 add関数を実行する
+        - [x] "add", 1, 1 を渡すと 2を返す
       - [ ] 先頭が subtract の場合 subtract関数を実行する
       - [ ] 先頭が divide の場合 divide関数を実行する
       - [ ] 先頭が multiply/add/subtract/divide 以外の場合、エラーが発生する
