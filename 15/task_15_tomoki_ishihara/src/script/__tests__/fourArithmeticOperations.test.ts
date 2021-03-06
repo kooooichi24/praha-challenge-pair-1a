@@ -29,6 +29,11 @@ describe("fourArithmeticOperationsクラスは四則演算を実行する", () =
           expect(fourArithmeticOperations.exec("subtract", 10, 3)).toBe(7);
         });
       });
+      describe("先頭が divide の場合 divide関数を実行する", () => {
+        it(`"divide", 7, 2 を渡すと 3.5 を返す`, () => {
+          expect(fourArithmeticOperations.exec("divide", 7, 2)).toBe(3.5);
+        });
+      });
     });
   });
 });
