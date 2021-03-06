@@ -4,7 +4,7 @@ export const subtract = (...numbers: number[]): string | number => {
     return 0;
   }
   const first = numbers[0];
-  const rest = numbers.slice(1, numbers.length);
+  const rest = numbers.slice(1);
   const result = rest.reduce((prev, cur) => prev - cur, first);
   if (result < 0) {
     return NEGATIVE_NUMBER;
