@@ -1,7 +1,16 @@
-import { add } from "./add";
+interface Operators {
+  add: (...numbers: number[]) => number | string;
+}
 
 export class FourArithmeticOperations {
-  exec(operator: string, ...numbers: number[]) {
-    return add(...numbers);
+  private operators: Operators;
+  constructor(operators: Operators) {
+    this.operators = operators;
+  }
+  exec(operation: string, ...numbers: number[]) {
+    switch (operation) {
+      case "add":
+        return this.operators.add(...numbers);
+    }
   }
 }
