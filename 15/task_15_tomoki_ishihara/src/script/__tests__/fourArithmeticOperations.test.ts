@@ -22,6 +22,11 @@ describe("fourArithmeticOperationsクラスは四則演算を実行する", () =
           expect(fourArithmeticOperations.exec("add", 1, 1)).toBe(2);
         });
       });
+      describe("先頭が subtract の場合 subtract関数を実行する", () => {
+        it(`"subtract", 10, 3 を渡すと 7 を返す`, () => {
+          expect(fourArithmeticOperations.exec("subtract", 10, 3)).toBe(7);
+        });
+      });
     });
   });
 });
