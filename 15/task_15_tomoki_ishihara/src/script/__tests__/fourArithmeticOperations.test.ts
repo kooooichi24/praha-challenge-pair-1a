@@ -51,7 +51,7 @@ describe("fourArithmeticOperationsクラスは四則演算を実行する", () =
           const NUMS_31 = Array(31).fill(10);
           expect(() =>
             fourArithmeticOperations.exec("add", ...NUMS_31)
-          ).toThrowError("Numbers length must be 30 or less.");
+          ).toThrowError("Numbers length must be in the range 1-30.");
         });
         it("30個の引数を渡すと結果をそのまま返す", () => {
           const NUMS_30 = Array(30).fill(10);
@@ -59,7 +59,7 @@ describe("fourArithmeticOperationsクラスは四則演算を実行する", () =
         });
         it("引数を渡さない場合エラーが発生する", () => {
           expect(() => fourArithmeticOperations.exec("add")).toThrowError(
-            "Numbers are reuqiuried."
+            "Numbers length must be in the range 1-30."
           );
         });
       });

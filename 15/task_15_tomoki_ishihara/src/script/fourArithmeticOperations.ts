@@ -5,17 +5,19 @@ interface Operators {
   divide: (...numbers: number[]) => number;
 }
 
+const NUMBERS_1_30_ERROR = Error("Numbers length must be in the range 1-30.");
+const INVALID_OPERATION_ERROR = Error(
+  "Operation must be one of multiply, add, subtract, divide."
+);
+
 export class FourArithmeticOperations {
   private operators: Operators;
   constructor(operators: Operators) {
     this.operators = operators;
   }
   exec(operation: string, ...numbers: number[]): number | string | undefined {
-    if (30 < numbers.length) {
-      throw Error("Numbers length must be 30 or less.");
-    }
-    if (numbers.length === 0) {
-      throw Error("Numbers are reuqiuried.");
+    if (numbers.length === 0 || 30 < numbers.length) {
+      throw NUMBERS_1_30_ERROR;
     }
     switch (operation) {
       case "add":
@@ -27,9 +29,7 @@ export class FourArithmeticOperations {
       case "divide":
         return this.operators.divide(...numbers);
       default:
-        throw Error(
-          "Operation must be one of multiply, add, subtract, divide."
-        );
+        throw INVALID_OPERATION_ERROR;
     }
   }
 }
