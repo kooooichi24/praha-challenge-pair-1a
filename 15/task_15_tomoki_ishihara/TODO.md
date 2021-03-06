@@ -15,8 +15,8 @@
         - [x] "add", 1, 1 を渡すと 2を返す
       - [x] 先頭が subtract の場合 subtract関数を実行する
         - [x] "subtract", 10, 3 を渡すと 7 を返す
-      - [ ] 先頭が divide の場合 divide関数を実行する
-        - [ ] "divide", 7, 2 を渡すと 3.5 を返す
+      - [x] 先頭が divide の場合 divide関数を実行する
+        - [x] "divide", 7, 2 を渡すと 3.5 を返す
       - [ ] 先頭が multiply/add/subtract/divide 以外の場合、エラーが発生する
         - [ ] "mod", 2 を渡すと エラーが発生する
     - [ ] 先頭以外の引数についての制限
