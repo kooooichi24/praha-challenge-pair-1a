@@ -9,4 +9,9 @@ describe("multiply 関数は引数を全て乗算して結果を返す", () => {
       expect(multiply(2, 3, 0)).toBe(0);
     });
   });
+  describe(`計算結果が1000を越える場合は "big big number" という文字列を返す`, () => {
+    it(`1001 を渡すと "big big number" を返す`, () => {
+      expect(multiply(1001)).toBe("big big number");
+    });
+  });
 });
