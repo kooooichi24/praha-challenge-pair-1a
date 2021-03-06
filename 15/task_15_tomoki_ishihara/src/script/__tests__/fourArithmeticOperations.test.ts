@@ -1,6 +1,7 @@
 import { FourArithmeticOperations } from "../fourArithmeticOperations";
 import { add } from "../add";
 import { multiply } from "../multiply";
+import { subtract } from "../subtract";
 
 describe("fourArithmeticOperationsクラスは四則演算を実行する", () => {
   describe("exec関数は渡された引数に対して計算を行い結果を返す", () => {
@@ -9,6 +10,7 @@ describe("fourArithmeticOperationsクラスは四則演算を実行する", () =
       fourArithmeticOperations = new FourArithmeticOperations({
         add,
         multiply,
+        subtract,
       });
     });
     describe("先頭の引数 (任意の文字列) をみて、対応する計算を実行する", () => {

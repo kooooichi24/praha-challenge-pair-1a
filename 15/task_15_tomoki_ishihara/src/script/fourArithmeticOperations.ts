@@ -1,6 +1,7 @@
 interface Operators {
   add: (...numbers: number[]) => number | string;
   multiply: (...numbers: number[]) => number | string;
+  subtract: (...numbers: number[]) => number | string;
 }
 
 export class FourArithmeticOperations {
@@ -14,6 +15,8 @@ export class FourArithmeticOperations {
         return this.operators.add(...numbers);
       case "multiply":
         return this.operators.multiply(...numbers);
+      case "subtract":
+        return this.operators.subtract(...numbers);
     }
   }
 }
