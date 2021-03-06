@@ -68,6 +68,13 @@ describe("fourArithmeticOperationsクラスは四則演算を実行する", () =
           );
         });
       });
+      describe("数字ではない場合エラーが発生する", () => {
+        it(`"add", "zero" を渡すとエラーが発生する`, () => {
+          expect(fourArithmeticOperations.exec("add", "zero")).toThrowError(
+            "Numbers must be number."
+          );
+        });
+      });
     });
   });
 });
