@@ -6,6 +6,14 @@
 
 ---
 
+- [ ] 四則演算を行うscript.js
+  - [ ] node script.js multiply 3 10 3 を実行すると 90 を出力する
+  - [ ] node script.js add 3 10 3 を実行すると 16 を出力する
+  - [ ] node script.js subtract 3 10 3 を実行すると negative number を出力する
+  - [ ] node script.js divide 100 10 を実行すると 10 を出力する
+
+---
+
 - fourArithmeticOperationsクラスは四則演算を実行する
   - [x] exec関数は渡された引数に対して計算を行い結果を返す
     - [x] 先頭の引数 (任意の文字列) をみて、対応する計算を実行する
@@ -19,7 +27,7 @@
         - [x] "divide", 7, 2 を渡すと 3.5 を返す
       - [x] 先頭が multiply/add/subtract/divide 以外の場合、エラーが発生する
         - [x] "mod", 2 を渡すと エラーが発生する
-        - [ ] "mod" を渡すとエラーが発生する
+        - [x] "mod" を渡すとエラーが発生する
         - [x] 何も渡さない場合 エラーが発生する
     - [x] 先頭以外の引数についての制限
       - [x] 1個〜30個までの引数を受け取る
