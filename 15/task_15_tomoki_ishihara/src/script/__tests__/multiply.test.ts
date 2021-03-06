@@ -13,5 +13,8 @@ describe("multiply 関数は引数を全て乗算して結果を返す", () => {
     it(`1001 を渡すと "big big number" を返す`, () => {
       expect(multiply(1001)).toBe("big big number");
     });
+    it(`10, 10, 10 を渡すと 1000 を返す`, () => {
+      expect(multiply(10, 10, 10)).toBe(1000);
+    });
   });
 });
