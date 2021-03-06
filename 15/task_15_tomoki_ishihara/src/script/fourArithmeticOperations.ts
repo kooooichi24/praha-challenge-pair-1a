@@ -1,5 +1,7 @@
+import { add } from "./add";
+
 export class FourArithmeticOperations {
   exec(operator: string, ...numbers: number[]) {
-    // TODO
+    return add(...numbers);
   }
 }
