@@ -36,6 +36,13 @@ describe("fourArithmeticOperationsクラスは四則演算を実行する", () =
           expect(fourArithmeticOperations.exec("divide", 7, 2)).toBe(3.5);
         });
       });
+      describe("先頭が multiply/add/subtract/divide 以外の場合、エラーが発生する", () => {
+        it(`"mod", 2 を渡すと エラーが発生する`, () => {
+          expect(() => fourArithmeticOperations.exec("mod", 2)).toThrowError(
+            "Operation must be one of multiply, add, subtract, divide."
+          );
+        });
+      });
     });
   });
 });
