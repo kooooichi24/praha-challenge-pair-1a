@@ -9,13 +9,17 @@ const NUMBERS_1_30_ERROR = Error("Numbers length must be in the range 1-30.");
 const INVALID_OPERATION_ERROR = Error(
   "Operation must be one of multiply, add, subtract, divide."
 );
+const OPERATION_REQUIRED_ERROR = Error("Operation is required.");
 
 export class FourArithmeticOperations {
   private operators: Operators;
   constructor(operators: Operators) {
     this.operators = operators;
   }
-  exec(operation: string, ...numbers: number[]): number | string | undefined {
+  exec(operation?: string, ...numbers: number[]): number | string | undefined {
+    if (operation === undefined) {
+      throw OPERATION_REQUIRED_ERROR;
+    }
     if (numbers.length === 0 || 30 < numbers.length) {
       throw NUMBERS_1_30_ERROR;
     }
