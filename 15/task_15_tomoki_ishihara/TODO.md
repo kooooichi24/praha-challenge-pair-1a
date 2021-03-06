@@ -6,11 +6,15 @@
 
 ---
 
-- [ ] 四則演算を行うscript.js
-  - [ ] node script.js multiply 3 10 3 を実行すると 90 を出力する
-  - [ ] node script.js add 3 10 3 を実行すると 16 を出力する
-  - [ ] node script.js subtract 3 10 3 を実行すると negative number を出力する
-  - [ ] node script.js divide 100 10 を実行すると 10 を出力する
+- [x] 四則演算を行うscript.js
+  - [x] node script.js multiply 3 10 3 を実行すると 90 を出力する
+  - [x] node script.js add 3 10 3 を実行すると 16 を出力する
+  - [x] node script.js subtract 3 10 3 を実行すると negative number を出力する
+  - [x] node script.js divide 100 10 を実行すると 10 を出力する
+
+目視にて確認
+
+![スクリーンショット](screenshots/scriptjs_result.png)
 
 ---
 
