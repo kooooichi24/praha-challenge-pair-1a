@@ -46,11 +46,17 @@
     - [x] 1, 1 を渡すと 0 を返す
   - [x] 引数がない場合
     - [x] 引数が一つも無い場合は 0 を返す
-- divide 関数
-  - [ ] 引数を全て除算して結果を返す
-  - [ ] 計算結果が小数になる場合は 小数第10位で四捨五入した結果を返す
-    - (有効桁数が15桁のようなので)
-    - [数値 | JavaScript プログラミング解説](https://so-zou.jp/web-app/tech/programming/javascript/grammar/data-type/number/#floating-point)
-    - [JavaScriptの数値計算はどれくらい正確なのか](https://zenn.dev/uhyo/articles/javascript-math-accuracy#%E3%81%8A%E3%81%BE%E3%81%91%3A-webassembly%E3%81%AE%E6%95%B0%E5%80%A4%E8%A8%88%E7%AE%97%E3%81%AE%E6%AD%A3%E7%A2%BA%E3%81%95)
-    - [倍精度浮動小数点数 - Wikipedia](https://ja.wikipedia.org/wiki/%E5%80%8D%E7%B2%BE%E5%BA%A6%E6%B5%AE%E5%8B%95%E5%B0%8F%E6%95%B0%E7%82%B9%E6%95%B0)
-  - [ ] 引数に0が含まれる場合、例外を発生させる
+- divide 関数は先頭の引数から残りの引数を除算して結果を返す
+  - [ ] 結果が整数の場合はそのまま返す
+    - [ ] 10, 2 を渡すと 5 を返す
+  - [ ] 結果が小数になる場合は 小数第10位で四捨五入した結果を返す
+  - [ ] 引数に関する例外
+    - [ ] 引数がない場合 0 を返す
+    - [ ] 引数に0が含まれる場合、例外を発生させる
+
+---
+
+- 有効桁数が15桁のようなので、キリの良い10桁とした
+  - [数値 | JavaScript プログラミング解説](https://so-zou.jp/web-app/tech/programming/javascript/grammar/data-type/number/#floating-point)
+  - [JavaScriptの数値計算はどれくらい正確なのか](https://zenn.dev/uhyo/articles/javascript-math-accuracy#%E3%81%8A%E3%81%BE%E3%81%91%3A-webassembly%E3%81%AE%E6%95%B0%E5%80%A4%E8%A8%88%E7%AE%97%E3%81%AE%E6%AD%A3%E7%A2%BA%E3%81%95)
+  - [倍精度浮動小数点数 - Wikipedia](https://ja.wikipedia.org/wiki/%E5%80%8D%E7%B2%BE%E5%BA%A6%E6%B5%AE%E5%8B%95%E5%B0%8F%E6%95%B0%E7%82%B9%E6%95%B0)
