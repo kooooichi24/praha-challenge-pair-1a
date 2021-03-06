@@ -57,6 +57,11 @@ describe("fourArithmeticOperationsクラスは四則演算を実行する", () =
           const NUMS_30 = Array(30).fill(10);
           expect(fourArithmeticOperations.exec("add", ...NUMS_30)).toBe(300);
         });
+        it("引数を渡さない場合エラーが発生する", () => {
+          expect(() => fourArithmeticOperations.exec("add")).toThrowError(
+            "Numbers are reuqiuried."
+          );
+        });
       });
     });
   });
