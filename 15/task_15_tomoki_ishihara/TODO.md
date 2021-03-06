@@ -9,8 +9,8 @@
 - fourArithmeticOperationsクラスは四則演算を実行する
   - [ ] exec関数は渡された引数に対して計算を行い結果を返す
     - [ ] 先頭の引数 (任意の文字列) をみて、対応する計算を実行する
-      - [ ] 先頭が multiply の場合 multiply関数を実行する
-        - [ ] "multiply", 2, 3 を渡すと 6 を返す
+      - [x] 先頭が multiply の場合 multiply関数を実行する
+        - [x] "multiply", 2, 3 を渡すと 6 を返す
       - [x] 先頭が add の場合 add関数を実行する
         - [x] "add", 1, 1 を渡すと 2を返す
       - [ ] 先頭が subtract の場合 subtract関数を実行する
