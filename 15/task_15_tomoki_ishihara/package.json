@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc --project tsconfig.prod.json",
+    "dev": "yarn build -w",
     "test": "jest",
     "test:watch": "yarn test --watchAll",
     "lint": "eslint src/** --ext .ts,.js",
