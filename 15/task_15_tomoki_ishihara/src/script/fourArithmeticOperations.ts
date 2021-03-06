@@ -14,6 +14,9 @@ export class FourArithmeticOperations {
     if (30 < numbers.length) {
       throw Error("Numbers length must be 30 or less.");
     }
+    if (numbers.length === 0) {
+      throw Error("Numbers are reuqiuried.");
+    }
     switch (operation) {
       case "add":
         return this.operators.add(...numbers);
