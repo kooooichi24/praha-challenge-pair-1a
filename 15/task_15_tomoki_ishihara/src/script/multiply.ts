@@ -1,3 +1,3 @@
 export const multiply = (...numbers: number[]) => {
-  // TODO
+  return numbers.reduce((prev, cur) => prev * cur, 1);
 };
