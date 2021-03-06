@@ -39,5 +39,8 @@
       "eslint --cache --fix",
       "prettier --write"
     ]
+  },
+  "dependencies": {
+    "commander": "^7.1.0"
   }
 }
