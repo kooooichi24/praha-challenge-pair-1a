@@ -23,6 +23,8 @@ export class FourArithmeticOperations {
   ): number | string | undefined {
     if (operation === undefined) {
       throw OPERATION_REQUIRED_ERROR;
+    } else if (!["add", "multiply", "subtract", "divide"].includes(operation)) {
+      throw INVALID_OPERATION_ERROR;
     }
     if (numbers.length === 0 || 30 < numbers.length) {
       throw NUMBERS_1_30_ERROR;
