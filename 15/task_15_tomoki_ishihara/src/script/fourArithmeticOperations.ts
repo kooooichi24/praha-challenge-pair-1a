@@ -20,6 +20,10 @@ export class FourArithmeticOperations {
         return this.operators.subtract(...numbers);
       case "divide":
         return this.operators.divide(...numbers);
+      default:
+        throw Error(
+          "Operation must be one of multiply, add, subtract, divide."
+        );
     }
   }
 }
