@@ -44,5 +44,16 @@ describe("fourArithmeticOperationsクラスは四則演算を実行する", () =
         });
       });
     });
+
+    describe("先頭以外の引数についての制限", () => {
+      describe("1個〜30個までの引数を受け取る", () => {
+        it("31個以上の引数を指定するとエラーが発生する", () => {
+          const NUMS_31 = Array(31).fill(10);
+          expect(() =>
+            fourArithmeticOperations.exec("add", ...NUMS_31)
+          ).toThrowError("Numbers length must be 30 or less.");
+        });
+      });
+    });
   });
 });
