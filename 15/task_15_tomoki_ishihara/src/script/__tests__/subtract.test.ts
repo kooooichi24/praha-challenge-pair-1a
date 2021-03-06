@@ -13,5 +13,8 @@ describe("subtract関数は先頭の引数から残りの引数を減算して�
     it(`1, 10 を渡すと "negative number" を返す`, () => {
       expect(subtract(1, 10)).toBe("negative number");
     });
+    it(`1, 1 を渡すと 0 を返す`, () => {
+      expect(subtract(1, 1)).toBe(0);
+    });
   });
 });
