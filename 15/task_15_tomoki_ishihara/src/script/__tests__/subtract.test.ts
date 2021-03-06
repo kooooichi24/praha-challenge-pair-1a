@@ -5,5 +5,8 @@ describe("subtract関数は引数を全て減算して結果を返す", () => {
     it("10, 1 を渡すと 9 を返す", () => {
       expect(subtract(10, 1)).toBe(9);
     });
+    it("10, 2, 1 を渡すと 7 を返す", () => {
+      expect(subtract(10, 2, 1)).toBe(7);
+    });
   });
 });
