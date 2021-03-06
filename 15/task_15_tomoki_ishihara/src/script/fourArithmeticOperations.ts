@@ -11,6 +11,9 @@ export class FourArithmeticOperations {
     this.operators = operators;
   }
   exec(operation: string, ...numbers: number[]): number | string | undefined {
+    if (30 < numbers.length) {
+      throw Error("Numbers length must be 30 or less.");
+    }
     switch (operation) {
       case "add":
         return this.operators.add(...numbers);
