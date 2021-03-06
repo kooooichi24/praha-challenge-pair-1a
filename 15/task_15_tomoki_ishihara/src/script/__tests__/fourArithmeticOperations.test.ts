@@ -53,6 +53,10 @@ describe("fourArithmeticOperationsクラスは四則演算を実行する", () =
             fourArithmeticOperations.exec("add", ...NUMS_31)
           ).toThrowError("Numbers length must be 30 or less.");
         });
+        it("30個の引数を渡すと結果をそのまま返す", () => {
+          const NUMS_30 = Array(30).fill(10);
+          expect(fourArithmeticOperations.exec("add", ...NUMS_30)).toBe(300);
+        });
       });
     });
   });
