@@ -18,5 +18,8 @@ describe("divide 関数は先頭の引数から残りの引数を除算して結
     it("引数がない場合 0 を返す", () => {
       expect(divide()).toBe(0);
     });
+    it("先頭の引数以外に0が含まれる場合、例外を発生させる", () => {
+      expect(() => divide(1, 0)).toThrowError("Cannot divide by zero");
+    });
   });
 });
