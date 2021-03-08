@@ -1,4 +1,4 @@
-import {add, subtract, multiply, divide} from '../src/index';
+import {add, subtract, multiply, divide} from '../index';
 
 describe('足し算のテスト', () => {
   describe('引数の要素数が 30 個以下の場合、加算結果を返す', () => {

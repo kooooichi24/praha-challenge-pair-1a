@@ -1,5 +1,5 @@
 module.exports = {
-  roots: ['<rootDir>/src/', '<rootDir>/__tests__/'],
+  roots: ['<rootDir>/src/'],
   preset: 'ts-jest',
   testEnvironment: 'node',
   collectCoverage: true,
