@@ -30,6 +30,16 @@
 
 ### 2. 過去最も多くの OrderDetail が紐づいた Order を取得してください。何個 OrderDetail が紐づいていたでしょうか？
 
+[実行結果](./output_images/most_orders.png)
+
+[実行クエリ](./src/most_orders.sql)
+
+- 疑問
+  - 過去最も多くの OrderDetail が紐づいた Order は 10 record 存在したが、今回は設問上 OrderID の降順で 1 件のみ取得した
+    - わざわざ 1 件に絞る必要ある？
+      - 要望上、複数件出力する必要がないからかな？
+    - なぜ OrderID の降順なのだろうか（特に深い意味はないと思ってる）
+
 ## 課題 2(質問)
 
 ## 疑問
