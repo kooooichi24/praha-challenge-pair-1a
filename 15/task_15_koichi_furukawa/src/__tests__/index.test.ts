@@ -12,38 +12,7 @@ describe('足し算のテスト', () => {
       });
 
       test('[1,2,...,30] を渡すと 465 を返す', () => {
-        const oneToThirty = [
-          1,
-          2,
-          3,
-          4,
-          5,
-          6,
-          7,
-          8,
-          9,
-          10,
-          11,
-          12,
-          13,
-          14,
-          15,
-          16,
-          17,
-          18,
-          19,
-          20,
-          21,
-          22,
-          23,
-          24,
-          25,
-          26,
-          27,
-          28,
-          29,
-          30,
-        ];
+        const oneToThirty = [...Array(30)].map((_, i) => i + 1);
 
         expect(add(oneToThirty)).toBe(465);
       });
@@ -62,39 +31,7 @@ describe('足し算のテスト', () => {
 
   describe('引数の要素数が 31 個以上の場合、例外を返す', () => {
     test('[1,2,...,31] を渡すと例外を返す', () => {
-      const oneToThityOne = [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-        25,
-        26,
-        27,
-        28,
-        29,
-        30,
-        31,
-      ];
+      const oneToThityOne = [...Array(31)].map((_, i) => i + 1);
 
       expect(() => add(oneToThityOne)).toThrow(Error);
     });
@@ -116,39 +53,15 @@ describe('引き算のテスト', () => {
     });
 
     test('[465,30,29,28,27,...,3,2] を渡すと 1 を返す', () => {
-      const argsLenIsThirty = [
-        465,
-        30,
-        29,
-        28,
-        27,
-        26,
-        25,
-        24,
-        23,
-        22,
-        21,
-        20,
-        19,
-        18,
-        17,
-        16,
-        15,
-        14,
-        13,
-        12,
-        11,
-        10,
-        9,
-        8,
-        7,
-        6,
-        5,
-        4,
-        3,
-        2,
-      ];
+      // Arrange
+      const twoToThity: ReadonlyArray<number> = [...Array(29)].map(
+        (_, i) => i + 2
+      );
+      const argsLenIsThirty = twoToThity.slice();
+      argsLenIsThirty.push(465);
+      argsLenIsThirty.sort((a, b) => b - a);
 
+      // Assert
       expect(subtract(argsLenIsThirty)).toBe(1);
     });
 
@@ -158,40 +71,15 @@ describe('引き算のテスト', () => {
   });
   describe('引数の要素数が 31 個以上の場合、例外を返す', () => {
     test('[465,30,29,28,27,...,3,2,1] を渡すと例外を返す', () => {
-      const argsLenIsThirtyOne = [
-        465,
-        30,
-        29,
-        28,
-        27,
-        26,
-        25,
-        24,
-        23,
-        22,
-        21,
-        20,
-        19,
-        18,
-        17,
-        16,
-        15,
-        14,
-        13,
-        12,
-        11,
-        10,
-        9,
-        8,
-        7,
-        6,
-        5,
-        4,
-        3,
-        2,
-        1,
-      ];
+      // Arrange
+      const oneToThirty: ReadonlyArray<number> = [...Array(30)].map(
+        (_, i) => i + 1
+      );
+      const argsLenIsThirtyOne = oneToThirty.slice();
+      argsLenIsThirtyOne.push(465);
+      argsLenIsThirtyOne.sort((a, b) => b - a);
 
+      // Assert
       expect(() => subtract(argsLenIsThirtyOne)).toThrow(Error);
     });
   });
@@ -217,38 +105,9 @@ describe('掛け算のテスト', () => {
     });
 
     test('[1,1,1,...,1] を渡すと 1 を返す', () => {
-      const argsLenIsThirty = [
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-      ];
+      const argsLenIsThirty = Array(30).fill(1);
+      // もしくは、こう書く
+      // const argsLenIsThirty = [...Array(30)].map(() => 1);
 
       expect(multiply(argsLenIsThirty)).toBe(1);
     });
@@ -259,39 +118,9 @@ describe('掛け算のテスト', () => {
   });
   describe('引数の要素数が 31 個以上の場合、例外を返す', () => {
     test('[1,1,1,...,1] を渡すと例外を返す', () => {
-      const argsLenIsThirtyOne = [
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-      ];
+      const argsLenIsThirtyOne = Array(31).fill(1);
+      // もしくは、こう書く
+      // const argsLenIsThirtyOne = [...Array(31)].map(() => 1);
 
       expect(() => multiply(argsLenIsThirtyOne)).toThrow(Error);
     });
@@ -318,38 +147,9 @@ describe('割り算のテスト', () => {
     });
 
     test('[1,1,1,...,1] を渡すと 1 を返す', () => {
-      const argsLenIsThirty = [
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-        1,
-      ];
+      const argsLenIsThirty = Array(30).fill(1);
+      // もしくは、こう書く
+      // const argsLenIsThirty = [...Array(30)].map(() => 1);
 
       expect(divide(argsLenIsThirty)).toBeCloseTo(1, 5);
     });
@@ -376,39 +176,9 @@ describe('割り算のテスト', () => {
   });
 
   describe('引数の要素数が 31 以上の場合、例外を返す', () => {
-    const argsLenIsThirty = [
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-      1,
-    ];
+    const argsLenIsThirty = Array(31).fill(1);
+    // もしくは、こう書く
+    // const argsLenIsThirty = [...Array(31)].map(() => 1);
 
     expect(() => divide(argsLenIsThirty)).toThrow(Error);
   });
