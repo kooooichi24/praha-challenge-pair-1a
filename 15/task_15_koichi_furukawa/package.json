@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "ts-node build/src/index.js",
-    "test": "jest --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "lint": "gts lint",
     "clean": "gts clean",
     "compile": "tsc",
