@@ -43,9 +43,12 @@ export const subtract = (array: number[]): number | string | Error => {
     return 0;
   }
 
-  const result = array.reduce((acc, cur) => {
+  const first = array[0];
+  const rest = array.slice(1);
+
+  const result = rest.reduce((acc, cur) => {
     return acc - cur;
-  });
+  }, first);
 
   if (result < 0) {
     return 'negative number';
@@ -74,7 +77,7 @@ export const multiply = (array: number[]): number | string | Error => {
 
   const result = array.reduce((acc, cur) => {
     return acc * cur;
-  });
+  }, 1);
 
   if (result < 1000) {
     return result;
@@ -102,7 +105,10 @@ export const divide = (array: number[]): number | Error => {
     throw new Error();
   }
 
-  return array.reduce((acc, cur) => {
+  const first = array[0];
+  const rest = array.slice(1);
+
+  return rest.reduce((acc, cur) => {
     return acc / cur;
-  });
+  }, first);
 };
