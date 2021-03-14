@@ -18,9 +18,9 @@
 
 #### 最もよく注文してくれたのは、どの Customer でしょうか？
 
-[実行結果](./output_images/most_order_customer_in_1996.png)
+[実行結果](./output_images/most_orders_customer_in_1996.png)
 
-[実行クエリ](./src/most_order_customer_in_1996.sql)
+[実行クエリ](./src/most_orders_customer_in_1996.sql)
 
 - 疑問
   - サブクエリ使いすぎマンになってしまった。
