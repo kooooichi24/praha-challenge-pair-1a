@@ -55,6 +55,12 @@
 
 [実行クエリ](./src/sales_country.sql)
 
+### 5. 国ごとの売上を年ごとに集計する
+
+[実行結果](./output_images/sales_country_year.png)
+
+[実行クエリ](./src/sales_country_year.sql)
+
 ## 課題 2(質問)
 
 ## 疑問
