@@ -8,6 +8,9 @@
 
 ## 課題 1(実装)
 
+![DB Diagram](./DB_Diagram/DB_Diagram.png)
+[DB Diagram](./DB_Diagram/DB_Diagram.md)
+
 ### 1. 「常連顧客を特定して欲しい」
 
 #### 1996 年に 3 回以上注文した（Orders が 3 つ以上紐づいている）Customer の ID と、注文回数を取得してみてください
@@ -45,6 +48,12 @@
 [実行結果](./output_images/most_orders_shipper.png)
 
 [実行クエリ](./src/most_orders_shipper.sql)
+
+### 4. 売上が高い順番に Country を並べてください。売上も表示してください
+
+[実行結果](./output_images/sales_country.png)
+
+[実行クエリ](./src/sales_country.sql)
 
 ## 課題 2(質問)
 
