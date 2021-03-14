@@ -40,6 +40,12 @@
       - 要望上、複数件出力する必要がないからかな？
     - なぜ OrderID の降順なのだろうか（特に深い意味はないと思ってる）
 
+### 3. Order 数が多い順番に Shipper の id を並べてください。Order 数も表示してください
+
+[実行結果](./output_images/most_orders_shipper.png)
+
+[実行クエリ](./src/most_orders_shipper.sql)
+
 ## 課題 2(質問)
 
 ## 疑問
