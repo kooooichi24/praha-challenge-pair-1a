@@ -67,6 +67,12 @@
 
 [実行クエリ](./src/junior.sql)
 
+## 7. Shipper に long_relation カラム（boolean）を追加
+
+[実行結果](./output_images/long_relation.png)
+
+[実行クエリ](./src/long_relation.sql)
+
 ## 課題 2(質問)
 
 ## 疑問
