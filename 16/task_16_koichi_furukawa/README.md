@@ -61,6 +61,12 @@
 
 [実行クエリ](./src/sales_country_year.sql)
 
+### 6. Employee テーブルに「Junior（若手）」カラム（boolean）を追加
+
+[実行結果](./output_images/junior.png)
+
+[実行クエリ](./src/junior.sql)
+
 ## 課題 2(質問)
 
 ## 疑問
