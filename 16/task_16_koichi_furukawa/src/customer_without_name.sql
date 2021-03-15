@@ -6,7 +6,7 @@ set
 where
   CustomerID = 1;
 
--- CustomerNameが存在するユーザを取得する
+-- CustomerNameが存在しないユーザを取得する
 select
   *
 from
