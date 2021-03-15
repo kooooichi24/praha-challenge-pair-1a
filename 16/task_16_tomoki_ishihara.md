@@ -287,9 +287,9 @@ Number of Records: 90
 
 > しかし残念ながら、これでは期待した結果は得られません。なぜでしょうか？
 
-= null は unkownを返すから？
+NULLは値や変数ではないため、値との比較ができず、結果unkownになるため。(SQLはtrue,falseにunkownを加えた3値論理を採用している)
 
-[SQLのNULLはなぜIS NULLで比較するのか - 転職した](http://yellowring.hatenablog.jp/entry/2014/06/28/232543)
+こちらがわかりやすかったです: [3値論理とNULL (1/3)：CodeZine（コードジン）](https://codezine.jp/article/detail/532)
 
 ### 10
 
@@ -396,10 +396,6 @@ Number of Records: 29
 
 ## クイズ
 
-- トランザクションとは何か？
-- TRUNCATE と DELETE の違い
-- count以外のaggregate関数をできるだけあげてください
-
 ### 1
 
 トランザクションとはなんですか？
@@ -422,8 +418,13 @@ DELETEはWHERE句で条件を指定することで、行単位での削除が可
 
 ### 3
 
-count()以外の集計関数を3つ以上あげてください。
+`COUNT` 以外の集計関数を3つあげてください。
 
 <details><summar>回答例</summary>
 
+- AVG グループ内の平均値を計算する
+- MAX 最大値を計算する
+- MIN 最小値を計算する
+- SUM 値を合計する
+- STDEV 標準偏差を計算する
 </details>
