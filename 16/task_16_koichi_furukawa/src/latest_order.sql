@@ -1,6 +1,6 @@
 select
   EmployeeID,
-  max(OrderDate) LatestOrderDate
+  max(OrderDate) as LatestOrderDate
 from
   [Orders]
 group by

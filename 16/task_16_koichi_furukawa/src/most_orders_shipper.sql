@@ -1,8 +1,8 @@
 select
-  o.ShipperID ShipperID,
-  count(*) ShippingCount
+  o.ShipperID as ShipperID,
+  count(*) as ShippingCount
 from
-  [Orders] as o
+  [Orders] o
 group by
   o.ShipperID
 order by

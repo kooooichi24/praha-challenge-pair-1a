@@ -87,6 +87,14 @@
 [実行結果](./output_images/customer_without_name.png)
 [実行クエリ](./src/customer_without_name.sql)
 
+## 9. JOIN の扱いになれる
+
+[実行結果](./output_images/employee_not_shown.png)
+[実行クエリ](./src/employee_not_shown.sql)
+
+[実行結果](./output_images/employee_null.png)
+[実行クエリ](./src/employee_null.sql)
+
 ## 課題 2(質問)
 
 ## 課題 3(クイズ)
@@ -139,3 +147,25 @@ SQL はエラーにはならず、結果は 1 件も取り出されない。
 
 - SQL Formatter 導入
   - [SQL Formatter](https://marketplace.visualstudio.com/items?itemName=adpyke.vscode-sql-formatter)
+- 表別名と列別名（Oracle の場合）
+
+  ※ SQLite は表列名も列別名もどちらも`as`もしくは空白を利用可能
+
+  - 列別名では`as`もしくは空白を利用する
+
+    as
+
+    ```sql
+    select column_name as another_column_name from [table_name];
+    ```
+
+    空白
+
+    ```sql
+    select column_name another_column_name from [table_name];
+    ```
+
+  - 表別名では 空白を利用する
+    ```sql
+    select column_name from [table_name] another_table_name;
+    ```

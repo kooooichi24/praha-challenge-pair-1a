@@ -4,7 +4,7 @@ from
   (
     select
       OrderID,
-      count(*) OrderDetailCount
+      count(*) as OrderDetailCount
     from
       [OrderDetails]
     group by
@@ -18,7 +18,7 @@ where
       (
         select
           OrderID,
-          count(*) OrderDetailCount
+          count(*) as OrderDetailCount
         from
           [OrderDetails]
         group by

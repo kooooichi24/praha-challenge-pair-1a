@@ -1,8 +1,8 @@
 select
-  o.CustomerId CustomerID,
-  count(*) OrderCount
+  o.CustomerId as CustomerID,
+  count(*) as OrderCount
 from
-  [Orders] as o
+  [Orders] o
 where
   orderdate between '1996-01-01'
   and '1996-12-31'
