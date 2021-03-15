@@ -73,6 +73,12 @@
 
 [実行クエリ](./src/long_relation.sql)
 
+## 8. それぞれの Employee が最後に担当した Order と、その日付
+
+[実行結果](./output_images/latest_order.png)
+
+[実行クエリ](./src/latest_order.sql)
+
 ## 課題 2(質問)
 
 ## 疑問
