@@ -79,7 +79,34 @@
 
 [実行クエリ](./src/latest_order.sql)
 
+## 8. NULL の扱いに慣れる
+
+[実行結果](./output_images/customers_with_name.png)
+[実行クエリ](./src/customers_with_name.sql)
+
+[実行結果](./output_images/customer_without_name.png)
+[実行クエリ](./src/customer_without_name.sql)
+
 ## 課題 2(質問)
+
+## 課題 3(クイズ)
+
+### クイズ 1
+
+Null 値は特殊な値のため、列に Null 値が含まれるかどうかは`IS NULL`演算子もしくは`IS NOT NULL`演算子でしか評価できません。
+では、以下のように評価対象が`Null`の場合、出力結果はどうなるでしょうか？
+
+```sql
+SELECT * FROM Customers WHERE CustomerName = NULL;
+```
+
+<details><summary>回答</summary><div>
+
+SQL はエラーにはならず、結果は 1 件も取り出されない。
+
+（Null 値はどのような値に対しても等しいまたは等しくないという評価ができない。）
+
+</div></details>
 
 ## 疑問
 
