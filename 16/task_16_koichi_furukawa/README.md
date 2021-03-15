@@ -151,6 +151,51 @@ SQL はエラーにはならず、結果は 1 件も取り出されない。
 
 </div></details>
 
+### クイズ 2
+
+SQL クエリでは列別名を指定することができます。
+
+`GROUP BY句`では列別名を利用することができず、`ORDER BY句`では列別名を利用できる理由を教えてください。
+
+**ヒント:** **評価順序**
+
+<details><summary>回答</summary><div>
+
+`GROUP BY句`は`SELECT句`よりも評価順序が早く、`ORDER BY句`は`SELECT句`よりも評価順序が遅いから。
+
+- 参考記事
+  - [ORDER BY 句で別名が使えて GROUP BY 句では別名が使えない理由](https://muroiwataru.net/entry/sql-order-by)
+  - [https://qiita.com/k_0120/items/a27ea1fc3b9bddc77fa1](https://qiita.com/k_0120/items/a27ea1fc3b9bddc77fa1)
+  - [SELECT 文の評価順序の話](https://qiita.com/suzukito/items/edcd00e680186f2930a8)
+
+</div></details>
+
+### クイズ 3
+
+`GROUP BY句` と `HAVING句` はどちらを先に記述すべきでしょうか？
+
+<details><summary>回答</summary><div>
+
+どちらを先に記述しても、同様に動作する。
+
+しかし、処理の流れに合わせて、`GROUP BY句` を先に記述してより論理的に分かりやすくすることが推奨されている。
+
+</div></details>
+
+### クイズ 4
+
+`GROUP BY句` を指定せずに `HAVING句` は指定した場合、どうなるでしょうか？
+
+エラーとなるでしょうか？エラーとならない場合は、どのような処理がされるでしょうか？
+
+<details><summary>回答</summary><div>
+
+エラーにならない。
+
+選択された行全体が 1 グループとして処理される。
+
+</div></details>
+
 ## 疑問
 
 - `between` の挙動が想定と異なる気がする？
