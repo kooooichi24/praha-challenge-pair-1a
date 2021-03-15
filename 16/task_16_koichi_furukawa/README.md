@@ -97,6 +97,41 @@
 
 ## 課題 2(質問)
 
+### WHERE と HAVING のそれぞれの違いを教えてください
+
+- WHERE
+  - WHERE 句の条件によってグループ化する対象のレコードが制限される
+  - グループ化する対象レコードを絞り込みたい場合に利用する
+- HAVING
+
+  - HAVING 句によって指定された条件を満たすグループが取り出される
+  - グループ化した後に、グループを絞り込みたい場合に利用する
+
+- 順序
+  1. WHERE 句の条件によってグループ化する対象のレコードが制限される
+  2. GROUP BY 句によってグループ化される
+  3. グループ関数が適用される
+  4. HAVING 句によって指定された条件を満たすグループが取り出される
+
+### DDL、DML、DCL、TCL とは何か？
+
+- DDL(Data Definition Language)
+  - 表などのデータベースオブジェクトを作成・変更・削除する
+  - コマンド
+    - CREATE, ALTER, DROP, RENAME, TRUNCATE, COMMENT
+- DML(Data Manipulation Language)
+  - 表内のデータを直接操作する
+  - コマンド
+    - SELECT, INSERT, UPDATE, DELETE, MERGE
+- DCL(Data Control Language)
+  - データベースに対する権限を付与したり、取り消したりする
+  - コマンド
+    - GRANT, REVOKE
+- TCL(Transation Control Language)
+  - トランザクションを制御する
+  - コマンド
+    - COMMIT, ROLLBACK, SAVEPOINT
+
 ## 課題 3(クイズ)
 
 ### クイズ 1
