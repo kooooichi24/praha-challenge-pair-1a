@@ -79,7 +79,7 @@
 
 [実行クエリ](./src/latest_order.sql)
 
-## 8. NULL の扱いに慣れる
+## 9. NULL の扱いに慣れる
 
 [実行結果](./output_images/customers_with_name.png)
 [実行クエリ](./src/customers_with_name.sql)
@@ -87,7 +87,7 @@
 [実行結果](./output_images/customer_without_name.png)
 [実行クエリ](./src/customer_without_name.sql)
 
-## 9. JOIN の扱いになれる
+## 10. JOIN の扱いになれる
 
 [実行結果](./output_images/employee_not_shown.png)
 [実行クエリ](./src/employee_not_shown.sql)
