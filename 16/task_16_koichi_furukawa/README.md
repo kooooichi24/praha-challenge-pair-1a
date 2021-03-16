@@ -8,8 +8,8 @@
 
 ## 課題 1(実装)
 
-![DB Diagram](./DB_Diagram/DB_Diagram.png)
-[DB Diagram](./DB_Diagram/DB_Diagram.md)
+![DB Diagram](./db_diagram/DB_Diagram.png)
+[DB Diagram](./db_diagram/DB_Diagram.md)
 
 ### 1. 「常連顧客を特定して欲しい」
 
