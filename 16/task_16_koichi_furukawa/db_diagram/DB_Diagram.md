@@ -1,6 +1,6 @@
 # DB Diagram
 
-![DB Diagram](./db_diagram.png)
+![DB Diagram](./DB_Diagram.png)
 
 ## dbdiagram.io
 
