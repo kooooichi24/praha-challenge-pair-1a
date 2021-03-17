@@ -2,7 +2,7 @@
 alter table
   [employees]
 add
-  Junior boolean not null default false
+  Junior boolean not null default false;
 
 /* Junior Column のフラグ更新 */
 update
@@ -10,4 +10,4 @@ update
 set
   Junior = true
 where
-  employees.BirthDate >= '1960-01-01'
+  employees.BirthDate >= date('1960-01-01');

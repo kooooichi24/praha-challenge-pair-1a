@@ -8,8 +8,8 @@ from
     from
       [Orders]
     where
-      orderdate between '1996-01-01'
-      and '1996-12-31'
+      orderdate between date('1996-01-01')
+      and date('1996-12-31')
     group by
       CustomerId
   ) as temp
@@ -25,8 +25,8 @@ where
         from
           [Orders]
         where
-          orderdate between '1996-01-01'
-          and '1996-12-31'
+          orderdate between date('1996-01-01')
+          and date('1996-12-31')
         group by
           CustomerId
       ) as num
