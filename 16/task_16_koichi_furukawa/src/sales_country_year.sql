@@ -9,4 +9,4 @@ from
   left outer join [Customers] c on o.CustomerID = c.CustomerID
 group by
   c.Country,
-  strftime('%Y', o.OrderDate)
+  strftime('%Y', o.OrderDate);

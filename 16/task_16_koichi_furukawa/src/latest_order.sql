@@ -6,4 +6,4 @@ from
 group by
   EmployeeID
 order by
-  EmployeeID
+  EmployeeID;

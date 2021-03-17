@@ -9,4 +9,4 @@ from
 group by
   c.Country
 order by
-  sales desc
+  sales desc;

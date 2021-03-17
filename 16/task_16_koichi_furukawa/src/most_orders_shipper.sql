@@ -6,4 +6,4 @@ from
 group by
   ShipperID
 order by
-  ShippingCount desc
+  ShippingCount desc;
