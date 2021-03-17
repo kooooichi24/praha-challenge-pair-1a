@@ -3,14 +3,13 @@ alter table
   [Shippers]
 add
   long_relation boolean not null default false
-
-/* long_relation Column のフラグ更新 */
+  /* long_relation Column のフラグ更新 */
 update
   [Shippers]
 set
   long_relation = true
 where
-  ShipperID = (
+  ShipperID in (
     select
       ShipperID
     from
