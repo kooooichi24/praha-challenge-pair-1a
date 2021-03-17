@@ -11,15 +11,15 @@
 ![DB Diagram](./db_diagram/DB_Diagram.png)
 [DB Diagram](./db_diagram/DB_Diagram.md)
 
-### 1. 「常連顧客を特定して欲しい」
+### 1.
 
-#### 1996 年に 3 回以上注文した（Orders が 3 つ以上紐づいている）Customer の ID と、注文回数を取得してみてください
+#### 1.
 
 [実行結果](./output_images/order_count_3.png)
 
 [実行クエリ](./src/order_count_3.sql)
 
-#### 最もよく注文してくれたのは、どの Customer でしょうか？
+#### 2.
 
 [実行結果](./output_images/most_orders_customer_in_1996.png)
 
@@ -31,7 +31,7 @@
 - 参考文献
   - [今更だけど SQL で count した中から max 値を取得する | Qiita](https://qiita.com/Kuzira_Kuzira/items/3106748174ef7fb6d907)
 
-### 2. 過去最も多くの OrderDetail が紐づいた Order を取得してください。何個 OrderDetail が紐づいていたでしょうか？
+### 2.
 
 [実行結果](./output_images/most_orders.png)
 
@@ -43,43 +43,43 @@
       - 要望上、複数件出力する必要がないからかな？
     - なぜ OrderID の降順なのだろうか（特に深い意味はないと思ってる）
 
-### 3. Order 数が多い順番に Shipper の id を並べてください。Order 数も表示してください
+### 3.
 
 [実行結果](./output_images/most_orders_shipper.png)
 
 [実行クエリ](./src/most_orders_shipper.sql)
 
-### 4. 売上が高い順番に Country を並べてください。売上も表示してください
+### 4.
 
 [実行結果](./output_images/sales_country.png)
 
 [実行クエリ](./src/sales_country.sql)
 
-### 5. 国ごとの売上を年ごとに集計する
+### 5.
 
 [実行結果](./output_images/sales_country_year.png)
 
 [実行クエリ](./src/sales_country_year.sql)
 
-### 6. Employee テーブルに「Junior（若手）」カラム（boolean）を追加
+### 6.
 
 [実行結果](./output_images/junior.png)
 
 [実行クエリ](./src/junior.sql)
 
-## 7. Shipper に long_relation カラム（boolean）を追加
+## 7.
 
 [実行結果](./output_images/long_relation.png)
 
 [実行クエリ](./src/long_relation.sql)
 
-## 8. それぞれの Employee が最後に担当した Order と、その日付
+## 8.
 
 [実行結果](./output_images/latest_order.png)
 
 [実行クエリ](./src/latest_order.sql)
 
-## 9. NULL の扱いに慣れる
+## 9.
 
 [実行結果](./output_images/customers_with_name.png)
 [実行クエリ](./src/customers_with_name.sql)
@@ -87,7 +87,7 @@
 [実行結果](./output_images/customer_without_name.png)
 [実行クエリ](./src/customer_without_name.sql)
 
-## 10. JOIN の扱いになれる
+## 10.
 
 [実行結果](./output_images/employee_not_shown.png)
 [実行クエリ](./src/employee_not_shown.sql)
@@ -97,7 +97,7 @@
 
 ## 課題 2(質問)
 
-### WHERE と HAVING のそれぞれの違いを教えてください
+### 1.
 
 - WHERE
   - WHERE 句の条件によってグループ化する対象のレコードが制限される
@@ -113,7 +113,7 @@
   3. グループ関数が適用される
   4. HAVING 句によって指定された条件を満たすグループが取り出される
 
-### DDL、DML、DCL、TCL とは何か？
+### 2.
 
 - DDL(Data Definition Language)
   - 表などのデータベースオブジェクトを作成・変更・削除する
