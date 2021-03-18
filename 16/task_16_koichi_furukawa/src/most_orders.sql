@@ -13,7 +13,7 @@ from
 where
   tmp.OrderDetailCount = (
     select
-      max(OrderDetailCount)
+      max(num.OrderDetailCount)
     from
       (
         select

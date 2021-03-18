@@ -16,7 +16,7 @@ from
 where
   temp.OrderCount = (
     select
-      max(OrderCount)
+      max(num.OrderCount)
     from
       (
         select
