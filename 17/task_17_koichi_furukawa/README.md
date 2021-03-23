@@ -357,6 +357,109 @@ mysql> EXPLAIN SELECT count(*) FROM employees WHERE first_name LIKE 'FU%';
 
 ## 課題 3(実装)
 
+### インデックスあり
+
+インデックス確認
+
+```sql
+mysql> SHOW INDEX FROM salaries;
++----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table    | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| salaries |          0 | PRIMARY  |            1 | emp_no      | A         |      228939 |     NULL | NULL   |      | BTREE      |         |               |
+| salaries |          0 | PRIMARY  |            2 | from_date   | A         |     2184160 |     NULL | NULL   |      | BTREE      |         |               |
+| salaries |          1 | salary   |            1 | salary      | A         |       72949 |     NULL | NULL   |      | BTREE      |         |               |
++----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+3 rows in set (0.01 sec)
+```
+
+INSERT クエリ
+
+```sql
+mysql> INSERT INTO salaries VALUES (499999, 50000, '2020-01-01', '2021-01-01');
+Query OK, 1 row affected (0.09 sec)
+```
+
+実行時間
+
+```sql
+mysql> SELECT EVENT_ID, TRUNCATE(timer_wait/1000000000000, 6) AS duration , SQL_TEXT FROM performance_schema.events_statements_history_long WHERE event_id = 3645;
++----------+----------+-------------------------------------------------------------------------+
+| EVENT_ID | duration | SQL_TEXT                                                                |
++----------+----------+-------------------------------------------------------------------------+
+|     3645 | 0.096011 | INSERT INTO salaries VALUES (499999, 50000, '2020-01-01', '2021-01-01') |
++----------+----------+-------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+### インデックスなし
+
+インデックス削除
+
+```sql
+mysql> ALTER TABLE salaries DROP INDEX salary;
+Query OK, 0 rows affected (0.12 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+```
+
+Primary Key は削除しなくてよいのかな...？
+
+ちなみに削除しようとしたらエラーになった
+
+```sql
+mysql> ALTER TABLE salaries DROP PRIMARY KEY;
+ERROR 1025 (HY000): Error on rename of './employees/#sql-1_2' to './employees/salaries' (errno: 150 - Foreign key constraint is incorrectly formed)
+```
+
+INSERT クエリ
+
+```sql
+mysql> INSERT INTO salaries VALUES (499999, 50000, '2021-01-01', '2022-01-01');
+Query OK, 1 row affected (0.02 sec)
+```
+
+実行時間
+
+```sql
+mysql> SELECT EVENT_ID, TRUNCATE(timer_wait/1000000000000, 6) AS duration , SQL_TEXT FROM performance_schema.events_statements_history_long WHERE event_id = 3810;
++----------+----------+-------------------------------------------------------------------------+
+| EVENT_ID | duration | SQL_TEXT                                                                |
++----------+----------+-------------------------------------------------------------------------+
+|     3810 | 0.022312 | INSERT INTO salaries VALUES (499999, 50000, '2021-01-01', '2022-01-01') |
++----------+----------+-------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+### インデックスありなし比較
+
+#### 実行時間比較
+
+インデックスがない場合の方が、INSERT 文の実行速度が早かった
+
+|          | インデックスなし | インデックスあり |
+| -------- | ---------------- | ---------------- |
+| 実行速度 | 0.09s            | 0.02s            |
+
+#### 理由
+
+インデックスを貼るために、追加したデータをインデックスに追加するから。
+
+また、インデックスの順序とツリーのバランスを保つための処理がある。
+
+> テーブルにインデックスがある場合、データベースはインデックスを使って新しいエントリを見つけられるようにしなければなりません。そのため、 新しいエントリはテーブルの全てのインデックスにも追加されます。従って、インデックスの数は insert 文の実行コストの乗数になります。
+
+[インデックスの欠点 : 書き込みが遅くなる - Use The Index, Luke](https://use-the-index-luke.com/ja/sql/dml)
+
+[インデックスを作れば作るほど、INSERT が遅くなる](https://use-the-index-luke.com/ja/sql/dml/insert)
+
+### DELETE 文もおなじ？
+
+INSERT 文と同じ。
+
+> 実際の行の削除は、新しい行の挿入と似たプロセスです。特に、インデックスから参照を削除し、インデックスツリーのバランスを保つ動きが 似ています。
+
+[インデックスを作れば作るほど、DELETE が遅くなる](https://use-the-index-luke.com/ja/sql/dml/delete)
+
 ## 課題 4(クイズ)
 
 ### クイズ 1
