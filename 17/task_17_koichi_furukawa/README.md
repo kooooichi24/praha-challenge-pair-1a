@@ -460,33 +460,574 @@ INSERT 文と同じ。
 
 [インデックスを作れば作るほど、DELETE が遅くなる](https://use-the-index-luke.com/ja/sql/dml/delete)
 
-## 課題 4(クイズ)
+## 課題 3(クイズ)
 
 ### クイズ 1
 
+1960 年以降に生まれた社員数を集計せよ
+
 <details><summary>回答</summary><div>
+
+#### インデックスなし
+
+クエリ実行
+
+```sql
+mysql> SELECT count(emp_no) FROM employees WHERE birth_date >= DATE('1960-01-01');
++---------------+
+| count(emp_no) |
++---------------+
+|        117138 |
++---------------+
+1 row in set (0.10 sec)
+```
+
+実行時間
+
+```sql
+mysql> SELECT EVENT_ID, TRUNCATE(timer_wait/1000000000000, 6) AS duration , SQL_TEXT FROM performance_schema.events_statements_history_long WHERE event_id = 5038;
++----------+----------+----------------------------------------------------------------------------+
+| EVENT_ID | duration | SQL_TEXT                                                                   |
++----------+----------+----------------------------------------------------------------------------+
+|     5038 | 0.104014 | SELECT count(emp_no) FROM employees WHERE birth_date >= DATE('1960-01-01') |
++----------+----------+----------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+クエリー実行計画の取得
+
+```sql
+mysql> EXPLAIN SELECT count(emp_no) FROM employees WHERE birth_date >= DATE('1960-01-01');
++----+-------------+-----------+------------+------+---------------+------+---------+------+--------+----------+-------------+
+| id | select_type | table     | partitions | type | possible_keys | key  | key_len | ref  | rows   | filtered | Extra       |
++----+-------------+-----------+------------+------+---------------+------+---------+------+--------+----------+-------------+
+|  1 | SIMPLE      | employees | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 299157 |    33.33 | Using where |
++----+-------------+-----------+------------+------+---------------+------+---------+------+--------+----------+-------------+
+1 row in set, 1 warning (0.00 sec)
+```
+
+#### インデックスあり（birth_date）
+
+インデックス作成
+
+```sql
+mysql> ALTER TABLE employees ADD INDEX index_birth_date(birth_date);
+Query OK, 0 rows affected (1.21 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+```
+
+クエリ実行
+
+```sql
+mysql> SELECT count(emp_no) FROM employees WHERE birth_date >= DATE('1960-01-01');
++---------------+
+| count(emp_no) |
++---------------+
+|        117138 |
++---------------+
+1 row in set (0.04 sec)
+```
+
+実行時間
+
+```sql
+mysql> SELECT EVENT_ID, TRUNCATE(timer_wait/1000000000000, 6) AS duration , SQL_TEXT FROM performance_schema.events_statements_history_long WHERE event_id = 5174;
++----------+----------+----------------------------------------------------------------------------+
+| EVENT_ID | duration | SQL_TEXT                                                                   |
++----------+----------+----------------------------------------------------------------------------+
+|     5174 | 0.044887 | SELECT count(emp_no) FROM employees WHERE birth_date >= DATE('1960-01-01') |
++----------+----------+----------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+クエリー実行計画の取得
+
+```sql
+mysql> EXPLAIN SELECT count(emp_no) FROM employees WHERE birth_date >= DATE('1960-01-01');
++----+-------------+-----------+------------+-------+------------------+------------------+---------+------+--------+----------+--------------------------+
+| id | select_type | table     | partitions | type  | possible_keys    | key              | key_len | ref  | rows   | filtered | Extra                    |
++----+-------------+-----------+------------+-------+------------------+------------------+---------+------+--------+----------+--------------------------+
+|  1 | SIMPLE      | employees | NULL       | range | index_birth_date | index_birth_date | 3       | NULL | 149578 |   100.00 | Using where; Using index |
++----+-------------+-----------+------------+-------+------------------+------------------+---------+------+--------+----------+--------------------------+
+1 row in set, 1 warning (0.00 sec)
+```
 
 </div></details>
 
 ### クイズ 2
 
+1960 年に生まれた社員数を集計せよ
+
 <details><summary>回答</summary><div>
+
+#### インデックスなし
+
+インデックス確認
+
+```sql
+mysql> SHOW INDEX FROM employees;
++-----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table     | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++-----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| employees |          0 | PRIMARY  |            1 | emp_no      | A         |      299157 |     NULL | NULL   |      | BTREE      |         |               |
++-----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+1 row in set (0.01 sec)
+```
+
+クエリ実行(Like 句使用)
+
+```sql
+mysql> SELECT count(emp_no) FROM employees WHERE DATE_FORMAT(birth_date, '%Y%m%d') like '1960%';
++---------------+
+| count(emp_no) |
++---------------+
+|         23126 |
++---------------+
+1 row in set (0.18 sec)
+```
+
+クエリ実行(BETWEEN 使用)
+
+```sql
+mysql> SELECT count(emp_no) FROM employees WHERE birth_date BETWEEN DATE('1960-01-01') AND DATE('1960-12-31');
++---------------+
+| count(emp_no) |
++---------------+
+|         23126 |
++---------------+
+1 row in set (0.09 sec)
+```
+
+実行時間
+
+```sql
+mysql> SELECT EVENT_ID, TRUNCATE(timer_wait/1000000000000, 6) AS duration , SQL_TEXT FROM performance_schema.events_statements_history_long WHERE event_id in (5340, 5388);
++----------+----------+--------------------------------------------------------------------------------------------------------+
+| EVENT_ID | duration | SQL_TEXT                                                                                               |
++----------+----------+--------------------------------------------------------------------------------------------------------+
+|     5340 | 0.182378 | SELECT count(emp_no) FROM employees WHERE DATE_FORMAT(birth_date, '%Y%m%d') like '1960%'               |
+|     5388 | 0.091249 | SELECT count(emp_no) FROM employees WHERE birth_date BETWEEN DATE('1960-01-01') AND DATE('1960-12-31') |
++----------+----------+--------------------------------------------------------------------------------------------------------+
+2 rows in set (0.01 sec)
+```
+
+クエリー案 1 の実行計画の取得
+
+```sql
+mysql> EXPLAIN SELECT count(emp_no) FROM employees WHERE DATE_FORMAT(birth_date, '%Y%m%d') like '1960%';
++----+-------------+-----------+------------+------+---------------+------+---------+------+--------+----------+-------------+
+| id | select_type | table     | partitions | type | possible_keys | key  | key_len | ref  | rows   | filtered | Extra       |
++----+-------------+-----------+------------+------+---------------+------+---------+------+--------+----------+-------------+
+|  1 | SIMPLE      | employees | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 299157 |   100.00 | Using where |
++----+-------------+-----------+------------+------+---------------+------+---------+------+--------+----------+-------------+
+1 row in set, 1 warning (0.00 sec)
+```
+
+クエリー案 2 の実行計画の取得
+
+```sql
+mysql> EXPLAIN SELECT count(emp_no) FROM employees WHERE birth_date BETWEEN DATE('1960-01-01') AND DATE('1960-12-31');
++----+-------------+-----------+------------+------+---------------+------+---------+------+--------+----------+-------------+
+| id | select_type | table     | partitions | type | possible_keys | key  | key_len | ref  | rows   | filtered | Extra       |
++----+-------------+-----------+------------+------+---------------+------+---------+------+--------+----------+-------------+
+|  1 | SIMPLE      | employees | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 299157 |    11.11 | Using where |
++----+-------------+-----------+------------+------+---------------+------+---------+------+--------+----------+-------------+
+1 row in set, 1 warning (0.00 sec)
+```
+
+#### インデックスあり（birth_date）
+
+インデックス作成
+
+```sql
+mysql> ALTER TABLE employees ADD INDEX index_birth_date(birth_date);
+Query OK, 0 rows affected (1.47 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+```
+
+インデックス確認
+
+```sql
+mysql> SHOW INDEX FROM employees;
++-----------+------------+------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table     | Non_unique | Key_name         | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++-----------+------------+------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| employees |          0 | PRIMARY          |            1 | emp_no      | A         |      299157 |     NULL | NULL   |      | BTREE      |         |               |
+| employees |          1 | index_birth_date |            1 | birth_date  | A         |        4712 |     NULL | NULL   |      | BTREE      |         |               |
++-----------+------------+------------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.00 sec)
+```
+
+クエリ実行(Like 句使用)
+
+```sql
+mysql> SELECT count(emp_no) FROM employees WHERE DATE_FORMAT(birth_date, '%Y%m%d') like '1960%';
++---------------+
+| count(emp_no) |
++---------------+
+|         23126 |
++---------------+
+1 row in set (0.17 sec)
+```
+
+クエリ実行(BETWEEN 使用)
+
+```sql
+mysql> SELECT count(emp_no) FROM employees WHERE birth_date BETWEEN DATE('1960-01-01') AND DATE('1960-12-31');
++---------------+
+| count(emp_no) |
++---------------+
+|         23126 |
++---------------+
+1 row in set (0.01 sec)
+```
+
+実行時間
+
+```sql
+mysql> SELECT EVENT_ID, TRUNCATE(timer_wait/1000000000000, 6) AS duration , SQL_TEXT FROM performance_schema.events_statements_history_long WHERE event_id in (5542, 5590);
++----------+----------+--------------------------------------------------------------------------------------------------------+
+| EVENT_ID | duration | SQL_TEXT                                                                                               |
++----------+----------+--------------------------------------------------------------------------------------------------------+
+|     5542 | 0.172233 | SELECT count(emp_no) FROM employees WHERE DATE_FORMAT(birth_date, '%Y%m%d') like '1960%'               |
+|     5590 | 0.009745 | SELECT count(emp_no) FROM employees WHERE birth_date BETWEEN DATE('1960-01-01') AND DATE('1960-12-31') |
++----------+----------+--------------------------------------------------------------------------------------------------------+
+2 rows in set (0.01 sec)
+```
+
+クエリー案 1 の実行計画の取得
+
+```sql
+mysql> EXPLAIN SELECT count(emp_no) FROM employees WHERE DATE_FORMAT(birth_date, '%Y%m%d') like '1960%';
++----+-------------+-----------+------------+-------+---------------+------------------+---------+------+--------+----------+--------------------------+
+| id | select_type | table     | partitions | type  | possible_keys | key              | key_len | ref  | rows   | filtered | Extra                    |
++----+-------------+-----------+------------+-------+---------------+------------------+---------+------+--------+----------+--------------------------+
+|  1 | SIMPLE      | employees | NULL       | index | NULL          | index_birth_date | 3       | NULL | 299157 |   100.00 | Using where; Using index |
++----+-------------+-----------+------------+-------+---------------+------------------+---------+------+--------+----------+--------------------------+
+1 row in set, 1 warning (0.00 sec)
+```
+
+クエリー案 2 の実行計画の取得
+
+```sql
+mysql> EXPLAIN SELECT count(emp_no) FROM employees WHERE birth_date BETWEEN DATE('1960-01-01') AND DATE('1960-12-31');
++----+-------------+-----------+------------+-------+------------------+------------------+---------+------+-------+----------+--------------------------+
+| id | select_type | table     | partitions | type  | possible_keys    | key              | key_len | ref  | rows  | filtered | Extra                    |
++----+-------------+-----------+------------+-------+------------------+------------------+---------+------+-------+----------+--------------------------+
+|  1 | SIMPLE      | employees | NULL       | range | index_birth_date | index_birth_date | 3       | NULL | 43264 |   100.00 | Using where; Using index |
++----+-------------+-----------+------------+-------+------------------+------------------+---------+------+-------+----------+--------------------------+
+1 row in set, 1 warning (0.00 sec)
+```
 
 </div></details>
 
 ### クイズ 3
 
-<details><summary>回答</summary><div>
-
-</div></details>
-
-### クイズ 4
+最も女性が入社した年度と人数を取得せよ。
 
 <details><summary>回答</summary><div>
 
+#### インデックスなし
+
+インデックス確認
+
+```sql
+mysql> SHOW INDEX FROM employees;
++-----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table     | Non_unique | Key_name | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++-----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| employees |          0 | PRIMARY  |            1 | emp_no      | A         |      299157 |     NULL | NULL   |      | BTREE      |         |               |
++-----------+------------+----------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+1 row in set (0.00 sec)
+```
+
+クエリ実行
+
+```sql
+mysql> SELECT YEAR(hire_date) hire_year, gender, COUNT(gender) count FROM employees WHERE gender = 'F' GROUP BY YEAR(hire_date), gender ORDER BY count DESC LIMIT 1;
++-----------+--------+-------+
+| hire_year | gender | count |
++-----------+--------+-------+
+|      1986 | F      | 14434 |
++-----------+--------+-------+
+1 row in set (0.13 sec)
+```
+
+実行時間
+
+```sql
+mysql> SELECT EVENT_ID, TRUNCATE(timer_wait/1000000000000, 6) AS duration , SQL_TEXT FROM performance_schema.events_statements_history_long WHERE event_id = 6277;
++----------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| EVENT_ID | duration | SQL_TEXT                                                                                                                                                     |
++----------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|     6277 | 0.124098 | SELECT YEAR(hire_date) hire_year, gender, COUNT(gender) count FROM employees WHERE gender = 'F' GROUP BY YEAR(hire_date), gender ORDER BY count DESC LIMIT 1 |
++----------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.01 sec)
+```
+
+クエリー実行計画の取得
+
+```sql
+mysql> EXPLAIN SELECT YEAR(hire_date) hire_year, gender, COUNT(gender) count FROM employees WHERE gender = 'F' GROUP BY YEAR(hire_date), gender ORDER BY count DESC LIMIT 1;
++----+-------------+-----------+------------+------+---------------+------+---------+------+--------+----------+----------------------------------------------+
+| id | select_type | table     | partitions | type | possible_keys | key  | key_len | ref  | rows   | filtered | Extra                                        |
++----+-------------+-----------+------------+------+---------------+------+---------+------+--------+----------+----------------------------------------------+
+|  1 | SIMPLE      | employees | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 299157 |    50.00 | Using where; Using temporary; Using filesort |
++----+-------------+-----------+------------+------+---------------+------+---------+------+--------+----------+----------------------------------------------+
+1 row in set, 1 warning (0.00 sec)
+```
+
+#### インデックスあり（gender のみ）
+
+インデックス作成(gender のみ)
+
+```sql
+mysql> ALTER TABLE employees ADD INDEX index_gender(gender);
+Query OK, 0 rows affected (1.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+```
+
+インデックス確認
+
+```sql
+mysql> SHOW INDEX FROM employees;
++-----------+------------+--------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table     | Non_unique | Key_name     | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++-----------+------------+--------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| employees |          0 | PRIMARY      |            1 | emp_no      | A         |      299157 |     NULL | NULL   |      | BTREE      |         |               |
+| employees |          1 | index_gender |            1 | gender      | A         |           1 |     NULL | NULL   |      | BTREE      |         |               |
++-----------+------------+--------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.00 sec)
+```
+
+クエリ実行
+
+```sql
+mysql> SELECT YEAR(hire_date) hire_year, gender, COUNT(gender) count FROM employees WHERE gender = 'F' GROUP BY YEAR(hire_date), gender ORDER BY count DESC LIMIT 1;
++-----------+--------+-------+
+| hire_year | gender | count |
++-----------+--------+-------+
+|      1986 | F      | 14434 |
++-----------+--------+-------+
+1 row in set (0.21 sec)
+```
+
+実行時間
+
+```sql
+mysql> SELECT EVENT_ID, TRUNCATE(timer_wait/1000000000000, 6) AS duration , SQL_TEXT FROM performance_schema.events_statements_history_long WHERE event_id = 6431;
++----------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| EVENT_ID | duration | SQL_TEXT                                                                                                                                                     |
++----------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|     6431 | 0.211344 | SELECT YEAR(hire_date) hire_year, gender, COUNT(gender) count FROM employees WHERE gender = 'F' GROUP BY YEAR(hire_date), gender ORDER BY count DESC LIMIT 1 |
++----------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.01 sec)
+```
+
+クエリーの実行計画の取得
+
+```sql
+mysql> EXPLAIN SELECT YEAR(hire_date) hire_year, gender, COUNT(gender) count FROM employees WHERE gender = 'F' GROUP BY YEAR(hire_date), gender ORDER BY count DESC LIMIT 1;
++----+-------------+-----------+------------+------+---------------+--------------+---------+-------+--------+----------+--------------------------------------------------------+
+| id | select_type | table     | partitions | type | possible_keys | key          | key_len | ref   | rows   | filtered | Extra                                                  |
++----+-------------+-----------+------------+------+---------------+--------------+---------+-------+--------+----------+--------------------------------------------------------+
+|  1 | SIMPLE      | employees | NULL       | ref  | index_gender  | index_gender | 1       | const | 149578 |   100.00 | Using index condition; Using temporary; Using filesort |
++----+-------------+-----------+------------+------+---------------+--------------+---------+-------+--------+----------+--------------------------------------------------------+
+1 row in set, 1 warning (0.00 sec)
+```
+
 </div></details>
 
-## 疑問
+#### インデックスあり（hire_date のみ）
+
+インデックス作成(hire_date のみ)
+
+```sql
+mysql> ALTER TABLE employees ADD INDEX index_hire_date(hire_date);
+Query OK, 0 rows affected (1.22 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+```
+
+インデックス確認
+
+```sql
+mysql> SHOW INDEX FROM employees;
++-----------+------------+-----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table     | Non_unique | Key_name        | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++-----------+------------+-----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| employees |          0 | PRIMARY         |            1 | emp_no      | A         |      299157 |     NULL | NULL   |      | BTREE      |         |               |
+| employees |          1 | index_hire_date |            1 | hire_date   | A         |        5636 |     NULL | NULL   |      | BTREE      |         |               |
++-----------+------------+-----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.00 sec)
+```
+
+クエリ実行
+
+```sql
+mysql> SELECT YEAR(hire_date) hire_year, gender, COUNT(gender) count FROM employees WHERE gender = 'F' GROUP BY YEAR(hire_date), gender ORDER BY count DESC LIMIT 1;
++-----------+--------+-------+
+| hire_year | gender | count |
++-----------+--------+-------+
+|      1986 | F      | 14434 |
++-----------+--------+-------+
+1 row in set (0.13 sec)
+```
+
+実行時間
+
+```sql
+mysql> SELECT EVENT_ID, TRUNCATE(timer_wait/1000000000000, 6) AS duration , SQL_TEXT FROM performance_schema.events_statements_history_long WHERE event_id = 6583;
++----------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| EVENT_ID | duration | SQL_TEXT                                                                                                                                                     |
++----------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|     6583 | 0.133667 | SELECT YEAR(hire_date) hire_year, gender, COUNT(gender) count FROM employees WHERE gender = 'F' GROUP BY YEAR(hire_date), gender ORDER BY count DESC LIMIT 1 |
++----------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+クエリーの実行計画の取得
+
+```sql
+mysql> EXPLAIN SELECT YEAR(hire_date) hire_year, gender, COUNT(gender) count FROM employees WHERE gender = 'F' GROUP BY YEAR(hire_date), gender ORDER BY count DESC LIMIT 1;
++----+-------------+-----------+------------+------+---------------+------+---------+------+--------+----------+----------------------------------------------+
+| id | select_type | table     | partitions | type | possible_keys | key  | key_len | ref  | rows   | filtered | Extra                                        |
++----+-------------+-----------+------------+------+---------------+------+---------+------+--------+----------+----------------------------------------------+
+|  1 | SIMPLE      | employees | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 299157 |    50.00 | Using where; Using temporary; Using filesort |
++----+-------------+-----------+------------+------+---------------+------+---------+------+--------+----------+----------------------------------------------+
+1 row in set, 1 warning (0.00 sec)
+```
+
+</div></details>
+#### インデックスあり（hire_date のみ）
+
+インデックス作成(hire_date のみ)
+
+```sql
+mysql> ALTER TABLE employees ADD INDEX index_hire_date(hire_date);
+Query OK, 0 rows affected (1.22 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+```
+
+インデックス確認
+
+```sql
+mysql> SHOW INDEX FROM employees;
++-----------+------------+-----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table     | Non_unique | Key_name        | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++-----------+------------+-----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| employees |          0 | PRIMARY         |            1 | emp_no      | A         |      299157 |     NULL | NULL   |      | BTREE      |         |               |
+| employees |          1 | index_hire_date |            1 | hire_date   | A         |        5636 |     NULL | NULL   |      | BTREE      |         |               |
++-----------+------------+-----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+2 rows in set (0.00 sec)
+```
+
+クエリ実行
+
+```sql
+mysql> SELECT YEAR(hire_date) hire_year, gender, COUNT(gender) count FROM employees WHERE gender = 'F' GROUP BY YEAR(hire_date), gender ORDER BY count DESC LIMIT 1;
++-----------+--------+-------+
+| hire_year | gender | count |
++-----------+--------+-------+
+|      1986 | F      | 14434 |
++-----------+--------+-------+
+1 row in set (0.13 sec)
+```
+
+実行時間
+
+```sql
+mysql> SELECT EVENT_ID, TRUNCATE(timer_wait/1000000000000, 6) AS duration , SQL_TEXT FROM performance_schema.events_statements_history_long WHERE event_id = 6583;
++----------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| EVENT_ID | duration | SQL_TEXT                                                                                                                                                     |
++----------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|     6583 | 0.133667 | SELECT YEAR(hire_date) hire_year, gender, COUNT(gender) count FROM employees WHERE gender = 'F' GROUP BY YEAR(hire_date), gender ORDER BY count DESC LIMIT 1 |
++----------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.00 sec)
+```
+
+クエリーの実行計画の取得
+
+```sql
+mysql> EXPLAIN SELECT YEAR(hire_date) hire_year, gender, COUNT(gender) count FROM employees WHERE gender = 'F' GROUP BY YEAR(hire_date), gender ORDER BY count DESC LIMIT 1;
++----+-------------+-----------+------------+------+---------------+------+---------+------+--------+----------+----------------------------------------------+
+| id | select_type | table     | partitions | type | possible_keys | key  | key_len | ref  | rows   | filtered | Extra                                        |
++----+-------------+-----------+------------+------+---------------+------+---------+------+--------+----------+----------------------------------------------+
+|  1 | SIMPLE      | employees | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 299157 |    50.00 | Using where; Using temporary; Using filesort |
++----+-------------+-----------+------------+------+---------------+------+---------+------+--------+----------+----------------------------------------------+
+1 row in set, 1 warning (0.00 sec)
+```
+
+</div></details>
+
+#### インデックスあり（gender と hire_date）
+
+インデックス作成(gender を追加)
+
+```sql
+mysql> ALTER TABLE employees ADD INDEX index_gender(gender);
+Query OK, 0 rows affected (0.92 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+```
+
+インデックス確認
+
+```sql
+mysql> SHOW INDEX FROM employees;
++-----------+------------+-----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| Table     | Non_unique | Key_name        | Seq_in_index | Column_name | Collation | Cardinality | Sub_part | Packed | Null | Index_type | Comment | Index_comment |
++-----------+------------+-----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+| employees |          0 | PRIMARY         |            1 | emp_no      | A         |      299157 |     NULL | NULL   |      | BTREE      |         |               |
+| employees |          1 | index_hire_date |            1 | hire_date   | A         |        5636 |     NULL | NULL   |      | BTREE      |         |               |
+| employees |          1 | index_gender    |            1 | gender      | A         |           1 |     NULL | NULL   |      | BTREE      |         |               |
++-----------+------------+-----------------+--------------+-------------+-----------+-------------+----------+--------+------+------------+---------+---------------+
+3 rows in set (0.00 sec)
+```
+
+クエリ実行
+
+```sql
+mysql> SELECT YEAR(hire_date) hire_year, gender, COUNT(gender) count FROM employees WHERE gender = 'F' GROUP BY YEAR(hire_date), gender ORDER BY count DESC LIMIT 1;
++-----------+--------+-------+
+| hire_year | gender | count |
++-----------+--------+-------+
+|      1986 | F      | 14434 |
++-----------+--------+-------+
+1 row in set (0.21 sec)
+```
+
+実行時間
+
+```sql
+mysql> SELECT EVENT_ID, TRUNCATE(timer_wait/1000000000000, 6) AS duration , SQL_TEXT FROM performance_schema.events_statements_history_long WHERE event_id = 6757;
++----------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| EVENT_ID | duration | SQL_TEXT                                                                                                                                                     |
++----------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|     6757 | 0.207205 | SELECT YEAR(hire_date) hire_year, gender, COUNT(gender) count FROM employees WHERE gender = 'F' GROUP BY YEAR(hire_date), gender ORDER BY count DESC LIMIT 1 |
++----------+----------+--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.01 sec)
+```
+
+クエリーの実行計画の取得
+
+```sql
+mysql> EXPLAIN SELECT YEAR(hire_date) hire_year, gender, COUNT(gender) count FROM employees WHERE gender = 'F' GROUP BY YEAR(hire_date), gender ORDER BY count DESC LIMIT 1;
++----+-------------+-----------+------------+------+---------------+--------------+---------+-------+--------+----------+--------------------------------------------------------+
+| id | select_type | table     | partitions | type | possible_keys | key          | key_len | ref   | rows   | filtered | Extra                                                  |
++----+-------------+-----------+------------+------+---------------+--------------+---------+-------+--------+----------+--------------------------------------------------------+
+|  1 | SIMPLE      | employees | NULL       | ref  | index_gender  | index_gender | 1       | const | 149578 |   100.00 | Using index condition; Using temporary; Using filesort |
++----+-------------+-----------+------------+------+---------------+--------------+---------+-------+--------+----------+--------------------------------------------------------+
+1 row in set, 1 warning (0.00 sec)
+```
+
+#### まとめ
+
+自分が考えたクエリだと、インデックスなしが 1 番早かった、、（GROUP BY 句で変換しているからインデックスが無効化されちゃったのかな？）
+
+|          | インデックスなし | index_gender のみ | index_hire_date のみ | index_gender と index_hire_date |
+| -------- | ---------------- | ----------------- | -------------------- | ------------------------------- |
+| 実行速度 | 0.124s           | 0.211s            | 0.133s               | 0.207s                          |
+
+</div></details>
 
 ## メモ
 
