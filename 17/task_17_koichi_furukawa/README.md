@@ -836,8 +836,6 @@ mysql> EXPLAIN SELECT YEAR(hire_date) hire_year, gender, COUNT(gender) count FRO
 1 row in set, 1 warning (0.00 sec)
 ```
 
-</div></details>
-
 #### インデックスあり（hire_date のみ）
 
 インデックス作成(hire_date のみ)
@@ -897,7 +895,6 @@ mysql> EXPLAIN SELECT YEAR(hire_date) hire_year, gender, COUNT(gender) count FRO
 1 row in set, 1 warning (0.00 sec)
 ```
 
-</div></details>
 #### インデックスあり（hire_date のみ）
 
 インデックス作成(hire_date のみ)
@@ -956,8 +953,6 @@ mysql> EXPLAIN SELECT YEAR(hire_date) hire_year, gender, COUNT(gender) count FRO
 +----+-------------+-----------+------------+------+---------------+------+---------+------+--------+----------+----------------------------------------------+
 1 row in set, 1 warning (0.00 sec)
 ```
-
-</div></details>
 
 #### インデックスあり（gender と hire_date）
 
