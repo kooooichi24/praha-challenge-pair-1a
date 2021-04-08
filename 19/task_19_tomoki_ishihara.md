@@ -18,7 +18,7 @@
 
 - slow_query_log: 有効無効を設定する
 - long_query_time: 最小0, デフォルト10 (秒)
-- min_examined_row_limit: 行数
+- min_examined_row_limit: 行数, 最小0, デフォルト0
 - slow_query_log_file でログファイル名を指定可能
 - log_slow_admin_statements: 管理ステートメントを集計対象に含めるかどうか
 - log_queries_not_using_indexes: フルスキャンを行うようなクエリをスロークエリとして集計するかどうか
@@ -371,11 +371,42 @@ whereの場合 onで絞る -> where で絞るの2回検索が入るのに対し�
 
 ## 課題5 (クイズ)
 
-スロークエリに関するクイズ3つ
+### クイズ1
 
-- long_query_timeのデフォルト値は何秒ですか？
-- mysqldumpslowの文字や数値は抽象化され、似たクエリは同じものとしてカウントされますが、数値を抽象化しない結果を表示するにはどうすればよいでしょうか？
-- long_query_time = 0, min_examined_row_limit を 1000 に設定して、以下のような実行計画を持つクエリを実行します。このクエリはスロークエリログに記録されるでしょうか？
+long_query_timeのデフォルト値は何秒ですか？
+
+<details><summary>回答例</summary>
+
+10秒
+</details>
+
+### クイズ2
+
+mysqldumpslowの文字や数値は抽象化され、似たクエリは同じものとしてカウントされますが、数値を抽象化しない結果を表示するにはどうすればよいでしょうか？
+
+<details><summary>回答例</summary>
+
+`-a` オプションを使用する。
+
+
+これが、
+
+```text
+Count: 1  Time=0.14s (0s)  Lock=0.00s (0s)  Rows=80.0 (80), root[root]@[172.17.0.1]
+  select * from employees where hire_date = date('S')
+```
+
+こうなる。
+
+```text
+Count: 1  Time=0.14s (0s)  Lock=0.00s (0s)  Rows=80.0 (80), root[root]@[172.17.0.1]
+  select * from employees where hire_date = date('1990-03-06')
+```
+</details>
+
+### クイズ3
+
+long_query_time = 0, min_examined_row_limit を 1000 に設定して、以下のような実行計画を持つクエリを実行します。このクエリはスロークエリログに記録されるでしょうか？
 
 ```sh
 mysql> explain select * from departments;
@@ -387,14 +418,11 @@ mysql> explain select * from departments;
 1 row in set, 1 warning (0.00 sec)
 ```
 
-### クイズ1
+<details><summary>回答例</summary>
 
-### クイズ2
+記録されない。スロークエリには `long_query_time`, `min_examined_row_limit` の両方の条件に当てはまったクエリが記録されるため。
 
-### クイズ3
-
-記録されている
-time=0, row=0のとき
+time=0, row=0のとき、記録されている。
 
 ```text
 # Time: 2021-04-08T03:54:22.948786Z
@@ -404,13 +432,16 @@ SET timestamp=1617854062;
 select * from departments;
 ```
 
-row=1000のとき
+time=0, row=1000のとき
 記録されなかった (直前に実行した marioのクエリは記録されている)
 
 ```text
+...
 # Time: 2021-04-08T03:57:28.075551Z
 # User@Host: root[root] @  [172.17.0.1]  Id:     5
 # Query_time: 0.070709  Lock_time: 0.000154 Rows_sent: 254  Rows_examined: 300024
 SET timestamp=1617854248;
 select * from employees where first_name = 'Mario';
 ```
+
+</details>
