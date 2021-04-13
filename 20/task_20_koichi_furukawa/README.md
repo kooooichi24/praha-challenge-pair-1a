@@ -300,58 +300,6 @@ mysql> select * from null_order order by salary IS NULL desc, salary desc;
 14 rows in set (0.00 sec)
 ```
 
-</div></details>
-### クイズ 1
-
-IS NULL, IS NOT NULL はインデックスを利用できるか？
-
-<details><summary>回答</summary><div>
-
-利用できる。
-（ただし以前は、インデックスを使わなかったみたい）
-
-- 参考記事
-
-  - [8.2.1.8 IS NULL の最適化 | MySQL Documentation](https://dev.mysql.com/doc/refman/5.6/ja/is-null-optimization.html)
-    - > MySQL は、col_name = constant_value に対して使用できる同じ最適化を col_name IS NULL に対しても実行できます。たとえば、MySQL は、インデックスと範囲を使用して、IS NULL を含む NULL を検索できます。
-  - [11.2. インデックスの種類 | PostgreSQL 10.5 文書](https://www.postgresql.jp/document/10/html/indexes-types.html)
-    - > インデックスの付いた列に対する IS NULL や IS NOT NULL でも B-tree インデックスを使用することができます。
-  - [IS NULL はインデックスを使うのか](https://techblog.istyle.co.jp/archives/1514)
-
-    - > NULL はインデックスを使わないって書かれた記事もブログもたくさん見かけます。過去にはそうだったのかも知れません。でも、実装はどんどん変わって行きます。過去に書かれたブログだけを読んでいると、今自分の使っている実装系とは合っていないって事もしばしばあります。やっぱり自分で確かめないとですね！
-
-  - [NULL 撲滅委員会](http://mickindex.sakura.ne.jp/database/db_getout_null.html)
-    - > 2. IS NULL、IS NOT NULL を指定する場合、インデックスが参照されないためパフォーマンスが悪い。
-    - このブログの筆者の他のシリーズも気になる
-      - [リレーショナル・データベースの世界](http://mickindex.sakura.ne.jp/database/idx_database.html)
-
-</div></details>
-### クイズ 1
-
-IS NULL, IS NOT NULL はインデックスを利用できるか？
-
-<details><summary>回答</summary><div>
-
-利用できる。
-（ただし以前は、インデックスを使わなかったみたい）
-
-- 参考記事
-
-  - [8.2.1.8 IS NULL の最適化 | MySQL Documentation](https://dev.mysql.com/doc/refman/5.6/ja/is-null-optimization.html)
-    - > MySQL は、col_name = constant_value に対して使用できる同じ最適化を col_name IS NULL に対しても実行できます。たとえば、MySQL は、インデックスと範囲を使用して、IS NULL を含む NULL を検索できます。
-  - [11.2. インデックスの種類 | PostgreSQL 10.5 文書](https://www.postgresql.jp/document/10/html/indexes-types.html)
-    - > インデックスの付いた列に対する IS NULL や IS NOT NULL でも B-tree インデックスを使用することができます。
-  - [IS NULL はインデックスを使うのか](https://techblog.istyle.co.jp/archives/1514)
-
-    - > NULL はインデックスを使わないって書かれた記事もブログもたくさん見かけます。過去にはそうだったのかも知れません。でも、実装はどんどん変わって行きます。過去に書かれたブログだけを読んでいると、今自分の使っている実装系とは合っていないって事もしばしばあります。やっぱり自分で確かめないとですね！
-
-  - [NULL 撲滅委員会](http://mickindex.sakura.ne.jp/database/db_getout_null.html)
-    - > 2. IS NULL、IS NOT NULL を指定する場合、インデックスが参照されないためパフォーマンスが悪い。
-    - このブログの筆者の他のシリーズも気になる
-      - [リレーショナル・データベースの世界](http://mickindex.sakura.ne.jp/database/idx_database.html)
-
-</div></details>
-
 ### クイズ 3
 
 NOT IN の条件に NULL が含まれている場合、どのような結果を取得できるでしょうか？
