@@ -24,12 +24,24 @@
 1. ビューごとに閲覧権限を割り当てることで、アクセスコントロールが可能になる。
 2. 利用頻度が高く且つ複雑なクエリを利用する際に、作成したビューを利用することでクエリがシンプルになる。
 
+#### 参考記事
+
+- [What is a good reason to use SQL views?](https://stackoverflow.com/questions/2680207/what-is-a-good-reason-to-use-sql-views)
+  - セキュリティ: 不必要な情報は見せない
+  - シンプルさ: 複数のテーブルを 1 つの仮想テーブルに結合し、単純化
+  - 集約テーブル: 計算結果へのエイリアス
+  - テーブルを分割: Sale2020, Sale2019
+- [View (SQL) | Wikipedia](<https://en.wikipedia.org/wiki/View_(SQL)>)
+  - ビューは、読み取り専用と更新可能に定義することができる
+
 #### 疑問
 
 セキュリティ目的の場合は、使用する目的が明確なため想像しやすい。
 一方、複雑なクエリに対するエイリアスのような目的でビューを利用する場合は、どのような基準でビューを作成するか想像しづらい。
 実際の現場でビューは、どちらの目的でも利用されているのだろうか？
 エイリアスのような目的で利用する場合、ビューの作成基準が気になる。
+
+↑ 上記参考記事を読んだら、セキュリティ目的以外にも利用されることが想像できた。
 
 ### 3
 
@@ -154,16 +166,16 @@ mysql> select * from v_salary_distribution_per_million;
 ビューなので、変化なし
 
 ```sql
-mysql> SELECT EVENT_ID, TRUNCATE(timer_wait/1000000000000, 6) AS duration , SQL_TEXT FROM performance_schema.events_statements_history_long WHERE event_id IN (664, 692, 720, 748, 786, 824);
-+----------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| EVENT_ID | duration | SQL_TEXT                                                                                                                                                                   |
-+----------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-|      664 | 1.201020 | SELECT trunc_salary, COUNT(trunc_salary) FROM ( SELECT emp_no, TRUNCATE(AVG(salary), -4) AS trunc_salary FROM salaries GROUP BY emp_no ) AS salaries GROUP BY trunc_salary |
-|      692 | 1.195313 | SELECT trunc_salary, COUNT(trunc_salary) FROM ( SELECT emp_no, TRUNCATE(AVG(salary), -4) AS trunc_salary FROM salaries GROUP BY emp_no ) AS salaries GROUP BY trunc_salary |
-|      720 | 1.208220 | SELECT trunc_salary, COUNT(trunc_salary) FROM ( SELECT emp_no, TRUNCATE(AVG(salary), -4) AS trunc_salary FROM salaries GROUP BY emp_no ) AS salaries GROUP BY trunc_salary |
-|      748 | 1.208986 | select * from v_salary_distribution_per_million                                                                                                                            |
-|      786 | 1.218175 | select * from v_salary_distribution_per_million                                                                                                                            |
-|      824 | 1.220190 | select * from v_salary_distribution_per_million                                                                                                                            |
-+----------+----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+mysql> mysql> SELECT EVENT_ID, TRUNCATE(timer_wait/1000000000000, 6) AS duration , LEFT(SQL_TEXT, 50) FROM performance_schema.events_statements_history_long WHERE event_id IN (664, 692, 720, 748, 786, 824);
++----------+----------+----------------------------------------------------+
+| EVENT_ID | duration | LEFT(SQL_TEXT, 50)                                 |
++----------+----------+----------------------------------------------------+
+|      664 | 1.201020 | SELECT trunc_salary, COUNT(trunc_salary) FROM ( SE |
+|      692 | 1.195313 | SELECT trunc_salary, COUNT(trunc_salary) FROM ( SE |
+|      720 | 1.208220 | SELECT trunc_salary, COUNT(trunc_salary) FROM ( SE |
+|      748 | 1.208986 | select * from v_salary_distribution_per_million    |
+|      786 | 1.218175 | select * from v_salary_distribution_per_million    |
+|      824 | 1.220190 | select * from v_salary_distribution_per_million    |
++----------+----------+----------------------------------------------------+
 8 rows in set (0.01 sec)
 ```
