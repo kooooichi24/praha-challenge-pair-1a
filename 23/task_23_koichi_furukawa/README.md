@@ -70,3 +70,4 @@ entity Entity01 {
 optional_attribute
 }
 @enduml
+```
