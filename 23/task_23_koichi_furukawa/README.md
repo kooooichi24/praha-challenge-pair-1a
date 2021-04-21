@@ -61,19 +61,6 @@ Post Table の例
 
 ### 2
 
-<<<<<<< HEAD
 ![database scheme](./scheme.png)
 
 [ER 図](https://plantuml.com/ja/ie-diagram)
-=======
-```plantuml
-@startuml
-entity Entity01 {
-* identifying_attribute
---
-* mandatory_attribute
-optional_attribute
-}
-@enduml
-```
->>>>>>> 6a1dd2d41566c9b5648d7cb191df27308f0bf53e
