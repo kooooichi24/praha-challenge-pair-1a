@@ -1,0 +1,29 @@
+@startuml scheme
+
+' hide the spot
+hide circle
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity Post {
+  * id: varchar
+  --
+  * text: varchar
+}
+
+entity Tag {
+  * id: varchar
+  --
+  * name: varchar
+}
+
+entity Post_Tag_Tagging {
+  * post.id: varchar <<FK>>
+  * tag.id: varchar <<FK>>
+}
+
+Post |o--o{ Post_Tag_Tagging
+Tag |o--o{ Post_Tag_Tagging
+
+@enduml
+
