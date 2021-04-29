@@ -1,0 +1,31 @@
+@startuml good_pattern_2
+
+' hide the spot
+hide circle
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity Book {
+  * id: varchar
+  --
+  * Book_Type_Id: varchar <<FK>>
+  * name: varchar
+}
+
+entity Book_Type {
+  * id: varchar
+  --
+  * type: varchar
+}
+
+entity Comment {
+  * id: varchar
+  --
+  * Book_Id: varchar <<FK>>
+  * text: varchar
+}
+
+Book_Type |o--o{ Book
+Book |o--o{ Comment
+
+@enduml
