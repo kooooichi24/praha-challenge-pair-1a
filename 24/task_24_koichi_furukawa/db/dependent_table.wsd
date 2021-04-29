@@ -1,0 +1,22 @@
+@startuml dependent_table
+
+' hide the spot
+hide circle
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity Post {
+  * id: varchar
+  --
+  * content: varchar
+}
+
+entity Tags {
+  * post_id: varchar
+  * tag: varchar
+}
+
+Post |o--o{ Tags
+
+@enduml
+

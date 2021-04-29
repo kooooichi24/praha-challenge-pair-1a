@@ -1,0 +1,29 @@
+@startuml cross_reference_table
+
+' hide the spot
+hide circle
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity Post {
+  * id: varchar
+  --
+  * content: varchar
+}
+
+entity Tag {
+  * id: varchar
+  --
+  * content: varchar
+}
+
+entity Post_Tag_Tagging {
+  * post.id: varchar <<FK>>
+  * tag.id: varchar <<FK>>
+}
+
+Post_Tag_Tagging }o--o| Post
+Post_Tag_Tagging }o--o| Tag
+
+@enduml
+
