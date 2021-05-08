@@ -1,0 +1,17 @@
+@startuml anti_pattern
+
+' hide the spot
+hide circle
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity Message {
+  * id: varchar
+  --
+  * parent_message_id: varchar
+  * text: varchar
+}
+
+Message |o--o{ Message
+
+@enduml

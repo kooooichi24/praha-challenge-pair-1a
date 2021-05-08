@@ -1,0 +1,19 @@
+@startuml closure-table
+
+' hide the spot
+hide circle
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity Message {
+  * id: varchar
+  --
+  * text: varchar
+}
+
+entity TreePaths {
+  * ancestor: varchar
+  * descestor: varchar
+}
+
+@enduml
