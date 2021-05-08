@@ -1,0 +1,22 @@
+@startuml references-table
+
+' hide the spot
+hide circle
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity Student_Status {
+  * status: varchar
+}
+
+entity Student {
+  * id: varchar
+  --
+  * name: varchar
+  * status: varchar
+}
+
+
+Student_Status |o--o{ Student
+
+@enduml
