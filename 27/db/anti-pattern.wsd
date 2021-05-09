@@ -1,0 +1,19 @@
+@startuml anti-pattern
+
+' hide the spot
+hide circle
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity NewCustomer {
+  * id: varchar
+  --
+  * contactPerson: varchar
+  * telephone: boolean
+  * metOnce: boolean
+  metAt: date
+  * closed: boolean
+  closedAt: boolean
+}
+
+@enduml

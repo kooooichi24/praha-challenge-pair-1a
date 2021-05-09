@@ -1,0 +1,32 @@
+@startuml class-table-Inheritance
+
+' hide the spot
+hide circle
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity NewCustomer_Status {
+  * id: varchar
+  --
+  contactPerson: varchar
+}
+
+entity NewCustomer_Status_Tel {
+  * new_customer_status_id: varchar
+}
+
+entity NewCustomer_Status_Met {
+  * new_customer_status_id: varchar
+  metAt: date
+}
+
+entity NewCustomer_Status_Closed {
+  * new_customer_status_id: varchar
+  closedAt: date
+}
+
+NewCustomer_Status --o| NewCustomer_Status_Tel
+NewCustomer_Status --o| NewCustomer_Status_Met
+NewCustomer_Status --o| NewCustomer_Status_Closed
+
+@enduml
