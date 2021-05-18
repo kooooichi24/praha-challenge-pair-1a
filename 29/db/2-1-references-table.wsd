@@ -1,4 +1,4 @@
-@startuml refactor-references-table
+@startuml 2-1-references-table
 
 
 ' hide the spot
@@ -13,6 +13,7 @@ entity 注文 {
   *商品ID <<FK>>
   *注文数
   *サビ抜きステータス
+  *シャリサイズ -- ここ
 }
 
 entity 顧客 {
