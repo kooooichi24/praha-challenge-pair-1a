@@ -1,0 +1,76 @@
+@startuml database-design-3
+
+' hide the spot
+hide circle
+' avoid problems with angled crows feet
+' skinparam linetype ortho
+
+entity 投稿 {
+  *投稿ID (int)
+  --
+  *ユーザーID <<FK>>
+  *チャンネルID <<FK>>
+  *メッセージ (varchar)
+  *投稿日時 (datetime)
+}
+
+entity 投稿ツリーパス {
+  *投稿ID AS 先祖 <<FK>>
+  *投稿ID AS 子孫 <<FK>>
+  --
+  *深さ (int)
+}
+
+entity ユーザー {
+  *ユーザーID (int)
+  --
+  *名前 (varchar)
+  *表示名 (varchar)
+  *メールアドレス (varchar)
+}
+
+entity チャンネル {
+  *チャンネルID (int)
+  --
+  *名前 (varchar)
+}
+
+entity ワークスペース {
+  *ワークスペースID
+  --
+  *名前
+}
+
+entity ワークスペース_チャンネル {
+  *ワークスペース_チャンネル_ID
+  --
+  *ワークスペースID <<FK>>
+  *チャンネルID <<FK>>
+}
+
+entity ワークスペース_ユーザー {
+  *ワークスペース_ユーザー_ID
+  --
+  *ワークスペースID <<FK>>
+  *ユーザーID <<FK>>
+}
+
+entity チャンネル_ユーザー {
+  *チャンネル_ユーザー_ID
+  --
+  *チャンネルID <<FK>>
+  *ユーザーID <<FK>>
+}
+
+ユーザー ||--|{ 投稿
+投稿 ||--|{ 投稿ツリーパス
+投稿 ||--|{ 投稿ツリーパス
+投稿 }|--|| チャンネル
+ワークスペース }|--|| ワークスペース_チャンネル
+チャンネル }|-u-|| ワークスペース_チャンネル
+ワークスペース }|-u-|| ワークスペース_ユーザー
+ユーザー }|-u-|| ワークスペース_ユーザー
+チャンネル }|-u-|| チャンネル_ユーザー
+ユーザー }|--|| チャンネル_ユーザー
+
+@enduml
