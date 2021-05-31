@@ -1,0 +1,66 @@
+@startuml 3-references-table
+
+' hide the spot
+hide circle
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity 注文 {
+  *注文ID
+  --
+  *伝票ID <<FK>>
+  *商品ID <<FK>>
+  *注文数
+  *合計金額 -- 商品.金額 * 注文数 の金額とは異なる可能性あり。値引きが発生した場合は値引き後の値が入る
+  *サビ抜きステータス
+  *シャリサイズ
+}
+
+entity 顧客 {
+  *顧客ID
+  --
+  *名前
+  *電話
+}
+
+entity 商品 {
+  *商品ID
+  --
+  *商品名
+  *金額
+  *商品カテゴリID <<FK>>
+}
+
+entity 商品カテゴリ {
+  *商品カテゴリID
+  --
+  *グループ名
+  *サブグループ名
+}
+
+entity 伝票 {
+  *伝票ID
+  --
+  *顧客ID <<FK>>
+  *合計皿数
+  *合計金額
+  *消費税率ID <<FK>>
+  *支払ステータス
+  *日時
+}
+
+entity 消費税率 {
+  *消費税率ID
+  --
+  *消費税率
+  *開始日
+  *終了日
+}
+
+商品カテゴリ ||--|{ 商品
+注文 ||--|| 商品
+伝票 ||--|| 顧客
+伝票 ||--|{ 注文
+伝票 ||--|| 消費税率
+
+@enduml

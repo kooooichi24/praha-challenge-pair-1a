@@ -1,0 +1,115 @@
+@startuml refactor-pair-review-2
+
+' hide the spot
+hide circle
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity 注文 {
+  *注文ID (int)
+  --
+  *伝票ID <<FK>>
+  *商品ID <<FK>>
+  *注文数 (int)
+  *合計金額 (int)
+  *サビ抜きステータスID <<FK>>
+  *シャリサイズID <<FK>>
+  *注文日時 (datetime)
+}
+
+entity サビ抜きステータス {
+  *サビ抜きステータスID (int)
+  --
+  *ステータス (varchar)
+}
+
+
+entity シャリサイズ {
+  *シャリサイズID (int)
+  --
+  *サイズ (varchar)
+}
+
+entity 顧客 {
+  *顧客ID (int)
+  --
+  *名前 (varchar)
+  *電話 (varchar)
+}
+
+entity 商品 {
+  *商品ID (int)
+  --
+  *商品名 (varchar)
+  *金額 (int)
+}
+
+entity 商品_商品タグ {
+  *商品_商品タグID (int)
+  --
+  *商品ID <<FK>>
+  *商品タグID <<FK>>
+}
+
+entity 商品タグ {
+  *商品タグID (int)
+  --
+  *タグ名 (varchar)
+}
+
+entity 商品カテゴリー {
+  *商品タグID AS 先祖 <<FK>> 
+  *商品タグID AS 子孫 <<FK>> 
+  --
+  *深さ (int)
+}
+
+
+entity 伝票 {
+  *伝票ID (int)
+  --
+  *顧客ID <<FK>>
+  *合計皿数 (int)
+  *合計金額 (int)
+  *消費税率ID <<FK>>
+  *支払ステータス (boolean)
+  *受付日時 (datetime)
+}
+
+entity 消費税率 {
+  *消費税率ID (int)
+  --
+  *消費税率 (int)
+  *開始日 (date)
+  *終了日 (date)
+}
+
+entity キャンペーン {
+  *キャンペーンID (int)
+  --
+  *キャンペーン名 (varchar)
+  *開始日時 (datetime)
+  *終了日時 (datetime)
+}
+
+entity 伝票_キャンペーン {
+  *伝票_キャンペーンID (int)
+  --
+  *伝票ID <<FK>>
+  *キャンペーンID <<FK>>
+}
+
+
+商品タグ ||--|{ 商品_商品タグ
+商品 ||--|{ 商品_商品タグ
+商品タグ ||--|{ 商品カテゴリー
+注文 }|--|| 商品
+注文 }|--|| サビ抜きステータス
+注文 }|--|| シャリサイズ
+伝票 ||--|| 顧客
+伝票 ||--|{ 注文
+伝票 }|--|| 消費税率
+伝票 ||--|{ 伝票_キャンペーン
+キャンペーン ||--|{ 伝票_キャンペーン
+
+@enduml
