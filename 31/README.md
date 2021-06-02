@@ -108,37 +108,37 @@ entity Page_Label_Relation {
   *label_id <<FK>>
 }
 
-entity Licence_Group {
+entity Authority_Group {
   *id (int)
   --
   *name (varchar)
 }
 
-entity Licence_Tag {
+entity Authority_Tag {
   *id (int)
   --
   *name (varchar)
 }
 
-entity Licence_Group_Tag {
+entity Authority_Group_Tag {
   *id (int)
   --
-  *licence_group_id <<FK>>
-  *licence_tag_id <<FK>>
+  *authority_group_id <<FK>>
+  *authority_tag_id <<FK>>
 }
 
-entity Licence_Group_User {
+entity Authority_Group_User {
   *id (int)
   --
-  *licence_group_id <<FK>>
+  *authority_group_id <<FK>>
   *space_user_belonging_id <<FK>>
 }
 
-entity Licence_User_Tag {
+entity Authority_User_Tag {
   *id (int)
   --
   *space_user_belonging_id <<FK>>
-  *licence_tag_id <<FK>>
+  *authority_tag_id <<FK>>
 }
 ```
 
@@ -147,7 +147,7 @@ entity Licence_User_Tag {
 - 追加対象項目
   - Site/Space/Page
   - Team
-  - Licence
+  - Authority
 - 対象外
   - ブログ
   - コメント
@@ -187,12 +187,12 @@ Space
 
 Page
 
-| id  | name                 | space_id |
-| --- | -------------------- | -------- |
-| 1   | Initialize           | 2        |
-| 2   | PC Setup             | 2        |
-| 3   | Get AWS Account      | 2        |
-| 4   | Regist Company Email | 1        |
+| id  | space_id |
+| --- | -------- |
+| 1   | 2        |
+| 2   | 2        |
+| 3   | 2        |
+| 4   | 1        |
 
 ---
 
@@ -304,7 +304,7 @@ Page_Label_Relation
 
 ---
 
-Licence_Tag
+Authority_Tag
 
 | id  | name        |
 | --- | ----------- |
@@ -314,7 +314,7 @@ Licence_Tag
 
 ---
 
-Licence_Group
+Authority_Group
 
 | id  | name             |
 | --- | ---------------- |
@@ -324,34 +324,34 @@ Licence_Group
 
 ---
 
-Licence_Group_Tag
+Authority_Group_Tag
 
-| id  | licence_group_id | licence_tag_id |
-| --- | ---------------- | -------------- |
-| 1   | 1                | 1              |
-| 2   | 1                | 2              |
-| 3   | 1                | 3              |
-| 4   | 2                | 1              |
-| 5   | 2                | 2              |
-| 6   | 3                | 1              |
-
----
-
-Licence_User_Tag
-
-| id  | space_user_belonging_id | licence_tag_id |
-| --- | ----------------------- | -------------- |
-| 1   | 3                       | 2              |
+| id  | authority_group_id | authority_tag_id |
+| --- | ------------------ | ---------------- |
+| 1   | 1                  | 1                |
+| 2   | 1                  | 2                |
+| 3   | 1                  | 3                |
+| 4   | 2                  | 1                |
+| 5   | 2                  | 2                |
+| 6   | 3                  | 1                |
 
 ---
 
-Licence_Group_Tag
+Authority_User_Tag
 
-| id  | licence_group_id | space_user_belonging_id |
-| --- | ---------------- | ----------------------- |
-| 1   | 1                | 1                       |
-| 2   | 2                | 2                       |
-| 3   | 3                | 3                       |
+| id  | space_user_belonging_id | authority_tag_id |
+| --- | ----------------------- | ---------------- |
+| 1   | 3                       | 2                |
+
+---
+
+Authority_Group_Tag
+
+| id  | authority_group_id | space_user_belonging_id |
+| --- | ------------------ | ----------------------- |
+| 1   | 1                  | 1                       |
+| 2   | 2                  | 2                       |
+| 3   | 3                  | 3                       |
 
 ### ユースケース
 
@@ -375,7 +375,7 @@ Licence_Group_Tag
 
 ## 疑問
 
-- Licence_Group_User や Licence_User_Tag には Space_User_Belonging_id を参照させているが、大丈夫？ Space_id と User_id をそれぞれ持たせた方が良い？
+- Authority_Group_User や Authority_User_Tag には Space_User_Belonging_id を参照させているが、大丈夫？ Space_id と User_id をそれぞれ持たせた方が良い？
 
 ## メモ
 

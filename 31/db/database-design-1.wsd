@@ -100,37 +100,37 @@ entity Page_Label_Relation {
   *label_id <<FK>>
 }
 
-entity Licence_Group {
+entity Authority_Group {
   *id (int)
   --
   *name (varchar)
 }
 
-entity Licence_Tag {
+entity Authority_Tag {
   *id (int)
   --
   *name (varchar)
 }
 
-entity Licence_Group_Tag {
+entity Authority_Group_Tag {
   *id (int)
   --
-  *licence_group_id <<FK>>
-  *licence_tag_id <<FK>>
+  *authority_group_id <<FK>>
+  *authority_tag_id <<FK>>
 }
 
-entity Licence_Group_User {
+entity Authority_Group_User {
   *id (int)
   --
-  *licence_group_id <<FK>>
+  *authority_group_id <<FK>>
   *space_user_belonging_id <<FK>>
 }
 
-entity Licence_User_Tag {
+entity Authority_User_Tag {
   *id (int)
   --
   *space_user_belonging_id <<FK>>
-  *licence_tag_id <<FK>>
+  *authority_tag_id <<FK>>
 }
 
 ' entity Page_Refer_Page {
@@ -156,12 +156,12 @@ User }|--|| User_Browse_Page
 Page }|--|| User_Browse_Page
 Label }|--|| Page_Label_Relation
 User_Save_Page }|--|| Page_Label_Relation
-Licence_Group }|--|| Licence_Group_Tag
-Licence_Tag }|--|| Licence_Group_Tag
-Licence_Group }|--|| Licence_Group_User
-Space_User_Belonging }|-u-|| Licence_Group_User
-Space_User_Belonging }|--|| Licence_User_Tag
-Licence_Tag }|--|| Licence_User_Tag
+Authority_Group }|--|| Authority_Group_Tag
+Authority_Tag }|--|| Authority_Group_Tag
+Authority_Group }|--|| Authority_Group_User
+Space_User_Belonging }|-u-|| Authority_Group_User
+Space_User_Belonging }|--|| Authority_User_Tag
+Authority_Tag }|--|| Authority_User_Tag
 
 ' Page }|--|| Page_Refer_Page
 ' Page }|--|| Page_Refer_Page
