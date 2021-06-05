@@ -1,0 +1,169 @@
+@startuml database-design-1
+
+' hide the spot
+hide circle
+' avoid problems with angled crows feet
+' skinparam linetype ortho
+
+entity User_Save_Page {
+  *id (int)
+  --
+  *title (varchar)
+  *body (varchar)
+  *page_id <<FK>>
+  *created_by <<FK>> (User.id)
+  *created_at (datetime)
+  *updated_by <<FK>> (User.id)
+  *updated_at (datetime)
+  *delete_flag (boolean)
+}
+
+entity User_Browse_Page {
+  *id (int)
+  --
+  *user_id <<FK>>
+  *page_id <<FK>>
+  *browse_at (datetime)
+}
+
+entity User_Favo_Page {
+  *id (int)
+  --
+  *user_id <<FK>>
+  *page_id <<FK>>
+  *favorite_at (datetime)
+}
+
+entity User {
+  *id (int)
+  --
+  *name (varchar)
+  *mail (varchar)
+}
+
+entity Team {
+  *id (int)
+  --
+  *name (varchar)
+}
+
+entity Team_Member {
+  *id (int)
+  --
+  *team_id <<FK>>
+  *user_id <<FK>>
+}
+
+entity Site {
+  *id (int)
+  --
+  *name (varchar)
+}
+
+entity Space {
+  *id (int)
+  --
+  *name (varchar)
+  *site_id <<FK>>
+}
+
+entity Page {
+  *id (int)
+  --
+  *space_id <<FK>>
+}
+
+entity Page_Path {
+  *ancestor <<FK>> (Page.id)
+  *descendant <<FK>> (Page.id)
+  --
+  *depth (int)
+}
+
+entity Space_User_Belonging {
+  *id (int)
+  --
+  *space_id <<FK>>
+  *user_id <<FK>>
+}
+
+entity Label {
+  *id (int)
+  --
+  *name (varchar)
+}
+
+entity Page_Label_Relation {
+  *id (int)
+  --
+  *page_id <<FK>> (User_Save_Page.id)
+  *label_id <<FK>>
+}
+
+entity Authority_Group {
+  *id (int)
+  --
+  *name (varchar)
+}
+
+entity Authority_Tag {
+  *id (int)
+  --
+  *name (varchar)
+}
+
+entity Authority_Group_Tag {
+  *id (int)
+  --
+  *authority_group_id <<FK>>
+  *authority_tag_id <<FK>>
+}
+
+entity Authority_Group_User {
+  *id (int)
+  --
+  *authority_group_id <<FK>>
+  *space_user_belonging_id <<FK>>
+}
+
+entity Authority_User_Tag {
+  *id (int)
+  --
+  *space_user_belonging_id <<FK>>
+  *authority_tag_id <<FK>>
+}
+
+' entity Page_Refer_Page {
+'   *id
+'   --
+'   *page_id <<FK>> (Page.id)
+'   *refer_page_id <<FK>> (Page.id)
+' }
+
+Site }|--|| Space
+Space }|-u-|| Page
+User }|-u-|| Space_User_Belonging
+Space }|--|| Space_User_Belonging
+User }|--|| Team_Member
+Team }|--|| Team_Member
+Page }|--|| Page_Path
+Page }|--|| Page_Path
+User }|--|| User_Save_Page
+Page }|-u-|| User_Save_Page
+User }|--|| User_Favo_Page
+Page }|-u-|| User_Favo_Page
+User }|--|| User_Browse_Page
+Page }|--|| User_Browse_Page
+Label }|--|| Page_Label_Relation
+User_Save_Page }|--|| Page_Label_Relation
+Authority_Group }|--|| Authority_Group_Tag
+Authority_Tag }|--|| Authority_Group_Tag
+Authority_Group }|--|| Authority_Group_User
+Space_User_Belonging }|-u-|| Authority_Group_User
+Space_User_Belonging }|--|| Authority_User_Tag
+Authority_Tag }|--|| Authority_User_Tag
+
+' Page }|--|| Page_Refer_Page
+' Page }|--|| Page_Refer_Page
+
+@enduml
