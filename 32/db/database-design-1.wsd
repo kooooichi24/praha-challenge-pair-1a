@@ -1,0 +1,49 @@
+@startuml database-design-1
+
+' hide the spot
+hide circle
+' avoid problems with angled crows feet
+' skinparam linetype ortho
+
+entity Set_Reminder {
+  *id
+  --
+  *reminder_id <<FK>>
+  *content
+  *user_from <<FK>>
+  *user_to <<FK>>
+  *period_id <<FK>>
+  *set_at
+}
+
+entity Complete_Reminder {
+  *id
+  --
+  *reminder_id <<FK>>
+  *completed_at
+}
+
+entity Reminders {
+  *id
+  --
+}
+
+entity Users {
+  *id
+  --
+  *display_name
+}
+
+entity Periods {
+  *id
+  --
+  *period
+}
+
+Reminders ||--|| Set_Reminder
+Reminders ||--|| Complete_Reminder
+Set_Reminder }|--|| Users
+Set_Reminder }|--|| Users
+Set_Reminder }|--|| Periods
+
+@enduml
