@@ -77,16 +77,42 @@
     - プレゼンテーション層は、ユーザーやフロントエンド、他のサービスとのインターフェースである。
     - そのためプレゼンテーション層では、入力形式や出力形式のバリデーションを行うべきである。
     - 言い換えると、入出力形式以外のバリデーションは実施すべきではない。
+    - もし許してしまうと、Repository に依存するし、ロジックが分散してしまう
   - ユースケース層
     - △
-    - ユースケースに How が記述してあるのは、気持ち悪い
     - もし他のユースケースでタスクを作成する際に、同様の if 文を書かないといけない（漏れが発生するかも
+    - 不安点あり。
+      - Todo ドメインオブジェクトに、アクセス機能制限を記述しなくて良いのか？
   - ドメイン層
     - ○
     - ドメインにルール/制約がまとまっている
-    - Admin ユーザー以外は Todo を作成することは不可能になった
+    - Admin ユーザー以外は Todo を作成/更新することは不可能になった
     - ただし、実装方法に不安点あり。
-      - Todo のコンストラクタに User インスタンスがあってもいいのかな？
+      - Todo ドメインオブジェクトに User ドメインオブジェクトが依存してもよいのかな？
+
+#### プレゼンテーション層に記述するサンプルコード
+
+```ts
+class CreateTodoController {
+  post(request): response {
+    // repository に依存
+    const user = userRepository.getUser(request.body.userId);
+    // Domainロジックがプレゼンテーション層に書いてある
+    if (!user.isAuthorized) {
+      throw new Error("Todo を作成できるのは、Admin ユーザーのみです");
+    }
+
+    const usecase = new todoUsecase();
+    usecase.exucute(request.body.content);
+
+    return {
+      statusCode: 200,
+      headers: {},
+      body: {},
+    };
+  }
+}
+```
 
 #### ユースケース層に記述するサンプルコード
 
@@ -104,9 +130,9 @@ class TodoUsecase {
   }
 
   createTodo(content: string, user_id: string): void {
+    // ここでアクセス制御
     const user = userRepository.getUser(user_id);
-    // ユースケースにHowが記述してある
-    if (user.getRole != "ADMIN") {
+    if (!user.isAuthorized) {
       throw new Error("Todo を作成できるのは、Admin ユーザーのみです");
     }
 
@@ -115,10 +141,10 @@ class TodoUsecase {
   }
 
   updateTodo(task_id: string, content: string, user_id: string): void {
+    // ここでアクセス制御
     const user = userRepository.getUser(user_id);
-    // ユースケースにHowが記述してある
-    if (user.getRole != "ADMIN") {
-      throw new Error("Todo を作成できるのは、Admin ユーザーのみです");
+    if (!user.isAuthorized) {
+      throw new Error("Todo を更新できるのは、Admin ユーザーのみです");
     }
 
     const todo = todoRepository.getByTodoId(task_id);
@@ -131,7 +157,6 @@ class Todo {
   private readonly id: string;
   private readonly content: string;
 
-  // コンストラクタの引数は、Todoのフィールドに関連するものだけ
   constractor(content: string) {
     if (!content) {
       throw new Error("必須項目が設定されていません");
@@ -164,6 +189,11 @@ class User {
     this.name = name;
     this.role = role;
   }
+
+  // How となるドメイン知識は、ドメインオブジェクトに記載
+  isAuthorized(): boolean {
+    return this.id === "ADMIN";
+  }
 }
 ```
 
@@ -183,16 +213,14 @@ class TodoUsecase {
   }
 
   createTodo(content: string, user_id: string): void {
-    // ユースケースからHowが消えた
     const user = userRepository.getUser(user_id);
     const todo = new Todo(content, user);
     todoRepository.create(todo);
   }
 
   updateTodo(task_id: string, content: string, user_id: string): void {
-    // ユースケースからHowが消えた
-    const todo = todoRepository.getByTodoId(task_id);
     const user = userRepository.getUser(user_id);
+    const todo = todoRepository.getByTodoId(task_id);
     todo.updateContent(content, user);
     todoRepository.save(todo);
   }
@@ -202,23 +230,26 @@ class Todo {
   private readonly id: string;
   private readonly content: string;
 
-  // コンストラクタの引数に、別ドメインの情報が関連している
+  // コンストラクタの引数に、別ドメインの情報が記述している
   constractor(content: string, user: User) {
-    if (!content) {
-      throw new Error("必須項目が設定されていません");
+    // ここでアクセス制御
+    if (!user.isAuthorized) {
+      throw new Error("Todo を作成できるのは、Admin ユーザーのみです");
     }
 
-    if (user.getRole != "ADMIN") {
-      throw new Error("Todo を作成できるのは、Admin ユーザーのみです");
+    if (!content) {
+      throw new Error("必須項目が設定されていません");
     }
 
     this.id = uuidv4();
     this.content = content;
   }
 
+  // コンストラクタの引数に、別ドメインの情報が記述している
   updateContent(content: string, user: User) {
-    if (user.getRole != "ADMIN") {
-      throw new Error("Todo を作成できるのは、Admin ユーザーのみです");
+    // ここでアクセス制御
+    if (!user.isAuthorized) {
+      throw new Error("Todo を更新できるのは、Admin ユーザーのみです");
     }
 
     this.content = content;
@@ -242,6 +273,11 @@ class User {
     this.id = uuidv4();
     this.name = name;
     this.role = role;
+  }
+
+  // How となるドメイン知識は、ドメインオブジェクトに記載
+  isAuthorized(): boolean {
+    return this.id === "ADMIN";
   }
 }
 ```
