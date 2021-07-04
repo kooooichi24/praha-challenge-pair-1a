@@ -2,7 +2,7 @@
 
 left to right direction
 actor 参加者
-rectangle プラハチャレンジ {
+package プラハチャレンジ {
   usecase 在籍ステータスを変更する as uc1
   usecase 課題の進捗ステータスを変更する as uc2
   ' usecase 他のチームに合流する
