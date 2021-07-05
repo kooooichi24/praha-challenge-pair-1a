@@ -1,0 +1,40 @@
+@startuml domain-model
+
+' hide the spot
+hide circle
+
+entity 参加者 {
+  参加者ID
+  --
+  名前
+  メールアドレス
+  在籍ステータス
+  List<課題>
+}
+
+entity チーム {
+  チームID
+  --
+  名前
+  List<参加者>
+}
+
+entity ペア {
+  チームID
+  --
+  名前
+  List<参加者>
+}
+
+entity 課題 {
+  課題ID
+  --
+  タイトル
+  学ばないと何が起きるのか
+  課題説明
+  完了条件
+  進捗ステータス
+}
+
+
+@enduml
